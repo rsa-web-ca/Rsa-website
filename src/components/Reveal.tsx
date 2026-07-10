@@ -21,10 +21,12 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const show = () => window.setTimeout(() => el.classList.add("reveal-in"), delay);
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          window.setTimeout(() => el.classList.add("reveal-in"), delay);
+          show();
           io.disconnect();
         }
       },
@@ -33,7 +35,16 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
 
     el.classList.add("reveal-armed");
     io.observe(el);
-    return () => io.disconnect();
+    // Safety net: never leave content hidden if the observer misfires
+    // (headless renderers, print, odd embedding contexts).
+    const fallback = window.setTimeout(() => {
+      el.classList.add("reveal-in");
+      io.disconnect();
+    }, 2500);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
   }, [delay]);
 
   return (

@@ -3,8 +3,7 @@ import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { site } from "../data/site";
 
-const OFFICE_IMG =
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80";
+const OFFICE_IMG = "/images/office.jpg";
 
 export default function About() {
   return (

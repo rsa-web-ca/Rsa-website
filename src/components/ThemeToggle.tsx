@@ -13,15 +13,22 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   const isDark = theme === "dark";
 
+  // Persist only on an explicit user choice, so the site keeps following
+  // the system preference until the visitor actually toggles.
+  function toggle() {
+    const next: Theme = isDark ? "light" : "dark";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+  }
+
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggle}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Light theme" : "Dark theme"}
       className={`inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 hover:bg-white/10 ${className}`}

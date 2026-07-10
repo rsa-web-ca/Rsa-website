@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       // The old Wix site hosted careers at /blank — keep the URL working.
       { path: "/blank", element: <Navigate to="/careers" replace /> },
       { path: "/contact", element: <Contact /> },
-      ...services.map((s) => ({ path: `/${s.slug}`, element: <ServiceDetail /> })),
+      ...services.map((s) => ({ path: `/${s.slug}`, element: <ServiceDetail slug={s.slug} /> })),
       { path: "*", element: <NotFound /> },
     ],
   },
