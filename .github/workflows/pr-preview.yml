@@ -38,7 +38,10 @@ jobs:
       - name: Deploy preview
         # Publishes to gh-pages under pr-preview/pr-<number>/, posts a sticky
         # comment with the preview URL, and removes the preview when the PR
-        # is closed or merged.
+        # is closed or merged. wait-for-pages-deployment holds off the
+        # comment until GitHub Pages has actually finished building, so the
+        # link isn't posted while it's still 404ing.
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: dist
+          wait-for-pages-deployment: true
