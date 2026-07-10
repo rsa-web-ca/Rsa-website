@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Semantic tokens — light is the default; .dark on <html> flips them. */
+:root {
+  --bg: oklch(0.99 0.002 262);
+  --surface: oklch(1 0 0);
+  --surface-raised: oklch(0.965 0.006 262);
+  --ink: oklch(0.24 0.03 264);
+  --ink-soft: oklch(0.42 0.025 262);
+  --line: oklch(0.88 0.012 262);
+  /* Navy band sections (hero, footer) — deep in both themes */
+  --band: oklch(0.25 0.07 264);
+  --band-deep: oklch(0.2 0.055 265);
+}
+
+.dark {
+  --bg: oklch(0.17 0.028 265);
+  --surface: oklch(0.21 0.038 264);
+  --surface-raised: oklch(0.25 0.045 264);
+  --ink: oklch(0.93 0.012 262);
+  --ink-soft: oklch(0.74 0.02 262);
+  --line: oklch(0.32 0.035 264);
+  --band: oklch(0.21 0.05 264);
+  --band-deep: oklch(0.15 0.035 265);
+}
+
+@theme {
+  /* Brand — deep navy carries authority; gold is the single accent */
+  --color-navy-950: oklch(0.2 0.055 265);
+  --color-navy-900: oklch(0.25 0.07 264);
+  --color-navy-800: oklch(0.31 0.085 264);
+  --color-navy-700: oklch(0.38 0.09 263);
+  --color-navy-600: oklch(0.46 0.09 262);
+  --color-navy-100: oklch(0.93 0.02 262);
+  --color-navy-50: oklch(0.97 0.008 262);
+
+  --color-gold-600: oklch(0.62 0.105 84);
+  --color-gold-500: oklch(0.72 0.115 86);
+  --color-gold-400: oklch(0.8 0.11 88);
+  --color-gold-100: oklch(0.94 0.045 90);
+
+  --font-display: "Frank Ruhl Libre", Georgia, "Times New Roman", serif;
+  --font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --shadow-lift: 0 1px 2px oklch(0.2 0.055 265 / 0.06), 0 8px 24px -12px oklch(0.2 0.055 265 / 0.25);
+  --shadow-float: 0 2px 4px oklch(0.2 0.055 265 / 0.08), 0 16px 40px -16px oklch(0.2 0.055 265 / 0.35);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Map semantic tokens into Tailwind utilities (bg-bg, text-ink, border-line…) */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-band: var(--band);
+  --color-band-deep: var(--band-deep);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background-color: oklch(0.94 0.045 90);
+  color: oklch(0.2 0.055 265);
+}
+
+:focus-visible {
+  outline: 2px solid oklch(0.62 0.105 84);
+  outline-offset: 2px;
+}
+
+/* Entrance reveal: content is visible by default; motion only enhances it
+   when JS adds .reveal-armed before the element enters the viewport. */
+.reveal-armed {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s var(--ease-out-quart), transform 0.6s var(--ease-out-quart);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  body {
+    transition: none;
+  }
+  .reveal-armed {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-in {
+    transition: none;
+  }
+}
