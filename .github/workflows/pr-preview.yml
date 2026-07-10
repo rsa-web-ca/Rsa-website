@@ -1,0 +1,44 @@
+name: PR deploy preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    # Fork PRs get a read-only token so the deploy step would fail;
+    # previews only run for branches on this repository.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - if: github.event.action != 'closed'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        if: github.event.action != 'closed'
+        run: npm ci
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: npm run build -- --base=/Rsa-website/pr-preview/pr-${{ github.event.number }}/
+
+      - name: Deploy preview
+        # Publishes to gh-pages under pr-preview/pr-<number>/, posts a sticky
+        # comment with the preview URL, and removes the preview when the PR
+        # is closed or merged.
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: dist

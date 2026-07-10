@@ -29,6 +29,27 @@ Connect the repository in Netlify — `netlify.toml` already configures:
 - SPA fallback (`/* → /index.html`)
 - `301` redirect from the old Wix careers URL `/blank` to `/careers`
 
+## Deployment (GitHub Pages)
+
+Two workflows in `.github/workflows/` publish to the `gh-pages` branch:
+
+- **`deploy.yml`** — every push to `master` builds the site and deploys it to
+  <https://rsa-web-ca.github.io/Rsa-website/>. A copy of `index.html` is served
+  as `404.html` so React Router deep links survive a page refresh.
+- **`pr-preview.yml`** — every pull request gets its own preview at
+  `…/Rsa-website/pr-preview/pr-<number>/`. The workflow posts the link as a
+  comment on the PR, updates the preview on each push, and deletes it when the
+  PR is closed or merged. (Previews only run for branches in this repo, not
+  forks — fork PRs don't get a write token.)
+
+> **One-time setup:** in the repo's **Settings → Pages**, set *Source* to
+> **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`. The
+> `gh-pages` branch is created automatically by the first workflow run.
+
+The site is base-path aware: the workflows pass `--base` to Vite, and the app
+reads `import.meta.env.BASE_URL` for the router basename and public images, so
+the same code still works at `/` on Netlify and local dev.
+
 ## Forms (FormSubmit)
 
 Both forms POST to FormSubmit's AJAX endpoint for `admin@rsa-india.in` with a CC to
