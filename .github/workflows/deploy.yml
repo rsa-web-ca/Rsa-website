@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Don't cancel an in-flight deploy; queue pushes to gh-pages instead so the
+# branch never ends up half-written.
+concurrency:
+  group: gh-pages-production
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: https://rsa-web-ca.github.io/Rsa-website/
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        # Project sites are served from /<repo>/, so Vite needs the base path.
+        run: npm run build -- --base=/Rsa-website/
+
+      - name: Add SPA fallback
+        # GitHub Pages serves 404.html for unknown paths; serving the app
+        # there lets React Router handle deep links like /about on refresh.
+        run: cp dist/index.html dist/404.html
+
+      - name: Deploy to gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: gh-pages
+          # PR previews live under pr-preview/ on the same branch — keep them.
+          clean-exclude: pr-preview/
+          force: false

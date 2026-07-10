@@ -4,7 +4,7 @@ import { industries } from "../data/industries";
 import { site } from "../data/site";
 import Reveal from "../components/Reveal";
 
-const HERO_IMG = "/images/hero.jpg";
+const HERO_IMG = `${import.meta.env.BASE_URL}images/hero.jpg`;
 
 export default function Home() {
   return (

@@ -29,7 +29,11 @@ const router = createBrowserRouter([
       { path: "*", element: <NotFound /> },
     ],
   },
-]);
+], {
+  // Vite's base is "/" locally and on Netlify, but GitHub Pages serves the
+  // site from a subpath (e.g. /Rsa-website/ or /Rsa-website/pr-preview/pr-N/).
+  basename: import.meta.env.BASE_URL.replace(/\/$/, ""),
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

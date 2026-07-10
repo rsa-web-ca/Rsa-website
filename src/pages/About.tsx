@@ -3,7 +3,7 @@ import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { site } from "../data/site";
 
-const OFFICE_IMG = "/images/office.jpg";
+const OFFICE_IMG = `${import.meta.env.BASE_URL}images/office.jpg`;
 
 export default function About() {
   return (
