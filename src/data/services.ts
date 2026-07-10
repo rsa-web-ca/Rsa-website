@@ -176,7 +176,7 @@ export const services: Service[] = [
       "End-to-end transaction support with independence, objectivity and confidentiality.",
     intro: [
       "With the goal of increasing enterprise value, we provide useful insights on structural and strategic possibilities.",
-      "We leverage extensive experience across multiple corporations and industries to deliver these services — maintaining independence, objectivity, and confidentiality while remaining client-focused and relationship-oriented.",
+      "The supply of such services is made easier by our significant experience with numerous corporations and industries. We preserve independence, objectivity, and secrecy while being focused and relationship-driven.",
       "We can assist you in handling all aspects of your transactions from beginning to end, acting as your business's support system and meeting expansion requirements.",
     ],
     offerings: [],
