@@ -4,8 +4,7 @@ import { industries } from "../data/industries";
 import { site } from "../data/site";
 import Reveal from "../components/Reveal";
 
-const HERO_IMG =
-  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80";
+const HERO_IMG = "/images/hero.jpg";
 
 export default function Home() {
   return (

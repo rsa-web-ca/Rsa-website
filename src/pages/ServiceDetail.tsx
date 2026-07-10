@@ -1,12 +1,11 @@
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { getService, services } from "../data/services";
 
-export default function ServiceDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const service = slug ? getService(slug) : undefined;
+export default function ServiceDetail({ slug }: { slug: string }) {
+  const service = getService(slug);
 
   if (!service) return <Navigate to="/services" replace />;
 
