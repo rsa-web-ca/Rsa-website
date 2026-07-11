@@ -42,4 +42,8 @@ jobs:
         uses: rossjrw/pr-preview-action@ffa7509e91a3ec8dfc2e5536c4d5c1acdf7a6de9 # v1
         with:
           source-dir: dist
-          wait-for-pages-deployment: true
+          # Only wait for the Pages build on deploy: it ensures the preview
+          # URL is live before the comment is posted. On close there's no
+          # comment or URL to wait for, and GitHub Pages builds have been
+          # erroring on the "remove" commits, failing the job for no reason.
+          wait-for-pages-deployment: ${{ github.event.action != 'closed' }}
