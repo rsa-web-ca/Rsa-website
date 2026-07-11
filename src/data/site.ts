@@ -8,11 +8,7 @@ export const site = {
   phoneHref: "tel:+919900911994",
   email: "admin@rsa-india.in",
   partnerEmail: "rshivakumarca@rsa-india.in",
-  mapsUrl:
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent(
-      "40-41, 1st floor, 6th Cross Rd, Kamakya Layout, Phase 3, Banashankari, Bengaluru, Karnataka 560085",
-    ),
+  mapsUrl: "https://maps.app.goo.gl/ocviPu21w2xXqpeC8?g_st=ic",
 } as const;
 
 /** FormSubmit endpoints — submissions go to admin@ with a copy to the partner email. */
