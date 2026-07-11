@@ -83,10 +83,27 @@ title: Hello World
 date: 2026-07-11
 author: R Shivakumar & Associates
 summary: A short teaser shown on the blog index.
+tags: announcements, firm news
+updated: 2026-07-15
+draft: false
 ---
 
 Your **Markdown** body here…
 ```
+
+Frontmatter fields:
+
+| Field     | Required | Notes                                                            |
+| --------- | -------- | ---------------------------------------------------------------- |
+| `title`   | yes      | Falls back to the filename slug if omitted.                      |
+| `date`    | yes      | ISO `YYYY-MM-DD`; posts are sorted newest-first by this.         |
+| `author`  | no       | Shown in the byline.                                             |
+| `summary` | no       | Teaser on the index; also used as the post's meta description.   |
+| `tags`    | no       | `a, b, c` or `[a, b, c]`; renders pills + the meta keywords tag. |
+| `updated` | no       | ISO date; shows a "Last updated …" line on the post.            |
+| `draft`   | no       | `true` hides the post from the production build (visible in dev).|
+
+Reading time is estimated automatically from the body — no field needed.
 
 `src/data/blog.ts` loads every file at build time (via Vite's
 `import.meta.glob`), parses the frontmatter, and sorts posts newest-first — so

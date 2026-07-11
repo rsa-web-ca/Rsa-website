@@ -25,16 +25,19 @@ export default function Blog() {
               <Reveal as="li" key={p.slug} delay={Math.min(i * 50, 250)}>
                 <Link
                   to={`/blogs/${p.slug}`}
-                  className="group grid gap-2 py-8 transition-colors duration-200 sm:grid-cols-[minmax(0,12rem)_1fr_auto] sm:items-baseline sm:gap-8"
+                  className="group grid gap-2 py-8 transition-colors duration-200 sm:grid-cols-[minmax(0,12rem)_1fr_auto] sm:items-start sm:gap-8"
                 >
-                  {p.date && (
-                    <time
-                      dateTime={p.date}
-                      className="text-sm font-medium uppercase tracking-[0.12em] text-ink-soft"
-                    >
-                      {formatDate(p.date)}
-                    </time>
-                  )}
+                  <div className="text-sm text-ink-soft">
+                    {p.date && (
+                      <time
+                        dateTime={p.date}
+                        className="font-medium uppercase tracking-[0.12em]"
+                      >
+                        {formatDate(p.date)}
+                      </time>
+                    )}
+                    <span className="mt-1 block text-xs">{p.readingTime} min read</span>
+                  </div>
                   <div>
                     <h2 className="font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
                       {p.title}
@@ -43,6 +46,18 @@ export default function Blog() {
                       <p className="mt-2 max-w-prose text-sm leading-relaxed text-ink-soft sm:text-base">
                         {p.summary}
                       </p>
+                    )}
+                    {p.tags.length > 0 && (
+                      <ul className="mt-3 flex flex-wrap gap-2" aria-label="Tags">
+                        {p.tags.map((tag) => (
+                          <li
+                            key={tag}
+                            className="rounded-full border border-line bg-surface-raised px-2.5 py-0.5 text-xs font-medium text-ink-soft"
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
                   <span className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-accent sm:mt-0">

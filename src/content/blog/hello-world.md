@@ -3,6 +3,7 @@ title: Hello World
 date: 2026-07-11
 author: R Shivakumar & Associates
 summary: The first post on our new journal — a short note on why we're starting to write, and what you can expect to find here.
+tags: announcements, firm news
 ---
 
 Welcome to the R Shivakumar & Associates journal. This is our first post, and

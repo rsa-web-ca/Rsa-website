@@ -16,19 +16,42 @@ export default function BlogPost({ slug }: BlogPostProps) {
   const post = getPost(slug);
 
   // Reserve the hook call before any early return to keep hook order stable.
-  usePageMeta(post?.title ?? "Post not found", post?.summary);
+  usePageMeta(post?.title ?? "Post not found", post?.summary, post?.tags.join(", "));
 
   if (!post) return <NotFound />;
 
-  const byline = [post.author, formatDate(post.date)].filter(Boolean).join(" · ");
+  const byline = [
+    post.author,
+    formatDate(post.date),
+    `${post.readingTime} min read`,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <>
       <PageHeader title={post.title} lede={byline || undefined} />
       <Reveal as="section" className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+        {post.updated && (
+          <p className="mb-8 text-sm text-ink-soft">
+            Last updated {formatDate(post.updated)}
+          </p>
+        )}
         <div className="blog-prose">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
         </div>
+        {post.tags.length > 0 && (
+          <ul className="mt-12 flex flex-wrap gap-2" aria-label="Tags">
+            {post.tags.map((tag) => (
+              <li
+                key={tag}
+                className="rounded-full border border-line bg-surface-raised px-3 py-1 text-xs font-medium text-ink-soft"
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        )}
         <div className="mt-14 border-t border-line pt-8">
           <Link
             to="/blogs"
