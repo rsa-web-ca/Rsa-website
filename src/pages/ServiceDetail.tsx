@@ -3,14 +3,19 @@ import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { getService, services } from "../data/services";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 export default function ServiceDetail({ slug }: { slug: string }) {
   const service = getService(slug);
+
+  usePageMeta(service?.title, service?.summary);
 
   if (!service) return <Navigate to="/services" replace />;
 
   const index = services.findIndex((s) => s.slug === service.slug);
   const others = services.filter((s) => s.slug !== service.slug);
+  const prev = index > 0 ? services[index - 1] : undefined;
+  const next = index < services.length - 1 ? services[index + 1] : undefined;
 
   return (
     <>
@@ -39,7 +44,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
-                          className="mt-1 h-4.5 w-4.5 shrink-0 text-gold-600"
+                          className="mt-1 h-4.5 w-4.5 shrink-0 text-accent"
                           aria-hidden="true"
                         >
                           <path
@@ -72,21 +77,21 @@ export default function ServiceDetail({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ul>
-              <div className="mt-6 flex gap-3 text-sm">
-                {index > 0 && (
-                  <Link
-                    to={`/${services[index - 1].slug}`}
-                    className="font-semibold text-gold-600 transition-colors hover:text-gold-500"
-                  >
-                    ← Previous
+              <div className="mt-6 flex gap-6 text-sm">
+                {prev && (
+                  <Link to={`/${prev.slug}`} className="group min-w-0">
+                    <span className="block text-xs text-ink-soft">← Previous</span>
+                    <span className="mt-0.5 block truncate font-semibold text-accent transition-colors group-hover:text-accent-strong">
+                      {prev.title}
+                    </span>
                   </Link>
                 )}
-                {index < services.length - 1 && (
-                  <Link
-                    to={`/${services[index + 1].slug}`}
-                    className="ml-auto font-semibold text-gold-600 transition-colors hover:text-gold-500"
-                  >
-                    Next →
+                {next && (
+                  <Link to={`/${next.slug}`} className="group ml-auto min-w-0 text-right">
+                    <span className="block text-xs text-ink-soft">Next →</span>
+                    <span className="mt-0.5 block truncate font-semibold text-accent transition-colors group-hover:text-accent-strong">
+                      {next.title}
+                    </span>
                   </Link>
                 )}
               </div>
@@ -94,7 +99,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
           </Reveal>
         </div>
       </section>
-      <ContactCta />
+      <ContactCta text={service.outro[0]} />
     </>
   );
 }

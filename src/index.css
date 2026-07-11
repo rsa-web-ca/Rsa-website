@@ -13,6 +13,9 @@
   /* Navy band sections (hero, footer) — deep in both themes */
   --band: oklch(0.25 0.07 264);
   --band-deep: oklch(0.2 0.055 265);
+  /* Gold accent tuned for text: ≥4.5:1 on bg/surface/surface-raised in each theme */
+  --accent: oklch(0.54 0.105 82);
+  --accent-strong: oklch(0.46 0.1 80);
 }
 
 .dark {
@@ -22,8 +25,11 @@
   --ink: oklch(0.93 0.012 262);
   --ink-soft: oklch(0.74 0.02 262);
   --line: oklch(0.32 0.035 264);
-  --band: oklch(0.21 0.05 264);
-  --band-deep: oklch(0.15 0.035 265);
+  /* Band sections sit clearly above/below the page bg so section rhythm survives dark mode */
+  --band: oklch(0.26 0.06 264);
+  --band-deep: oklch(0.12 0.03 266);
+  --accent: oklch(0.8 0.11 88);
+  --accent-strong: oklch(0.72 0.115 86);
 }
 
 @theme {
@@ -60,6 +66,8 @@
   --color-line: var(--line);
   --color-band: var(--band);
   --color-band-deep: var(--band-deep);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
 }
 
 html {

@@ -25,7 +25,7 @@ export default function Footer() {
           </div>
 
           <nav aria-label="Footer — pages">
-            <h2 className="font-display text-base font-semibold text-white">Pages</h2>
+            <h3 className="font-display text-base font-semibold text-white">Pages</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {[
                 ["Home", "/"],
@@ -45,7 +45,7 @@ export default function Footer() {
           </nav>
 
           <nav aria-label="Footer — services">
-            <h2 className="font-display text-base font-semibold text-white">Services</h2>
+            <h3 className="font-display text-base font-semibold text-white">Services</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {services.map((s) => (
                 <li key={s.slug}>
@@ -58,7 +58,7 @@ export default function Footer() {
           </nav>
 
           <div>
-            <h2 className="font-display text-base font-semibold text-white">Contact</h2>
+            <h3 className="font-display text-base font-semibold text-white">Contact</h3>
             <address className="mt-4 space-y-3 text-sm not-italic leading-relaxed">
               <p>
                 <a

@@ -3,8 +3,13 @@ import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { services } from "../data/services";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 export default function Services() {
+  usePageMeta(
+    "Our Services",
+    "Nine service lines covering audit, taxation, advisory and compliance — each led with senior-partner attention.",
+  );
   return (
     <>
       <PageHeader
@@ -19,11 +24,11 @@ export default function Services() {
                 to={`/${s.slug}`}
                 className="group grid gap-2 py-8 transition-colors duration-200 sm:grid-cols-[minmax(0,20rem)_1fr_auto] sm:items-center sm:gap-8"
               >
-                <h2 className="font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-gold-600">
+                <h2 className="font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
                   {s.title}
                 </h2>
-                <p className="text-sm leading-relaxed text-ink-soft sm:text-base">{s.intro[0]}</p>
-                <span className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-gold-600 sm:mt-0">
+                <p className="max-w-prose text-sm leading-relaxed text-ink-soft sm:text-base">{s.intro[0]}</p>
+                <span className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-accent sm:mt-0">
                   Read more
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

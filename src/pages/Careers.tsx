@@ -1,7 +1,8 @@
-import type { FormEvent } from "react";
+import { useEffect, useRef, type FormEvent } from "react";
 import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
 import { useFormSubmit } from "../hooks/useFormSubmit";
+import { usePageMeta } from "../hooks/usePageMeta";
 import {
   Field,
   TextInput,
@@ -15,7 +16,17 @@ import {
 import { positions, genders, caCourseStatuses, attemptOptions } from "../data/careers";
 
 export default function Careers() {
+  usePageMeta(
+    "Work with Us",
+    "Positions open for Article Trainees, Audit Assistants & Audit Managers in Bengaluru.",
+  );
   const { status, submit } = useFormSubmit("Careers application — rsa-india.in");
+  const successRef = useRef<HTMLDivElement>(null);
+
+  // The form unmounts on success; bring the confirmation into view.
+  useEffect(() => {
+    if (status === "success") successRef.current?.scrollIntoView({ block: "center" });
+  }, [status]);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,13 +41,13 @@ export default function Careers() {
       />
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-3xl font-semibold text-ink">Join the Team</h2>
-        <p className="mt-3 text-ink-soft">
+        <p className="mt-3 max-w-prose text-ink-soft">
           Tell us about yourself and the position you are applying for — we review every
           application personally.
         </p>
 
         {status === "success" ? (
-          <div className="mt-10">
+          <div ref={successRef} className="mt-10">
             <SuccessNote message="Thanks for applying! We'll be in touch soon." />
           </div>
         ) : (
@@ -45,37 +56,16 @@ export default function Careers() {
               <Honeypot />
               <div className="grid gap-6 sm:grid-cols-2">
                 <Field label="Full Name" htmlFor="fullName" required>
-                  <TextInput
-                    id="fullName"
-                    name="Full Name"
-                    type="text"
-                    required
-                    autoComplete="name"
-                    placeholder="Please enter your full name"
-                  />
+                  <TextInput id="fullName" name="Full Name" type="text" required autoComplete="name" />
                 </Field>
                 <Field label="Email" htmlFor="email" required>
-                  <TextInput
-                    id="email"
-                    name="Email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                    placeholder="Please enter your email"
-                  />
+                  <TextInput id="email" name="Email" type="email" required autoComplete="email" />
                 </Field>
               </div>
 
               <div className="grid gap-6 sm:grid-cols-2">
                 <Field label="Phone" htmlFor="phone" required>
-                  <TextInput
-                    id="phone"
-                    name="Phone"
-                    type="tel"
-                    required
-                    autoComplete="tel"
-                    placeholder="Please enter your mobile number"
-                  />
+                  <TextInput id="phone" name="Phone" type="tel" required autoComplete="tel" />
                 </Field>
                 <Field label="Position" htmlFor="position" required>
                   <Select id="position" name="Position" required defaultValue="">
@@ -146,12 +136,10 @@ export default function Careers() {
               </div>
 
               <Field label="Work Exposure" htmlFor="workExposure" required>
-                <TextArea
-                  id="workExposure"
-                  name="Work Exposure"
-                  required
-                  placeholder="Please share your work exposure, freshers may enter N/A"
-                />
+                <TextArea id="workExposure" name="Work Exposure" required aria-describedby="workExposureHint" />
+                <p id="workExposureHint" className="mt-1.5 text-sm text-ink-soft">
+                  Share the areas you have worked in — freshers may enter N/A.
+                </p>
               </Field>
 
               {status === "error" && <ErrorNote />}

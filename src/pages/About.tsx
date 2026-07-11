@@ -2,10 +2,15 @@ import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import { site } from "../data/site";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const OFFICE_IMG = `${import.meta.env.BASE_URL}images/office.jpg`;
 
 export default function About() {
+  usePageMeta(
+    "About Us",
+    `A firm of chartered accountants in Bengaluru rendering audit & assurance, taxation, tax litigation and consultancy services since ${site.since}.`,
+  );
   return (
     <>
       <PageHeader title="About Us" />
