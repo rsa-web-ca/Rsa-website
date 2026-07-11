@@ -277,7 +277,7 @@ export default function Home() {
                 Speak with us about your requirements
               </h2>
               <p className="mt-3 max-w-xl text-white/75">
-                Call, write, or visit our office in Banashankari, Bengaluru — we respond promptly.
+                Call, write, or visit our office in Banashankari, Bengaluru.
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
