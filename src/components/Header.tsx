@@ -140,6 +140,9 @@ export default function Header() {
           <NavLink to="/careers" className={navLinkClass}>
             Careers
           </NavLink>
+          <NavLink to="/blogs" className={navLinkClass}>
+            Blog
+          </NavLink>
           <NavLink to="/contact" className={navLinkClass}>
             Contact
           </NavLink>
@@ -226,6 +229,9 @@ export default function Header() {
             </NavLink>
             <NavLink to="/careers" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
               Careers
+            </NavLink>
+            <NavLink to="/blogs" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+              Blog
             </NavLink>
             <NavLink to="/contact" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
               Contact

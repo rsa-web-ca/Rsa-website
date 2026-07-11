@@ -67,3 +67,65 @@ Spam protection: a hidden honeypot field plus FormSubmit's own filtering
 
 All page copy lives in `src/data/` (`site.ts`, `services.ts`, `industries.ts`,
 `careers.ts`) — edit those files to change text without touching components.
+
+## Blog
+
+The blog lives at `/blogs` (index) and `/blogs/<slug>` (individual posts), and
+matches the site's design — no separate generator or build step.
+
+To publish a post, drop a Markdown file into `src/content/blog/`. The filename
+becomes the URL slug (`hello-world.md` → `/blogs/hello-world`). Start it with a
+frontmatter block:
+
+```markdown
+---
+title: Hello World
+date: 2026-07-11
+author: R Shivakumar & Associates
+summary: A short teaser shown on the blog index.
+tags: announcements, firm news
+updated: 2026-07-15
+draft: false
+---
+
+Your **Markdown** body here…
+```
+
+Frontmatter fields:
+
+| Field     | Required | Notes                                                            |
+| --------- | -------- | ---------------------------------------------------------------- |
+| `title`   | yes      | Falls back to the filename slug if omitted.                      |
+| `date`    | yes      | ISO `YYYY-MM-DD`; posts are sorted newest-first by this.         |
+| `author`  | no       | Shown in the byline.                                             |
+| `summary` | no       | Teaser on the index; also used as the post's meta description.   |
+| `tags`    | no       | `a, b, c` or `[a, b, c]`; renders pills + the meta keywords tag. |
+| `updated` | no       | ISO date; shows a "Last updated …" line on the post.            |
+| `draft`   | no       | `true` hides the post from the production build (visible in dev).|
+
+Reading time is estimated automatically from the body — no field needed.
+
+`src/data/blog.ts` loads every file at build time (via Vite's
+`import.meta.glob`), parses the frontmatter (shared logic in
+`src/data/frontmatter.ts`), and sorts posts newest-first — so adding a file
+automatically lists it on the index and gives it a route. Post bodies are
+rendered with `react-markdown` + `remark-gfm` (GitHub-flavoured Markdown) and
+styled by the on-brand `.blog-prose` block in `src/index.css`.
+
+Built-in blog features:
+
+- **Search, tag filter and pagination** on the index, all driven by URL query
+  params (`?q=`, `?tag=`, `?page=`) so any view is linkable and shareable.
+- **Previous/next navigation** and a **reading-progress bar** on each post.
+- The latest post is surfaced in a **"From the blog"** section on the home page.
+- Tags are clickable everywhere and link to the filtered index.
+
+## SEO
+
+- `usePageMeta` (`src/hooks/usePageMeta.ts`) sets a per-route title,
+  description, keywords, canonical URL and Open Graph / Twitter Card tags.
+  Blog posts are tagged as `og:type=article`.
+- A Vite plugin in `vite.config.ts` generates `feed.xml` (RSS 2.0),
+  `sitemap.xml` (all routes + posts) and `robots.txt` into `dist/` at build.
+- All absolute URLs use `site.url` in `src/data/site.ts` — update that one
+  constant if the canonical production domain changes.
