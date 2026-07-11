@@ -8,13 +8,13 @@ import { usePageMeta } from "../hooks/usePageMeta";
 export default function Services() {
   usePageMeta(
     "Our Services",
-    "Nine service lines covering audit, taxation, advisory and compliance — each led with senior-partner attention.",
+    "Nine service lines covering audit, taxation, advisory and compliance.",
   );
   return (
     <>
       <PageHeader
         title="Our Services"
-        lede="Nine service lines covering audit, taxation, advisory and compliance — each led with senior-partner attention."
+        lede="Nine service lines covering audit, taxation, advisory and compliance."
       />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <ul className="divide-y divide-line">

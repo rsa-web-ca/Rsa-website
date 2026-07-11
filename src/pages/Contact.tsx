@@ -15,7 +15,7 @@ import {
 import { site } from "../data/site";
 
 export default function Contact() {
-  usePageMeta("Contact Us", "Call, write, or visit our office in Banashankari, Bengaluru — we respond promptly.");
+  usePageMeta("Contact Us", "Call, write, or visit our office in Banashankari, Bengaluru.");
   const { status, submit } = useFormSubmit("Contact enquiry — rsa-india.in");
   const successRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +31,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageHeader title="Contact Us" lede="Get in touch — we respond promptly." />
+      <PageHeader title="Contact Us" lede="Call, write, or visit our office in Banashankari, Bengaluru." />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
           <Reveal>

@@ -25,7 +25,7 @@ export default function Industries() {
           ))}
         </ul>
       </section>
-      <ContactCta text="Working in a different sector? We would still like to hear from you." />
+      <ContactCta />
     </>
   );
 }

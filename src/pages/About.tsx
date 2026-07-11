@@ -45,7 +45,7 @@ export default function About() {
           />
         </div>
       </Reveal>
-      <ContactCta text="Speak with us about audit, tax or advisory requirements." />
+      <ContactCta />
     </>
   );
 }
