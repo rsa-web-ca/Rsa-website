@@ -2,6 +2,8 @@ export const site = {
   name: "R Shivakumar & Associates",
   tagline: "Chartered Accountants",
   since: 1997,
+  /** Canonical production origin — used for SEO tags, the sitemap and RSS feed. */
+  url: "https://www.rsa-india.in",
   address:
     "40-41, 1st floor, 6th Cross Rd, Kamakya Layout, Phase 3, Banashankari, Bengaluru, Karnataka 560085, India",
   phone: "+91 99009 11994",

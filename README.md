@@ -106,7 +106,26 @@ Frontmatter fields:
 Reading time is estimated automatically from the body — no field needed.
 
 `src/data/blog.ts` loads every file at build time (via Vite's
-`import.meta.glob`), parses the frontmatter, and sorts posts newest-first — so
-adding a file automatically lists it on the index and gives it a route. Post
-bodies are rendered with `react-markdown` + `remark-gfm` (GitHub-flavoured
-Markdown) and styled by the on-brand `.blog-prose` block in `src/index.css`.
+`import.meta.glob`), parses the frontmatter (shared logic in
+`src/data/frontmatter.ts`), and sorts posts newest-first — so adding a file
+automatically lists it on the index and gives it a route. Post bodies are
+rendered with `react-markdown` + `remark-gfm` (GitHub-flavoured Markdown) and
+styled by the on-brand `.blog-prose` block in `src/index.css`.
+
+Built-in blog features:
+
+- **Search, tag filter and pagination** on the index, all driven by URL query
+  params (`?q=`, `?tag=`, `?page=`) so any view is linkable and shareable.
+- **Previous/next navigation** and a **reading-progress bar** on each post.
+- The latest post is surfaced in a **"From the blog"** section on the home page.
+- Tags are clickable everywhere and link to the filtered index.
+
+## SEO
+
+- `usePageMeta` (`src/hooks/usePageMeta.ts`) sets a per-route title,
+  description, keywords, canonical URL and Open Graph / Twitter Card tags.
+  Blog posts are tagged as `og:type=article`.
+- A Vite plugin in `vite.config.ts` generates `feed.xml` (RSS 2.0),
+  `sitemap.xml` (all routes + posts) and `robots.txt` into `dist/` at build.
+- All absolute URLs use `site.url` in `src/data/site.ts` — update that one
+  constant if the canonical production domain changes.

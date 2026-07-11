@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { services } from "../data/services";
 import { industries } from "../data/industries";
 import { site } from "../data/site";
+import { posts, formatDate } from "../data/blog";
 import Reveal from "../components/Reveal";
 import { usePageMeta } from "../hooks/usePageMeta";
+
+const latestPost = posts[0];
 
 const HERO_IMG = `${import.meta.env.BASE_URL}images/hero.jpg`;
 
@@ -205,6 +208,65 @@ export default function Home() {
           </ul>
         </div>
       </Reveal>
+
+      {/* Latest from the blog */}
+      {latestPost && (
+        <section className="bg-surface-raised py-16 lg:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Reveal>
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
+                  From the blog
+                </h2>
+                <Link
+                  to="/blogs"
+                  className="text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-strong"
+                >
+                  View all posts →
+                </Link>
+              </div>
+            </Reveal>
+            <Reveal className="mt-10">
+              <Link
+                to={`/blogs/${latestPost.slug}`}
+                className="group block rounded-2xl border border-line bg-surface p-8 shadow-lift transition-colors duration-200 hover:border-accent sm:p-10"
+              >
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-soft">
+                  {latestPost.date && (
+                    <time dateTime={latestPost.date} className="font-medium uppercase tracking-[0.12em]">
+                      {formatDate(latestPost.date)}
+                    </time>
+                  )}
+                  <span aria-hidden="true">·</span>
+                  <span>{latestPost.readingTime} min read</span>
+                </div>
+                <h3 className="mt-3 font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent sm:text-3xl">
+                  {latestPost.title}
+                </h3>
+                {latestPost.summary && (
+                  <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{latestPost.summary}</p>
+                )}
+                <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                  Read the post
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </Link>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* Contact band */}
       <section className="bg-band">

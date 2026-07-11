@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
+import ReadingProgress from "../components/ReadingProgress";
 import NotFound from "./NotFound";
 import { getPost, getAdjacentPosts, formatDate, type BlogPost } from "../data/blog";
 import { usePageMeta } from "../hooks/usePageMeta";
@@ -16,7 +17,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
   const post = getPost(slug);
 
   // Reserve the hook call before any early return to keep hook order stable.
-  usePageMeta(post?.title ?? "Post not found", post?.summary, post?.tags.join(", "));
+  usePageMeta(post?.title ?? "Post not found", post?.summary, post?.tags.join(", "), "article");
 
   if (!post) return <NotFound />;
 
@@ -32,6 +33,7 @@ export default function BlogPost({ slug }: BlogPostProps) {
 
   return (
     <>
+      <ReadingProgress />
       <PageHeader title={post.title} lede={byline || undefined} />
       <Reveal as="section" className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         {post.updated && (
@@ -45,11 +47,13 @@ export default function BlogPost({ slug }: BlogPostProps) {
         {post.tags.length > 0 && (
           <ul className="mt-12 flex flex-wrap gap-2" aria-label="Tags">
             {post.tags.map((tag) => (
-              <li
-                key={tag}
-                className="rounded-full border border-line bg-surface-raised px-3 py-1 text-xs font-medium text-ink-soft"
-              >
-                {tag}
+              <li key={tag}>
+                <Link
+                  to={`/blogs?tag=${encodeURIComponent(tag)}`}
+                  className="inline-block rounded-full border border-line bg-surface-raised px-3 py-1 text-xs font-medium text-ink-soft transition-colors hover:border-accent hover:text-accent"
+                >
+                  {tag}
+                </Link>
               </li>
             ))}
           </ul>
