@@ -4,7 +4,7 @@ export const site = {
   since: 1997,
   address:
     "40-41, 1st floor, 6th Cross Rd, Kamakya Layout, Phase 3, Banashankari, Bengaluru, Karnataka 560085, India",
-  phone: "99009 11994",
+  phone: "+91 99009 11994",
   phoneHref: "tel:+919900911994",
   email: "admin@rsa-india.in",
   partnerEmail: "rshivakumarca@rsa-india.in",

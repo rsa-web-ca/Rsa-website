@@ -3,10 +3,12 @@ import { services } from "../data/services";
 import { industries } from "../data/industries";
 import { site } from "../data/site";
 import Reveal from "../components/Reveal";
+import { usePageMeta } from "../hooks/usePageMeta";
 
 const HERO_IMG = `${import.meta.env.BASE_URL}images/hero.jpg`;
 
 export default function Home() {
+  usePageMeta();
   return (
     <>
       {/* Hero */}
@@ -14,7 +16,7 @@ export default function Home() {
         <img
           src={HERO_IMG}
           alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
+          className="absolute inset-0 h-full w-full object-cover opacity-35"
           fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-band-deep/70 via-band-deep/55 to-band-deep" aria-hidden="true" />
@@ -50,7 +52,7 @@ export default function Home() {
           </div>
 
           {/* Office panel — fills the wide right column on desktop */}
-          <aside className="hidden rounded-2xl border border-white/15 bg-navy-900/70 p-8 shadow-float lg:block">
+          <aside className="hidden rounded-2xl border border-white/15 bg-navy-900/70 p-8 lg:block">
             <h2 className="font-display text-lg font-semibold text-white">Our Office</h2>
             <address className="mt-5 space-y-5 text-sm not-italic leading-relaxed text-white/75">
               <div className="flex gap-3">
@@ -109,7 +111,7 @@ export default function Home() {
             </p>
             <Link
               to="/about"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-gold-600 transition-colors duration-200 hover:text-gold-500"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-strong"
             >
               More about the firm
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true">
@@ -142,7 +144,7 @@ export default function Home() {
               <h2 className="font-display text-3xl font-semibold text-ink sm:text-4xl">Our Services</h2>
               <Link
                 to="/services"
-                className="text-sm font-semibold text-gold-600 transition-colors duration-200 hover:text-gold-500"
+                className="text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-strong"
               >
                 View all services →
               </Link>
@@ -155,11 +157,11 @@ export default function Home() {
                   to={`/${s.slug}`}
                   className="group block border-t-2 border-line pt-5 transition-colors duration-200 hover:border-gold-500"
                 >
-                  <h3 className="font-display text-xl font-semibold text-ink transition-colors duration-200 group-hover:text-gold-600">
+                  <h3 className="font-display text-xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
                     {s.title}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">{s.summary}</p>
-                  <span className="mt-3 inline-block text-sm font-semibold text-gold-600 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                  <span className="mt-3 inline-block text-sm font-semibold text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                     Read more →
                   </span>
                 </Link>
@@ -181,7 +183,7 @@ export default function Home() {
             </p>
             <Link
               to="/industries"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gold-600 transition-colors duration-200 hover:text-gold-500"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors duration-200 hover:text-accent-strong"
             >
               See all sectors
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true">
@@ -194,7 +196,7 @@ export default function Home() {
               <li key={ind.name}>
                 <Link
                   to="/industries"
-                  className="inline-block rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-200 hover:border-gold-500 hover:text-gold-600"
+                  className="inline-block rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-200 hover:border-gold-500 hover:text-accent"
                 >
                   {ind.name}
                 </Link>
