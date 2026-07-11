@@ -127,9 +127,9 @@ export const services: Service[] = [
     slug: "virtual-cfo",
     title: "Virtual CFO",
     summary:
-      "An affordable interim, part-time or virtual CFO so you can concentrate on running the business.",
+      "An interim, part-time or virtual CFO so you can concentrate on running the business.",
     intro: [
-      "Maintaining a CFO service and engaging an affordable interim CFO, part-time CFO, or virtual CFO — we will relieve you of financial burden, allowing you to concentrate on running and expanding your business.",
+      "Maintaining a CFO service and engaging an interim CFO, part-time CFO, or virtual CFO — we will relieve you of financial burden, allowing you to concentrate on running and expanding your business.",
     ],
     listHeading: "We can handle",
     offerings: [

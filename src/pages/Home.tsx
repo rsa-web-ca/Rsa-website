@@ -35,8 +35,7 @@ export default function Home() {
               {site.tagline}
             </p>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
-              Rendering services in audit &amp; assurance, taxation, tax litigation and consultancy —
-              with senior-partner attention on every engagement.
+              Rendering services in audit &amp; assurance, taxation, tax litigation and consultancy.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
@@ -274,7 +273,7 @@ export default function Home() {
           <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto]">
             <div>
               <h2 className="font-display text-3xl font-semibold text-white">
-                Speak with us about your requirements
+                How to reach us
               </h2>
               <p className="mt-3 max-w-xl text-white/75">
                 Call, write, or visit our office in Banashankari, Bengaluru.
