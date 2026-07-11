@@ -25,13 +25,13 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-band-deep/70 via-band-deep/55 to-band-deep" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 pt-20 sm:px-6 sm:pt-24 lg:grid-cols-[1fr_minmax(20rem,24rem)] lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-gold-400">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-maroon-400">
               Since {site.since} · Bengaluru
             </p>
             <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[1.08] text-white sm:text-6xl">
               {site.name}
             </h1>
-            <p className="mt-3 font-display text-2xl font-medium text-gold-400 sm:text-3xl">
+            <p className="mt-3 font-display text-2xl font-medium text-maroon-400 sm:text-3xl">
               {site.tagline}
             </p>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
@@ -41,13 +41,13 @@ export default function Home() {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/contact"
-                className="rounded-md bg-gold-500 px-7 py-3.5 text-sm font-semibold text-navy-950 shadow-float transition-all duration-200 hover:bg-gold-400"
+                className="rounded-md bg-maroon-700 px-7 py-3.5 text-sm font-semibold text-white shadow-float transition-all duration-200 hover:bg-maroon-600"
               >
                 Get in Touch
               </Link>
               <Link
                 to="/services"
-                className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-gold-400 hover:text-gold-400"
+                className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
               >
                 Explore Our Services
               </Link>
@@ -55,32 +55,32 @@ export default function Home() {
           </div>
 
           {/* Office panel — fills the wide right column on desktop */}
-          <aside className="hidden rounded-2xl border border-white/15 bg-navy-900/70 p-8 lg:block">
+          <aside className="hidden rounded-2xl border border-white/15 bg-slate-900/70 p-8 lg:block">
             <h2 className="font-display text-lg font-semibold text-white">Our Office</h2>
             <address className="mt-5 space-y-5 text-sm not-italic leading-relaxed text-white/75">
               <div className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-gold-400" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-maroon-400" aria-hidden="true">
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                   <circle cx="12" cy="10" r="3" />
                 </svg>
-                <a href={site.mapsUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-gold-400">
+                <a href={site.mapsUrl} target="_blank" rel="noreferrer" className="transition-colors hover:text-maroon-400">
                   {site.address}
                 </a>
               </div>
               <div className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-gold-400" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-maroon-400" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                 </svg>
-                <a href={site.phoneHref} className="font-medium text-white transition-colors hover:text-gold-400">
+                <a href={site.phoneHref} className="font-medium text-white transition-colors hover:text-maroon-400">
                   {site.phone}
                 </a>
               </div>
               <div className="flex gap-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-gold-400" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-maroon-400" aria-hidden="true">
                   <rect width="20" height="16" x="2" y="4" rx="2" />
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
-                <a href={`mailto:${site.email}`} className="font-medium text-white transition-colors hover:text-gold-400">
+                <a href={`mailto:${site.email}`} className="font-medium text-white transition-colors hover:text-maroon-400">
                   {site.email}
                 </a>
               </div>
@@ -89,7 +89,7 @@ export default function Home() {
               href={site.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-gold-400 transition-colors hover:text-gold-500"
+              className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-maroon-400 transition-colors hover:text-maroon-500"
             >
               Get directions
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true">
@@ -125,13 +125,13 @@ export default function Home() {
           <dl className="flex gap-10 border-t border-line pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
             <div>
               <dt className="text-sm text-ink-soft">Practising since</dt>
-              <dd className="mt-1 font-display text-4xl font-semibold text-navy-800 dark:text-gold-400">
+              <dd className="mt-1 font-display text-4xl font-semibold text-accent">
                 {site.since}
               </dd>
             </div>
             <div>
               <dt className="text-sm text-ink-soft">Service lines</dt>
-              <dd className="mt-1 font-display text-4xl font-semibold text-navy-800 dark:text-gold-400">
+              <dd className="mt-1 font-display text-4xl font-semibold text-accent">
                 {services.length}
               </dd>
             </div>
@@ -158,7 +158,7 @@ export default function Home() {
               <Reveal as="li" key={s.slug} delay={Math.min(i * 60, 300)}>
                 <Link
                   to={`/${s.slug}`}
-                  className="group block border-t-2 border-line pt-5 transition-colors duration-200 hover:border-gold-500"
+                  className="group block border-t-2 border-line pt-5 transition-colors duration-200 hover:border-maroon-600"
                 >
                   <h3 className="font-display text-xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
                     {s.title}
@@ -199,7 +199,7 @@ export default function Home() {
               <li key={ind.name}>
                 <Link
                   to="/industries"
-                  className="inline-block rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-200 hover:border-gold-500 hover:text-accent"
+                  className="inline-block rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink-soft transition-all duration-200 hover:border-maroon-600 hover:text-accent"
                 >
                   {ind.name}
                 </Link>
@@ -283,13 +283,13 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/contact"
-                className="rounded-md bg-gold-500 px-7 py-3.5 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400"
+                className="rounded-md bg-maroon-700 px-7 py-3.5 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
               >
                 Contact Us
               </Link>
               <a
                 href={site.phoneHref}
-                className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-gold-400 hover:text-gold-400"
+                className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
               >
                 {site.phone}
               </a>

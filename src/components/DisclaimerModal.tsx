@@ -41,7 +41,7 @@ export default function DisclaimerModal() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-navy-950/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/70 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="disclaimer-title"
@@ -98,7 +98,7 @@ export default function DisclaimerModal() {
             ref={agreeRef}
             type="button"
             onClick={handleAgree}
-            className="rounded-md bg-gold-500 px-7 py-3 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400"
+            className="rounded-md bg-maroon-700 px-7 py-3 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
           >
             I Agree
           </button>

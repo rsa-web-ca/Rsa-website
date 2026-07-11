@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { services } from "../data/services";
 import { site } from "../data/site";
+import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-    isActive ? "text-gold-400" : "text-white/85 hover:text-white"
+    isActive ? "text-maroon-400" : "text-white/85 hover:text-white"
   }`;
 
 export default function Header() {
@@ -51,23 +52,17 @@ export default function Header() {
     <header className="sticky top-0 z-40 bg-band-deep/95 shadow-lift backdrop-blur-sm">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-gold-500 focus:px-4 focus:py-2 focus:text-navy-950"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-maroon-700 focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to main content
       </a>
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="group flex items-center gap-3" aria-label={`${site.name} — home`}>
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-gold-500/40 bg-navy-800/60 font-display text-sm font-bold tracking-wide text-gold-400 transition-colors duration-200 group-hover:border-gold-500/70">
-            RSA
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className="font-display text-sm font-semibold text-white min-[420px]:text-base sm:text-lg">
-              R Shivakumar &amp; Associates
-            </span>
-            <span className="hidden text-[0.7rem] font-medium uppercase tracking-[0.18em] text-gold-400/90 min-[420px]:block">
-              Chartered Accountants
-            </span>
-          </span>
+        <Link
+          to="/"
+          className="group flex items-center transition-opacity duration-200 hover:opacity-90"
+          aria-label={`${site.name} — home`}
+        >
+          <Logo tone="band" className="text-base min-[420px]:text-lg sm:text-xl" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
@@ -82,7 +77,7 @@ export default function Header() {
             <Link
               to="/services"
               className={`rounded-md py-2 pl-3 pr-1 text-sm font-medium transition-colors duration-200 ${
-                onServicesRoute ? "text-gold-400" : "text-white/85 hover:text-white"
+                onServicesRoute ? "text-maroon-400" : "text-white/85 hover:text-white"
               }`}
             >
               Services
@@ -95,7 +90,7 @@ export default function Header() {
               aria-haspopup="true"
               aria-label="Browse services"
               className={`flex cursor-pointer items-center rounded-md py-2 pr-2 transition-colors duration-200 ${
-                onServicesRoute ? "text-gold-400" : "text-white/85 hover:text-white"
+                onServicesRoute ? "text-maroon-400" : "text-white/85 hover:text-white"
               }`}
             >
               <svg
@@ -148,7 +143,7 @@ export default function Header() {
           </NavLink>
           <Link
             to="/contact"
-            className="ml-3 rounded-md bg-gold-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400"
+            className="ml-3 rounded-md bg-maroon-700 px-4 py-2 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
           >
             Get in Touch
           </Link>
@@ -239,13 +234,13 @@ export default function Header() {
             <div className="flex flex-wrap items-center gap-3 border-t border-white/10 px-3 pb-1 pt-4">
               <Link
                 to="/contact"
-                className="rounded-md bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400"
+                className="rounded-md bg-maroon-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
               >
                 Get in Touch
               </Link>
               <a
                 href={site.phoneHref}
-                className="rounded-md border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-gold-400 hover:text-gold-400"
+                className="rounded-md border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
               >
                 Call {site.phone}
               </a>
