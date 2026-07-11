@@ -6,60 +6,61 @@
    Brand palette taken from the firm's logo: deep maroon is the single
    highlight accent; cool slate carries the dark band sections. */
 :root {
-  --bg: oklch(0.99 0.002 255);
+  --bg: oklch(0.99 0.002 248);
   --surface: oklch(1 0 0);
-  --surface-raised: oklch(0.965 0.005 255);
-  --ink: oklch(0.24 0.02 258);
-  --ink-soft: oklch(0.43 0.018 256);
-  --line: oklch(0.88 0.01 255);
-  /* Slate band sections (hero, footer) — deep charcoal-slate in both themes */
-  --band: oklch(0.29 0.028 255);
-  --band-deep: oklch(0.23 0.022 256);
-  /* Maroon accent tuned for text: ≥4.5:1 on bg/surface/surface-raised in each theme */
-  --accent: oklch(0.46 0.16 21);
-  --accent-strong: oklch(0.4 0.15 20);
+  --surface-raised: oklch(0.965 0.005 248);
+  --ink: oklch(0.24 0.02 250);
+  --ink-soft: oklch(0.43 0.02 248);
+  --line: oklch(0.88 0.01 248);
+  /* Slate band sections (hero, footer) — deep slate-grey (#708090 family) in both themes */
+  --band: oklch(0.29 0.026 247);
+  --band-deep: oklch(0.23 0.02 248);
+  /* Maroon accent (#80001F) tuned for text: ≥4.5:1 on bg/surface in each theme */
+  --accent: #80001f;
+  --accent-strong: #66001a;
 }
 
 .dark {
-  --bg: oklch(0.17 0.015 258);
-  --surface: oklch(0.21 0.02 257);
-  --surface-raised: oklch(0.25 0.022 257);
-  --ink: oklch(0.93 0.008 255);
-  --ink-soft: oklch(0.74 0.014 255);
-  --line: oklch(0.32 0.02 256);
+  --bg: oklch(0.17 0.014 250);
+  --surface: oklch(0.21 0.018 249);
+  --surface-raised: oklch(0.25 0.02 249);
+  --ink: oklch(0.93 0.008 248);
+  --ink-soft: oklch(0.74 0.014 248);
+  --line: oklch(0.32 0.018 248);
   /* Band sections sit clearly above/below the page bg so section rhythm survives dark mode */
-  --band: oklch(0.27 0.025 255);
-  --band-deep: oklch(0.13 0.015 258);
-  --accent: oklch(0.72 0.145 22);
-  --accent-strong: oklch(0.66 0.155 22);
+  --band: oklch(0.27 0.024 247);
+  --band-deep: oklch(0.13 0.014 250);
+  --accent: oklch(0.71 0.15 17);
+  --accent-strong: oklch(0.65 0.16 17);
 }
 
 @theme {
-  /* Brand — cool slate carries the dark band sections; maroon is the single accent */
-  --color-slate-950: oklch(0.2 0.02 256);
-  --color-slate-900: oklch(0.27 0.024 255);
-  --color-slate-800: oklch(0.33 0.028 254);
-  --color-slate-700: oklch(0.4 0.03 254);
-  --color-slate-600: oklch(0.5 0.03 253);
-  --color-slate-100: oklch(0.93 0.012 255);
-  --color-slate-50: oklch(0.97 0.006 255);
+  /* Brand — slate-grey (#708090 anchors slate-500) carries the dark band sections */
+  --color-slate-950: oklch(0.21 0.018 250);
+  --color-slate-900: oklch(0.27 0.022 248);
+  --color-slate-800: oklch(0.34 0.026 247);
+  --color-slate-700: oklch(0.43 0.028 247);
+  --color-slate-600: oklch(0.5 0.03 247);
+  --color-slate-500: oklch(0.575 0.028 247);
+  --color-slate-100: oklch(0.93 0.012 248);
+  --color-slate-50: oklch(0.97 0.006 248);
 
-  /* Maroon — the firm's signature red, drawn straight from the logo */
-  --color-maroon-900: oklch(0.34 0.13 19);
-  --color-maroon-800: oklch(0.4 0.145 19);
-  --color-maroon-700: oklch(0.45 0.16 20);
-  --color-maroon-600: oklch(0.51 0.17 21);
-  --color-maroon-500: oklch(0.58 0.17 22);
-  --color-maroon-400: oklch(0.72 0.14 23);
-  --color-maroon-300: oklch(0.81 0.1 24);
-  --color-maroon-100: oklch(0.93 0.045 22);
-  --color-maroon-50: oklch(0.97 0.018 22);
+  /* Maroon — the firm's signature red; maroon-700 is #80001F */
+  --color-maroon-900: oklch(0.27 0.13 13);
+  --color-maroon-800: oklch(0.31 0.15 14);
+  --color-maroon-700: oklch(0.345 0.155 15);
+  --color-maroon-600: oklch(0.43 0.17 16);
+  --color-maroon-500: oklch(0.53 0.18 17);
+  --color-maroon-400: oklch(0.71 0.15 17);
+  --color-maroon-300: oklch(0.8 0.11 18);
+  --color-maroon-100: oklch(0.92 0.05 16);
+  --color-maroon-50: oklch(0.965 0.02 16);
 
   --font-display: "Frank Ruhl Libre", Georgia, "Times New Roman", serif;
   --font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --shadow-lift: 0 1px 2px oklch(0.2 0.02 256 / 0.06), 0 8px 24px -12px oklch(0.2 0.02 256 / 0.25);
-  --shadow-float: 0 2px 4px oklch(0.2 0.02 256 / 0.08), 0 16px 40px -16px oklch(0.2 0.02 256 / 0.35);
+  --shadow-lift: 0 1px 2px oklch(0.2 0.02 250 / 0.06), 0 8px 24px -12px oklch(0.2 0.02 250 / 0.25);
+  --shadow-float: 0 2px 4px oklch(0.2 0.02 250 / 0.08), 0 16px 40px -16px oklch(0.2 0.02 250 / 0.35);
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -100,12 +101,12 @@ p {
 }
 
 ::selection {
-  background-color: oklch(0.93 0.045 22);
-  color: oklch(0.34 0.13 19);
+  background-color: oklch(0.92 0.05 16);
+  color: #80001f;
 }
 
 :focus-visible {
-  outline: 2px solid oklch(0.51 0.17 21);
+  outline: 2px solid #80001f;
   outline-offset: 2px;
 }
 

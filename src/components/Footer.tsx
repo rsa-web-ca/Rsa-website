@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Logo tone="band" className="items-start text-xl" />
+            <Logo tone="band" className="h-12" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
               Rendering audit, tax and advisory services from Bengaluru since {site.since}.
             </p>
