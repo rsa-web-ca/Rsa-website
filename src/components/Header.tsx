@@ -62,7 +62,7 @@ export default function Header() {
           className="group flex items-center transition-opacity duration-200 hover:opacity-90"
           aria-label={`${site.name} — home`}
         >
-          <Logo tone="band" className="text-base min-[420px]:text-lg sm:text-xl" />
+          <Logo tone="band" className="h-9 min-[420px]:h-10 sm:h-12" />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
