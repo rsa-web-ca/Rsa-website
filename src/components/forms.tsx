@@ -5,7 +5,7 @@ import { site } from "../data/site";
 const fieldClass =
   "w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-base text-ink shadow-sm " +
   "placeholder:text-ink-soft/90 transition-colors duration-200 " +
-  "focus:border-gold-600 focus:outline-none focus:ring-2 focus:ring-gold-600/30";
+  "focus:border-maroon-600 focus:outline-none focus:ring-2 focus:ring-maroon-600/30";
 
 export function Field({ label, htmlFor, required, children }: {
   label: string;
@@ -62,7 +62,7 @@ export function SubmitButton({ status, children }: { status: SubmitStatus; child
     <button
       type="submit"
       disabled={submitting}
-      className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-gold-500 px-8 py-3 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400 disabled:cursor-wait disabled:opacity-60"
+      className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-maroon-700 px-8 py-3 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600 disabled:cursor-wait disabled:opacity-60"
     >
       {submitting && (
         <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -79,7 +79,7 @@ export function SuccessNote({ message }: { message: string }) {
   return (
     <div
       role="status"
-      className="flex items-start gap-3 rounded-xl border border-gold-500/40 bg-gold-100/60 p-5 text-navy-950 dark:bg-gold-500/10 dark:text-gold-100"
+      className="flex items-start gap-3 rounded-xl border border-maroon-600/40 bg-maroon-50 p-5 text-maroon-900 dark:bg-maroon-700/15 dark:text-maroon-100"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />

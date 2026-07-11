@@ -25,13 +25,13 @@ export default function About() {
             <dl className="mt-10 grid grid-cols-2 gap-8 border-t border-line pt-8">
               <div>
                 <dt className="text-sm text-ink-soft">Established</dt>
-                <dd className="mt-1 font-display text-3xl font-semibold text-navy-800 dark:text-gold-400">
+                <dd className="mt-1 font-display text-3xl font-semibold text-accent">
                   {site.since}
                 </dd>
               </div>
               <div>
                 <dt className="text-sm text-ink-soft">Based in</dt>
-                <dd className="mt-1 font-display text-3xl font-semibold text-navy-800 dark:text-gold-400">
+                <dd className="mt-1 font-display text-3xl font-semibold text-accent">
                   Bengaluru
                 </dd>
               </div>

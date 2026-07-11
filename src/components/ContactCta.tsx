@@ -15,13 +15,13 @@ export default function ContactCta({ text = "For any further details, kindly con
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/contact"
-            className="rounded-md bg-gold-500 px-6 py-3 text-sm font-semibold text-navy-950 shadow-lift transition-all duration-200 hover:bg-gold-400"
+            className="rounded-md bg-maroon-700 px-6 py-3 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
           >
             Contact Us
           </Link>
           <a
             href={site.phoneHref}
-            className="rounded-md border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-gold-400 hover:text-gold-400"
+            className="rounded-md border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
           >
             Call {site.phone}
           </a>
