@@ -99,6 +99,22 @@ export function getPost(slug: string): BlogPost | undefined {
   return posts.find((p) => p.slug === slug);
 }
 
+/**
+ * Neighbouring posts for prev/next navigation. `posts` is newest-first, so the
+ * entry before is newer and the entry after is older.
+ */
+export function getAdjacentPosts(slug: string): {
+  newer?: BlogPost;
+  older?: BlogPost;
+} {
+  const i = posts.findIndex((p) => p.slug === slug);
+  if (i === -1) return {};
+  return {
+    newer: i > 0 ? posts[i - 1] : undefined,
+    older: i < posts.length - 1 ? posts[i + 1] : undefined,
+  };
+}
+
 /** Human-friendly date, e.g. "11 July 2026". Falls back to the raw string. */
 export function formatDate(iso: string): string {
   if (!iso) return "";

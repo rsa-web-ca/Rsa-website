@@ -5,7 +5,7 @@ import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import NotFound from "./NotFound";
-import { getPost, formatDate } from "../data/blog";
+import { getPost, getAdjacentPosts, formatDate, type BlogPost } from "../data/blog";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 interface BlogPostProps {
@@ -19,6 +19,8 @@ export default function BlogPost({ slug }: BlogPostProps) {
   usePageMeta(post?.title ?? "Post not found", post?.summary, post?.tags.join(", "));
 
   if (!post) return <NotFound />;
+
+  const { newer, older } = getAdjacentPosts(post.slug);
 
   const byline = [
     post.author,
@@ -52,7 +54,16 @@ export default function BlogPost({ slug }: BlogPostProps) {
             ))}
           </ul>
         )}
-        <div className="mt-14 border-t border-line pt-8">
+        {(older || newer) && (
+          <nav
+            className="mt-14 grid gap-4 border-t border-line pt-8 sm:grid-cols-2"
+            aria-label="More posts"
+          >
+            {older ? <PostLink post={older} direction="previous" /> : <span className="hidden sm:block" />}
+            {newer && <PostLink post={newer} direction="next" />}
+          </nav>
+        )}
+        <div className="mt-8 text-center">
           <Link
             to="/blogs"
             className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
@@ -76,5 +87,39 @@ export default function BlogPost({ slug }: BlogPostProps) {
       </Reveal>
       <ContactCta />
     </>
+  );
+}
+
+/** A previous/next post card used in the post footer navigation. */
+function PostLink({ post, direction }: { post: BlogPost; direction: "previous" | "next" }) {
+  const isNext = direction === "next";
+  return (
+    <Link
+      to={`/blogs/${post.slug}`}
+      className={`group flex flex-col gap-1 rounded-xl border border-line bg-surface p-5 transition-colors duration-200 hover:border-accent hover:bg-surface-raised ${
+        isNext ? "sm:text-right" : ""
+      }`}
+    >
+      <span
+        className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft ${
+          isNext ? "sm:justify-end" : ""
+        }`}
+      >
+        {!isNext && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+            <path fillRule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clipRule="evenodd" />
+          </svg>
+        )}
+        {isNext ? "Next post" : "Previous post"}
+        {isNext && (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+            <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
+          </svg>
+        )}
+      </span>
+      <span className="font-display text-lg font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
+        {post.title}
+      </span>
+    </Link>
   );
 }
