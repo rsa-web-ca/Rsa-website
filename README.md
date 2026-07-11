@@ -67,3 +67,29 @@ Spam protection: a hidden honeypot field plus FormSubmit's own filtering
 
 All page copy lives in `src/data/` (`site.ts`, `services.ts`, `industries.ts`,
 `careers.ts`) — edit those files to change text without touching components.
+
+## Blog
+
+The blog lives at `/blogs` (index) and `/blogs/<slug>` (individual posts), and
+matches the site's design — no separate generator or build step.
+
+To publish a post, drop a Markdown file into `src/content/blog/`. The filename
+becomes the URL slug (`hello-world.md` → `/blogs/hello-world`). Start it with a
+frontmatter block:
+
+```markdown
+---
+title: Hello World
+date: 2026-07-11
+author: R Shivakumar & Associates
+summary: A short teaser shown on the blog index.
+---
+
+Your **Markdown** body here…
+```
+
+`src/data/blog.ts` loads every file at build time (via Vite's
+`import.meta.glob`), parses the frontmatter, and sorts posts newest-first — so
+adding a file automatically lists it on the index and gives it a route. Post
+bodies are rendered with `react-markdown` + `remark-gfm` (GitHub-flavoured
+Markdown) and styled by the on-brand `.blog-prose` block in `src/index.css`.
