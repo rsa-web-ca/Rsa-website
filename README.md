@@ -34,13 +34,16 @@ Connect the repository in Netlify — `netlify.toml` already configures:
 Two workflows in `.github/workflows/` publish to the `gh-pages` branch:
 
 - **`deploy.yml`** — every push to `master` builds the site and deploys it to
-  <https://rsa-web-ca.github.io/Rsa-website/>. A copy of `index.html` is served
+  the custom domain <https://rsa-india.in/>. A copy of `index.html` is served
   as `404.html` so React Router deep links survive a page refresh.
-- **`pr-preview.yml`** — every pull request gets its own preview at
-  `…/Rsa-website/pr-preview/pr-<number>/`. The workflow posts the link as a
-  comment on the PR, updates the preview on each push, and deletes it when the
-  PR is closed or merged. (Previews only run for branches in this repo, not
-  forks — fork PRs don't get a write token.)
+- **`pr-preview.yml`** — every pull request gets its own preview, served under
+  the same custom domain at `https://rsa-india.in/pr-preview/pr-<number>/`
+  (GitHub redirects the plain `rsa-web-ca.github.io/Rsa-website/...` project
+  URL there once a custom domain is set, so previews build for that path
+  directly). The workflow posts the link as a comment on the PR, updates the
+  preview on each push, and deletes it when the PR is closed or merged.
+  (Previews only run for branches in this repo, not forks — fork PRs don't
+  get a write token.)
 
 > **One-time setup:** in the repo's **Settings → Pages**, set *Source* to
 > **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`. The

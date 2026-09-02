@@ -32,8 +32,13 @@ jobs:
         run: npm ci
 
       - name: Build
+        # A custom domain is set on this repo, so GitHub 301-redirects
+        # rsa-web-ca.github.io/Rsa-website/* to rsa-india.in/*, dropping the
+        # /Rsa-website/ segment. Previews are actually viewed at
+        # rsa-india.in/pr-preview/pr-<n>/, so the base must match that path,
+        # not the raw github.io project-page path.
         if: github.event.action != 'closed'
-        run: npm run build -- --base=/Rsa-website/pr-preview/pr-${{ github.event.number }}/
+        run: npm run build -- --base=/pr-preview/pr-${{ github.event.number }}/
 
       - name: Deploy preview
         # Publishes to gh-pages under pr-preview/pr-<number>/, posts a sticky
