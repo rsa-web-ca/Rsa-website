@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+  `rounded-md px-2 py-2 text-sm font-medium transition-colors duration-200 xl:px-3 ${
     isActive ? "text-maroon-400" : "text-white/85 hover:text-white"
   }`;
 
@@ -59,13 +59,13 @@ export default function Header() {
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          className="group flex items-center transition-opacity duration-200 hover:opacity-90"
+          className="group flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
           aria-label={`${site.name} — home`}
         >
-          <Logo tone="band" className="h-9 min-[420px]:h-10 sm:h-12" />
+          <Logo tone="band" className="h-9 min-[420px]:h-10 sm:h-12 lg:h-9 xl:h-12" />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Primary">
           <NavLink to="/" className={navLinkClass} end>
             Home
           </NavLink>
@@ -76,7 +76,7 @@ export default function Header() {
           <div className="relative flex items-center" ref={servicesRef}>
             <Link
               to="/services"
-              className={`rounded-md py-2 pl-3 pr-1 text-sm font-medium transition-colors duration-200 ${
+              className={`rounded-md py-2 pl-2 pr-1 text-sm font-medium transition-colors duration-200 xl:pl-3 ${
                 onServicesRoute ? "text-maroon-400" : "text-white/85 hover:text-white"
               }`}
             >
@@ -141,9 +141,21 @@ export default function Header() {
           <NavLink to="/contact" className={navLinkClass}>
             Contact
           </NavLink>
+          <a
+            href={site.crmUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="ml-2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border border-white/25 px-3 py-2 text-sm font-semibold text-white/85 transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400 xl:ml-3 xl:px-4"
+          >
+            {site.crmLabel}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+              <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
+              <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
+            </svg>
+          </a>
           <Link
             to="/contact"
-            className="ml-3 rounded-md bg-maroon-700 px-4 py-2 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
+            className="ml-2 whitespace-nowrap rounded-md bg-maroon-700 px-3 py-2 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600 xl:px-4"
           >
             Get in Touch
           </Link>
@@ -231,6 +243,18 @@ export default function Header() {
             <NavLink to="/contact" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
               Contact
             </NavLink>
+            <a
+              href={site.crmUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10"
+            >
+              {site.crmLabel}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-white/50" aria-hidden="true">
+                <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
+                <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
+              </svg>
+            </a>
             <div className="flex flex-wrap items-center gap-3 border-t border-white/10 px-3 pb-1 pt-4">
               <Link
                 to="/contact"
