@@ -65,7 +65,7 @@ export default function Header() {
           <Logo tone="band" className="h-9 min-[420px]:h-10 sm:h-12 lg:h-9 xl:h-12" />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Primary">
           <NavLink to="/" className={navLinkClass} end>
             Home
           </NavLink>
@@ -145,9 +145,13 @@ export default function Header() {
             href={site.crmUrl}
             target="_blank"
             rel="noreferrer"
-            className="ml-2 whitespace-nowrap rounded-md border border-white/25 px-3 py-2 text-sm font-semibold text-white/85 transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400 xl:ml-3 xl:px-4"
+            className="ml-2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border border-white/25 px-3 py-2 text-sm font-semibold text-white/85 transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400 xl:ml-3 xl:px-4"
           >
             {site.crmLabel}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+              <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
+              <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
+            </svg>
           </a>
           <Link
             to="/contact"
