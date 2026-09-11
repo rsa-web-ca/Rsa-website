@@ -11,6 +11,9 @@ export const site = {
   email: "admin@rsa-india.in",
   partnerEmail: "rshivakumarca@rsa-india.in",
   mapsUrl: "https://maps.app.goo.gl/ocviPu21w2xXqpeC8?g_st=ic",
+  /** Client portal (CRM) — external app, opens in a new tab. */
+  crmUrl: "https://crm.rsa-india.in",
+  crmLabel: "Client Portal",
 } as const;
 
 /** FormSubmit endpoints — submissions go to admin@ with a copy to the partner email. */
