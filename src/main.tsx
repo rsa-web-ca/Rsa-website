@@ -50,6 +50,9 @@ if (posthogKey) {
     api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
     // Tracks $pageview on client-side route changes as well as full loads.
     defaults: "2025-05-24",
+    // The PostHog project is shared with another site, so tag every event
+    // (including the initial $pageview) to tell this site's data apart.
+    loaded: (ph) => ph.register({ site: "rsa-website" }),
   });
 }
 
