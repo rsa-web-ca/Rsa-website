@@ -1,6 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import posthog from "posthog-js";
+import { PostHogProvider } from "@posthog/react";
 import "./index.css";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -40,8 +42,21 @@ const router = createBrowserRouter([
   basename: import.meta.env.BASE_URL.replace(/\/$/, ""),
 });
 
+// Analytics only run when a project key is baked in at build time (the
+// production deploy), so local dev and PR previews don't pollute the data.
+const posthogKey = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
+if (posthogKey) {
+  posthog.init(posthogKey, {
+    api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+    // Tracks $pageview on client-side route changes as well as full loads.
+    defaults: "2025-05-24",
+  });
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <PostHogProvider client={posthog}>
+      <RouterProvider router={router} />
+    </PostHogProvider>
   </StrictMode>,
 );

@@ -34,6 +34,11 @@ jobs:
       - name: Build
         # Served from the custom domain root (rsa-india.in), so use the default "/" base.
         run: npm run build
+        env:
+          # PostHog project keys are public (they ship in the JS bundle), so
+          # they live in repository variables rather than secrets.
+          VITE_PUBLIC_POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
+          VITE_PUBLIC_POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
 
       - name: Add SPA fallback
         # GitHub Pages serves 404.html for unknown paths; serving the app
