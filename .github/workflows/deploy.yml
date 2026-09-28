@@ -37,7 +37,7 @@ jobs:
         env:
           # PostHog project keys are public (they ship in the JS bundle), so
           # the key is committed here; a POSTHOG_KEY repo variable overrides it.
-          VITE_PUBLIC_POSTHOG_KEY: ${{ vars.POSTHOG_KEY || 'phc_AbvCM8U2ExBEAP9PMRrMZrBU7a7SiSMmFfUjLYdcTLMUnpx' }}
+          VITE_PUBLIC_POSTHOG_KEY: ${{ vars.POSTHOG_KEY || 'phc_uc47m2XD9RQeaiLvCwcN62T24TfqNndHpTykjNG6Rw4A' }}
           VITE_PUBLIC_POSTHOG_HOST: ${{ vars.POSTHOG_HOST }}
 
       - name: Add SPA fallback
