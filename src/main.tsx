@@ -42,10 +42,10 @@ const router = createBrowserRouter([
   basename: import.meta.env.BASE_URL.replace(/\/$/, ""),
 });
 
-// Analytics only run when a project key is baked in at build time (the
-// production deploy), so local dev and PR previews don't pollute the data.
+// Analytics only run when enabled and a project key is baked in at build time
+// (the production deploy), so local dev and PR previews don't pollute the data.
 const posthogKey = import.meta.env.VITE_PUBLIC_POSTHOG_KEY;
-if (posthogKey) {
+if (posthogKey && import.meta.env.VITE_PUBLIC_POSTHOG_ENABLED === "true") {
   posthog.init(posthogKey, {
     api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
     // Tracks $pageview on client-side route changes as well as full loads.
