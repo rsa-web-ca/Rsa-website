@@ -36,6 +36,13 @@ const router = createBrowserRouter([
       { path: "*", element: <NotFound /> },
     ],
   },
+  // Unlisted internal tool: no site header/footer and no links to it from the
+  // site. Loaded on demand so its palette catalogue stays out of the main bundle.
+  {
+    path: "/fs-palette-studio",
+    lazy: () => import("./pages/fs-palette-studio/FsPaletteStudio").then((m) => ({ Component: m.default })),
+  },
+  { path: "/fs-pallete-studio", element: <Navigate to="/fs-palette-studio" replace /> },
 ], {
   // Vite's base is "/" locally and on Netlify, but GitHub Pages serves the
   // site from a subpath (e.g. /Rsa-website/ or /Rsa-website/pr-preview/pr-N/).
