@@ -132,3 +132,28 @@ Built-in blog features:
   `sitemap.xml` (all routes + posts) and `robots.txt` into `dist/` at build.
 - All absolute URLs use `site.url` in `src/data/site.ts` — update that one
   constant if the canonical production domain changes.
+
+## Brand film
+
+A 17-second brand film built with [HyperFrames](https://github.com/heygen-com/hyperframes)
+(HTML + GSAP rendered to video). A ledger page rules itself and the firm's line is
+written onto it, a year counter runs from 1997 to today, the nine practice areas are
+signed off with an auditor's tick, and it closes on the logo over the office.
+
+![R Shivakumar & Associates brand film](video/out/rsa-brand-film.gif)
+
+- **Video (1080p MP4):** [`video/out/rsa-brand-film.mp4`](video/out/rsa-brand-film.mp4)
+- **GIF (800px, 15fps):** [`video/out/rsa-brand-film.gif`](video/out/rsa-brand-film.gif)
+- **Source:** [`video/index.html`](video/index.html), which uses the site's maroon/slate palette, Frank Ruhl Libre + Public Sans, the logo and the office photo
+
+To edit and re-render (Node 22+ and FFmpeg required):
+
+```bash
+cd video
+npx hyperframes preview                     # live preview in the browser
+npx hyperframes check                       # lint + layout/contrast audit
+npx hyperframes render --quality delivery --output out/rsa-brand-film.mp4
+# GIF from the MP4
+ffmpeg -i out/rsa-brand-film.mp4 -vf "fps=15,scale=800:-1:flags=lanczos,palettegen=stats_mode=diff" palette.png
+ffmpeg -i out/rsa-brand-film.mp4 -i palette.png -lavfi "fps=15,scale=800:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" out/rsa-brand-film.gif
+```
