@@ -6,15 +6,17 @@
    Brand palette taken from the firm's logo: deep maroon is the single
    highlight accent; cool slate carries the dark band sections. */
 :root {
-  --bg: oklch(0.99 0.002 248);
-  --surface: oklch(1 0 0);
-  --surface-raised: oklch(0.965 0.005 248);
-  --ink: oklch(0.24 0.02 250);
-  --ink-soft: oklch(0.43 0.02 248);
-  --line: oklch(0.88 0.01 248);
-  /* Slate band sections (hero, footer) — deep slate-grey (#708090 family) in both themes */
-  --band: oklch(0.29 0.026 247);
-  --band-deep: oklch(0.23 0.02 248);
+  /* Warm "paper" neutrals with navy-ink type: reads like the firm's letterhead
+     rather than a cool SaaS grey. Maroon stays the single, sparing accent. */
+  --bg: oklch(0.975 0.005 85);
+  --surface: oklch(0.995 0.002 85);
+  --surface-raised: oklch(0.948 0.008 85);
+  --ink: oklch(0.23 0.03 258);
+  --ink-soft: oklch(0.43 0.022 258);
+  --line: oklch(0.87 0.01 85);
+  /* Slate band sections (footer, utility bar) */
+  --band: oklch(0.29 0.03 258);
+  --band-deep: oklch(0.22 0.028 258);
   /* Maroon accent (#80001F) tuned for text: ≥4.5:1 on bg/surface in each theme */
   --accent: #80001f;
   --accent-strong: #66001a;
@@ -62,7 +64,7 @@
   --shadow-lift: 0 1px 2px oklch(0.2 0.02 250 / 0.06), 0 8px 24px -12px oklch(0.2 0.02 250 / 0.25);
   --shadow-float: 0 2px 4px oklch(0.2 0.02 250 / 0.08), 0 16px 40px -16px oklch(0.2 0.02 250 / 0.35);
 
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Map semantic tokens into Tailwind utilities (bg-bg, text-ink, border-line…) */
@@ -96,6 +98,11 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+/* Old-style figures for numerals set in the display serif (years, indexes). */
+.figures-oldstyle {
+  font-variant-numeric: oldstyle-nums;
+}
+
 p {
   text-wrap: pretty;
 }
@@ -110,29 +117,16 @@ p {
   outline-offset: 2px;
 }
 
-/* Entrance reveal: content is visible by default; motion only enhances it
-   when JS adds .reveal-armed before the element enters the viewport. */
-.reveal-armed {
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-.reveal-in {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.6s var(--ease-out-quart), transform 0.6s var(--ease-out-quart);
-}
-
 /* Page transition: replays whenever Layout remounts the route content
    (keyed by pathname), giving every navigation a soft fade + rise. */
 .page-transition {
-  animation: page-fade-in 0.45s var(--ease-out-quart);
+  animation: page-fade-in 0.4s var(--ease-out-quart);
 }
 
 @keyframes page-fade-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -292,13 +286,6 @@ p {
     scroll-behavior: auto;
   }
   body {
-    transition: none;
-  }
-  .reveal-armed {
-    opacity: 1;
-    transform: none;
-  }
-  .reveal-in {
     transition: none;
   }
   .page-transition {

@@ -94,7 +94,7 @@ export default function Blog() {
                   value={q}
                   onChange={(e) => onSearch(e.target.value)}
                   placeholder="Search posts…"
-                  className="w-full rounded-lg border border-line bg-surface py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-soft focus:border-accent focus:outline-none"
+                  className="w-full rounded border border-line bg-surface py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-soft focus:border-accent focus:outline-none"
                 />
               </label>
 
@@ -170,7 +170,7 @@ export default function Blog() {
                     <div className="group grid gap-2 py-8 sm:grid-cols-[minmax(0,12rem)_1fr_auto] sm:items-start sm:gap-8">
                       <div className="text-sm text-ink-soft">
                         {p.date && (
-                          <time dateTime={p.date} className="font-medium uppercase tracking-[0.12em]">
+                          <time dateTime={p.date} className="font-medium">
                             {formatDate(p.date)}
                           </time>
                         )}
@@ -263,7 +263,7 @@ interface PageLinkProps {
 
 function PageLink({ to, children, current, disabled, rel }: PageLinkProps) {
   const base =
-    "inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors";
+    "inline-flex h-9 min-w-9 items-center justify-center rounded border px-3 text-sm font-medium transition-colors";
   if (disabled) {
     return (
       <span

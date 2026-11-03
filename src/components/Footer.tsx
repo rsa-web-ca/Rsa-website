@@ -9,14 +9,14 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
-            <Logo tone="band" className="h-12" />
+            <Logo tone="band" className="h-10" />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
               Rendering audit, tax and advisory services from Bengaluru since {site.since}.
             </p>
           </div>
 
           <nav aria-label="Footer — pages">
-            <h3 className="font-display text-base font-semibold text-white">Pages</h3>
+            <h3 className="font-display text-base font-medium text-white">Pages</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {[
                 ["Home", "/"],
@@ -28,7 +28,7 @@ export default function Footer() {
                 ["Contact", "/contact"],
               ].map(([label, to]) => (
                 <li key={to}>
-                  <Link to={to} className="transition-colors duration-200 hover:text-maroon-400">
+                  <Link to={to} className="transition-colors duration-200 hover:text-white hover:underline underline-offset-4">
                     {label}
                   </Link>
                 </li>
@@ -38,7 +38,7 @@ export default function Footer() {
                   href={site.crmUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-maroon-400"
+                  className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-white hover:underline underline-offset-4"
                 >
                   {site.crmLabel}
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5 text-white/40" aria-hidden="true">
@@ -51,11 +51,11 @@ export default function Footer() {
           </nav>
 
           <nav aria-label="Footer — services">
-            <h3 className="font-display text-base font-semibold text-white">Services</h3>
+            <h3 className="font-display text-base font-medium text-white">Services</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               {services.map((s) => (
                 <li key={s.slug}>
-                  <Link to={`/${s.slug}`} className="transition-colors duration-200 hover:text-maroon-400">
+                  <Link to={`/${s.slug}`} className="transition-colors duration-200 hover:text-white hover:underline underline-offset-4">
                     {s.title}
                   </Link>
                 </li>
@@ -64,21 +64,21 @@ export default function Footer() {
           </nav>
 
           <div>
-            <h3 className="font-display text-base font-semibold text-white">Contact</h3>
+            <h3 className="font-display text-base font-medium text-white">Contact</h3>
             <address className="mt-4 space-y-3 text-sm not-italic leading-relaxed">
               <p>
                 <a
                   href={site.mapsUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="transition-colors duration-200 hover:text-maroon-400"
+                  className="transition-colors duration-200 hover:text-white hover:underline underline-offset-4"
                 >
                   {site.address}
                 </a>
               </p>
               <p>
                 Mobile:{" "}
-                <a href={site.phoneHref} className="font-medium text-white transition-colors duration-200 hover:text-maroon-400">
+                <a href={site.phoneHref} className="font-medium text-white transition-colors duration-200 hover:text-white hover:underline underline-offset-4">
                   {site.phone}
                 </a>
               </p>
@@ -86,7 +86,7 @@ export default function Footer() {
                 Email:{" "}
                 <a
                   href={`mailto:${site.email}`}
-                  className="font-medium text-white transition-colors duration-200 hover:text-maroon-400"
+                  className="font-medium text-white transition-colors duration-200 hover:text-white hover:underline underline-offset-4"
                 >
                   {site.email}
                 </a>
@@ -95,9 +95,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/50">
-          <p>
-            &copy;{new Date().getFullYear()} by {site.name}. All rights reserved.
+        <div className="mt-12 grid gap-4 border-t border-white/10 pt-6 text-xs leading-relaxed text-white/55 md:grid-cols-[1fr_auto] md:gap-10">
+          <p className="max-w-3xl">
+            This website provides general information about the firm in keeping with the
+            guidelines of the Institute of Chartered Accountants of India. It is not an
+            advertisement or a solicitation of work, and nothing on it is professional advice.
+          </p>
+          <p className="md:text-right">
+            &copy; {new Date().getFullYear()} {site.name}. All rights reserved.
           </p>
         </div>
       </div>

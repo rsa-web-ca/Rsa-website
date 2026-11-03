@@ -46,7 +46,7 @@ export default function DisclaimerModal() {
       aria-modal="true"
       aria-labelledby="disclaimer-title"
     >
-      <div className="my-8 w-full max-w-2xl rounded-xl border border-line bg-surface p-6 shadow-lift sm:p-8">
+      <div className="my-8 w-full max-w-2xl rounded border border-line bg-surface p-6 shadow-lift sm:p-8">
         <h2
           id="disclaimer-title"
           className="font-display text-lg font-semibold leading-snug text-ink sm:text-xl"
@@ -90,7 +90,7 @@ export default function DisclaimerModal() {
           <button
             type="button"
             onClick={handleDisagree}
-            className="rounded-md border border-line px-7 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
+            className="rounded border border-line px-7 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
           >
             I Disagree
           </button>
@@ -98,7 +98,7 @@ export default function DisclaimerModal() {
             ref={agreeRef}
             type="button"
             onClick={handleAgree}
-            className="rounded-md bg-maroon-700 px-7 py-3 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
+            className="rounded bg-maroon-700 px-7 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
           >
             I Agree
           </button>

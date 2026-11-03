@@ -39,7 +39,7 @@ export default function Contact() {
               <h2 className="font-display text-2xl font-semibold text-ink">Visit or write to us</h2>
               <div className="mt-8 space-y-8">
                 <div className="flex gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface-raised text-accent">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded border border-line text-accent">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                       <circle cx="12" cy="10" r="3" />
@@ -59,7 +59,7 @@ export default function Contact() {
                 </div>
 
                 <div className="flex gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface-raised text-accent">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded border border-line text-accent">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                     </svg>
@@ -73,7 +73,7 @@ export default function Contact() {
                 </div>
 
                 <div className="flex gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface-raised text-accent">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded border border-line text-accent">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
                       <rect width="20" height="16" x="2" y="4" rx="2" />
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
@@ -100,7 +100,7 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="rounded-2xl border border-transparent bg-surface p-6 shadow-lift dark:border-line sm:p-10">
+            <div className="rounded border border-line border-t-2 border-t-ink bg-surface p-6 sm:p-10">
               <h2 className="font-display text-2xl font-semibold text-ink">Get in Touch</h2>
               {status === "success" ? (
                 <div ref={successRef} className="mt-8">

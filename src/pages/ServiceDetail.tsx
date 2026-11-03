@@ -19,7 +19,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
 
   return (
     <>
-      <PageHeader title={service.title} />
+      <PageHeader title={service.title} parent={{ label: "Services", to: "/services" }} />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-[1fr_20rem]">
           <Reveal>
@@ -33,13 +33,13 @@ export default function ServiceDetail({ slug }: { slug: string }) {
               {service.offerings.length > 0 && (
                 <>
                   {service.listHeading && (
-                    <h2 className="mb-5 mt-10 font-display text-2xl font-semibold text-ink">
+                    <h2 className="mb-2 mt-12 border-b-2 border-ink pb-3 font-display text-2xl font-medium text-ink">
                       {service.listHeading}
                     </h2>
                   )}
-                  <ul className="space-y-3">
+                  <ul className="divide-y divide-line">
                     {service.offerings.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
+                      <li key={item} className="flex items-start gap-3 py-3.5">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -64,13 +64,13 @@ export default function ServiceDetail({ slug }: { slug: string }) {
 
           <Reveal as="div" delay={100}>
             <aside className="lg:sticky lg:top-24">
-              <h2 className="font-display text-lg font-semibold text-ink">Other services</h2>
-              <ul className="mt-4 space-y-1 border-t border-line pt-4">
+              <h2 className="border-b-2 border-ink pb-3 text-sm font-semibold text-ink">Other services</h2>
+              <ul className="mt-3 space-y-0.5">
                 {others.map((s) => (
                   <li key={s.slug}>
                     <Link
                       to={`/${s.slug}`}
-                      className="block rounded-md px-3 py-2 text-sm text-ink-soft transition-colors duration-200 hover:bg-surface-raised hover:text-ink"
+                      className="block rounded px-3 py-2 text-sm text-ink-soft transition-colors duration-200 hover:bg-surface-raised hover:text-ink"
                     >
                       {s.title}
                     </Link>

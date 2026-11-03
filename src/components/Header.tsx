@@ -5,9 +5,11 @@ import { site } from "../data/site";
 import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
+// Active page is marked with a maroon rule under the label (not colour alone:
+// aria-current comes from NavLink) — the quiet convention of a printed index.
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `rounded-md px-2 py-2 text-sm font-medium transition-colors duration-200 xl:px-3 ${
-    isActive ? "text-maroon-400" : "text-white/85 hover:text-white"
+  `flex h-full items-center border-b-2 px-2 pt-0.5 text-sm font-medium transition-colors duration-200 xl:px-3 ${
+    isActive ? "border-accent text-ink" : "border-transparent text-ink-soft hover:text-ink"
   }`;
 
 export default function Header() {
@@ -48,24 +50,50 @@ export default function Header() {
   const onServicesRoute =
     location.pathname === "/services" || services.some((s) => `/${s.slug}` === location.pathname);
 
+  // Negative top on md+ lets the utility bar scroll away while the main bar stays pinned.
   return (
-    <header className="sticky top-0 z-40 bg-band-deep/95 shadow-lift backdrop-blur-sm">
+    <header className="sticky top-0 z-40 md:-top-9">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-maroon-700 focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-maroon-700 focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to main content
       </a>
+
+      {/* Utility bar — the firm's particulars, as on its letterhead */}
+      <div className="hidden bg-band-deep text-xs text-white/75 md:block">
+        <div className="mx-auto flex h-9 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+          <p>Chartered Accountants · Banashankari, Bengaluru · Est. {site.since}</p>
+          <div className="flex items-center gap-5">
+            <a href={site.phoneHref} className="transition-colors hover:text-white">{site.phone}</a>
+            <a href={`mailto:${site.email}`} className="transition-colors hover:text-white">{site.email}</a>
+            <a
+              href={site.crmUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 border-l border-white/20 pl-5 font-medium text-white transition-colors hover:text-maroon-300"
+            >
+              {site.crmLabel}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+                <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
+                <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-b border-line bg-surface/95 backdrop-blur-sm">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           to="/"
-          className="group flex shrink-0 items-center transition-opacity duration-200 hover:opacity-90"
+          className="flex shrink-0 items-center transition-opacity duration-200 hover:opacity-85"
           aria-label={`${site.name} — home`}
         >
-          <Logo tone="band" className="h-9 min-[420px]:h-10 sm:h-12 lg:h-9 xl:h-12" />
+          <Logo tone="auto" className="h-9 sm:h-10 lg:h-8 xl:h-10" />
         </Link>
 
-        <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Primary">
+        <nav className="hidden h-full items-center lg:flex" aria-label="Primary">
           <NavLink to="/" className={navLinkClass} end>
             Home
           </NavLink>
@@ -73,11 +101,11 @@ export default function Header() {
             About
           </NavLink>
 
-          <div className="relative flex items-center" ref={servicesRef}>
+          <div className="relative flex h-full items-center" ref={servicesRef}>
             <Link
               to="/services"
-              className={`rounded-md py-2 pl-2 pr-1 text-sm font-medium transition-colors duration-200 xl:pl-3 ${
-                onServicesRoute ? "text-maroon-400" : "text-white/85 hover:text-white"
+              className={`flex h-full items-center border-b-2 pl-2 pr-1 pt-0.5 text-sm font-medium transition-colors duration-200 xl:pl-3 ${
+                onServicesRoute ? "border-accent text-ink" : "border-transparent text-ink-soft hover:text-ink"
               }`}
             >
               Services
@@ -89,9 +117,7 @@ export default function Header() {
               aria-expanded={servicesOpen}
               aria-haspopup="true"
               aria-label="Browse services"
-              className={`flex cursor-pointer items-center rounded-md py-2 pr-2 transition-colors duration-200 ${
-                onServicesRoute ? "text-maroon-400" : "text-white/85 hover:text-white"
-              }`}
+              className="flex cursor-pointer items-center py-2 pr-2 text-ink-soft transition-colors duration-200 hover:text-ink"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -108,23 +134,26 @@ export default function Header() {
               </svg>
             </button>
             {servicesOpen && (
-              <div className="absolute left-1/2 top-full z-50 mt-2 w-72 -translate-x-1/2 overflow-hidden rounded-xl border border-line bg-surface py-2 shadow-float">
+              <div className="absolute left-0 top-full z-50 w-[34rem] border border-line border-t-2 border-t-accent bg-surface p-2 shadow-float">
+                <ul className="grid grid-cols-2">
+                  {services.map((s, i) => (
+                    <li key={s.slug}>
+                      <Link
+                        to={`/${s.slug}`}
+                        className="flex gap-3 px-3 py-2.5 text-sm text-ink-soft transition-colors hover:bg-surface-raised hover:text-ink"
+                      >
+                        <span className="w-5 shrink-0 tabular-nums text-ink-soft/70">{String(i + 1).padStart(2, "0")}</span>
+                        {s.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
                 <Link
                   to="/services"
-                  className="block px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-surface-raised"
+                  className="mt-1 block border-t border-line px-3 pb-1.5 pt-3 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
                 >
-                  All Services
+                  All services →
                 </Link>
-                <div className="mx-4 my-1 border-t border-line" />
-                {services.map((s) => (
-                  <Link
-                    key={s.slug}
-                    to={`/${s.slug}`}
-                    className="block px-4 py-2.5 text-sm text-ink-soft transition-colors hover:bg-surface-raised hover:text-ink"
-                  >
-                    {s.title}
-                  </Link>
-                ))}
               </div>
             )}
           </div>
@@ -141,36 +170,24 @@ export default function Header() {
           <NavLink to="/contact" className={navLinkClass}>
             Contact
           </NavLink>
-          <a
-            href={site.crmUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="ml-2 inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border border-white/25 px-3 py-2 text-sm font-semibold text-white/85 transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400 xl:ml-3 xl:px-4"
-          >
-            {site.crmLabel}
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
-              <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
-              <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
-            </svg>
-          </a>
           <Link
             to="/contact"
-            className="ml-2 whitespace-nowrap rounded-md bg-maroon-700 px-3 py-2 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600 xl:px-4"
+            className="ml-3 whitespace-nowrap rounded bg-maroon-700 px-4 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800 xl:ml-4"
           >
             Get in Touch
           </Link>
-          <ThemeToggle className="ml-1 text-white/85" />
+          <ThemeToggle className="ml-1 text-ink-soft" />
         </nav>
 
         <div className="flex items-center gap-1 lg:hidden">
-          <ThemeToggle className="text-white/85" />
+          <ThemeToggle className="text-ink-soft" />
           <button
             type="button"
             onClick={() => setMobileOpen((o) => !o)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-md text-white/90 transition-colors hover:bg-white/10"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded text-ink transition-colors hover:bg-ink/5"
           >
             {mobileOpen ? (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-6 w-6" aria-hidden="true">
@@ -184,21 +201,22 @@ export default function Header() {
           </button>
         </div>
       </div>
+      </div>
 
       {mobileOpen && (
-        <nav id="mobile-nav" className="border-t border-white/10 bg-band-deep lg:hidden" aria-label="Mobile">
+        <nav id="mobile-nav" className="max-h-[calc(100dvh-72px)] overflow-y-auto border-b border-line bg-surface lg:hidden" aria-label="Mobile">
           <div className="space-y-1 px-4 py-4">
-            <NavLink to="/" end className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/" end className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               Home
             </NavLink>
-            <NavLink to="/about" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/about" className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               About
             </NavLink>
             <button
               type="button"
               onClick={() => setMobileServicesOpen((o) => !o)}
               aria-expanded={mobileServicesOpen}
-              className="flex w-full cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10"
+              className="flex w-full cursor-pointer items-center justify-between rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised"
             >
               Services
               <svg
@@ -216,55 +234,55 @@ export default function Header() {
               </svg>
             </button>
             {mobileServicesOpen && (
-              <div className="ml-3 space-y-1 border-l border-white/15 pl-3">
-                <Link to="/services" className="block rounded-md px-3 py-2 text-sm font-semibold text-white/90 hover:bg-white/10">
+              <div className="ml-3 space-y-1 border-l border-line pl-3">
+                <Link to="/services" className="block rounded px-3 py-2 text-sm font-semibold text-ink hover:bg-surface-raised">
                   All Services
                 </Link>
                 {services.map((s) => (
                   <Link
                     key={s.slug}
                     to={`/${s.slug}`}
-                    className="block rounded-md px-3 py-2 text-sm text-white/75 hover:bg-white/10 hover:text-white"
+                    className="block rounded px-3 py-2 text-sm text-ink-soft hover:bg-surface-raised hover:text-ink"
                   >
                     {s.title}
                   </Link>
                 ))}
               </div>
             )}
-            <NavLink to="/industries" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/industries" className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               Industries
             </NavLink>
-            <NavLink to="/careers" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/careers" className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               Careers
             </NavLink>
-            <NavLink to="/blogs" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/blogs" className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               Blog
             </NavLink>
-            <NavLink to="/contact" className="block rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10">
+            <NavLink to="/contact" className="block rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised">
               Contact
             </NavLink>
             <a
               href={site.crmUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-medium text-white/90 hover:bg-white/10"
+              className="flex items-center gap-2 rounded px-3 py-2.5 text-base font-medium text-ink hover:bg-surface-raised"
             >
               {site.crmLabel}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-white/50" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 text-ink-soft" aria-hidden="true">
                 <path d="M11 3a.75.75 0 0 0 0 1.5h2.44l-6.22 6.22a.75.75 0 1 0 1.06 1.06L14.5 5.56V8a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 15.25 3H11Z" />
                 <path d="M4.75 5A1.75 1.75 0 0 0 3 6.75v8.5C3 16.216 3.784 17 4.75 17h8.5A1.75 1.75 0 0 0 15 15.25V11.5a.75.75 0 0 0-1.5 0v3.75a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25H8.5A.75.75 0 0 0 8.5 5H4.75Z" />
               </svg>
             </a>
-            <div className="flex flex-wrap items-center gap-3 border-t border-white/10 px-3 pb-1 pt-4">
+            <div className="flex flex-wrap items-center gap-3 border-t border-line px-3 pb-1 pt-4">
               <Link
                 to="/contact"
-                className="rounded-md bg-maroon-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
+                className="rounded bg-maroon-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
               >
                 Get in Touch
               </Link>
               <a
                 href={site.phoneHref}
-                className="rounded-md border border-white/25 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
+                className="rounded border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
               >
                 Call {site.phone}
               </a>

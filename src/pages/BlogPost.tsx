@@ -100,12 +100,12 @@ function PostLink({ post, direction }: { post: BlogPost; direction: "previous" |
   return (
     <Link
       to={`/blogs/${post.slug}`}
-      className={`group flex flex-col gap-1 rounded-xl border border-line bg-surface p-5 transition-colors duration-200 hover:border-accent hover:bg-surface-raised ${
+      className={`group flex flex-col gap-1 rounded border border-line bg-surface p-5 transition-colors duration-200 hover:border-accent hover:bg-surface-raised ${
         isNext ? "sm:text-right" : ""
       }`}
     >
       <span
-        className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft ${
+        className={`inline-flex items-center gap-1.5 text-sm font-semibold text-ink ${
           isNext ? "sm:justify-end" : ""
         }`}
       >
