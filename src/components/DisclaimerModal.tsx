@@ -90,7 +90,7 @@ export default function DisclaimerModal() {
           <button
             type="button"
             onClick={handleDisagree}
-            className="rounded border border-line px-7 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
+            className="rounded-lg border border-line px-7 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
           >
             I Disagree
           </button>
@@ -98,7 +98,7 @@ export default function DisclaimerModal() {
             ref={agreeRef}
             type="button"
             onClick={handleAgree}
-            className="rounded bg-maroon-700 px-7 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+            className="rounded-lg bg-maroon-700 px-7 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
           >
             I Agree
           </button>

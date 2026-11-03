@@ -9,13 +9,13 @@ export default function ComplianceWidget({ count = 4 }: { count?: number }) {
   const { items } = useCompliance(2);
   const next = items.slice(0, count);
   return (
-    <aside className="glass-panel rounded-2xl p-6 text-white sm:p-7" aria-labelledby="next-due">
+    <aside className="rounded-xl border border-white/12 bg-[#121a28] p-6 text-white sm:p-7" aria-labelledby="next-due">
       <div className="flex items-center justify-between gap-4">
         <h2 id="next-due" className="flex items-center gap-2.5 text-sm font-semibold">
           <span className="live-dot" aria-hidden="true" />
           Next due dates
         </h2>
-        <span className="text-xs text-white/55">Updated live</span>
+        <span className="text-xs text-white/55">Worked out from today</span>
       </div>
       <ul className="mt-5 divide-y divide-white/10">
         {next.map((i) => {
@@ -27,7 +27,7 @@ export default function ComplianceWidget({ count = 4 }: { count?: number }) {
                 <span className="block truncate text-[15px] font-medium">{i.title}</span>
                 <span className="block truncate text-xs text-white/55">{i.period}{i.extension ? " · Extended" : ""}</span>
               </span>
-              <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold tabular-nums ${days <= 3 ? "bg-maroon-600 text-white" : "bg-white/10 text-white/85"}`}>
+              <span className={`shrink-0 text-sm tabular-nums ${days <= 3 ? "font-semibold text-maroon-300" : "text-white/70"}`}>
                 {countdownLabel(days).replace("In ", "")}
               </span>
             </li>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import PageHeader from "../components/PageHeader";
@@ -6,22 +6,34 @@ import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
 import ReadingProgress from "../components/ReadingProgress";
 import NotFound from "./NotFound";
-import { getPost, getAdjacentPosts, formatDate, type BlogPost } from "../data/blog";
+import { formatDate, type BlogPost } from "../data/blog";
+import { usePosts } from "../hooks/usePosts";
+import { formatSize } from "../lib/cms";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 interface BlogPostProps {
-  slug: string;
+  /** Set for markdown posts (one static route each); CRM posts arrive via /blogs/:slug. */
+  slug?: string;
 }
 
-export default function BlogPost({ slug }: BlogPostProps) {
-  const post = getPost(slug);
+export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
+  const params = useParams();
+  const slug = fixedSlug ?? params.slug ?? "";
+  const { posts, ready } = usePosts();
+  const index = posts.findIndex((p) => p.slug === slug);
+  const post = index === -1 ? undefined : posts[index];
 
   // Reserve the hook call before any early return to keep hook order stable.
   usePageMeta(post?.title ?? "Post not found", post?.summary, post?.tags.join(", "), "article");
 
-  if (!post) return <NotFound />;
+  if (!post) {
+    // A CRM post is only known once the CRM answers; until then, wait rather than 404.
+    if (!ready) return <div className="mx-auto max-w-3xl px-4 py-24 text-ink-soft" role="status">Loading…</div>;
+    return <NotFound />;
+  }
 
-  const { newer, older } = getAdjacentPosts(post.slug);
+  const newer = index > 0 ? posts[index - 1] : undefined;
+  const older = index < posts.length - 1 ? posts[index + 1] : undefined;
 
   const byline = [
     post.author,
@@ -41,9 +53,27 @@ export default function BlogPost({ slug }: BlogPostProps) {
             Last updated {formatDate(post.updated)}
           </p>
         )}
+        {post.cover && (
+          <img src={post.cover.url} alt="" className="mb-10 aspect-[16/9] w-full rounded-lg border border-line object-cover" />
+        )}
         <div className="blog-prose">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
         </div>
+        {post.files && post.files.length > 0 && (
+          <section className="mt-12 border-t border-line pt-8" aria-labelledby="downloads">
+            <h2 id="downloads" className="font-display text-xl font-medium text-ink">Downloads</h2>
+            <ul className="mt-4 divide-y divide-line rounded-lg border border-line">
+              {post.files.map((f) => (
+                <li key={f.id}>
+                  <a href={f.url} className="flex items-center justify-between gap-4 px-4 py-3 transition-colors hover:bg-surface-raised">
+                    <span className="min-w-0 truncate font-medium text-ink">{f.name}</span>
+                    <span className="shrink-0 text-sm text-ink-soft">{formatSize(f.sizeBytes)}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
         {post.tags.length > 0 && (
           <ul className="mt-12 flex flex-wrap gap-2" aria-label="Tags">
             {post.tags.map((tag) => (

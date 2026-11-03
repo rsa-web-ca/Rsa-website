@@ -13,19 +13,19 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap justify-center gap-4">
         <Link
           to="/"
-          className="rounded bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+          className="rounded-lg bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
         >
           Back to Home
         </Link>
         <Link
           to="/services"
-          className="rounded border border-line px-6 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-maroon-600 hover:text-accent"
+          className="rounded-lg border border-line px-6 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-maroon-600 hover:text-accent"
         >
           Browse Services
         </Link>
         <Link
           to="/contact"
-          className="rounded border border-line px-6 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-maroon-600 hover:text-accent"
+          className="rounded-lg border border-line px-6 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-maroon-600 hover:text-accent"
         >
           Contact Us
         </Link>

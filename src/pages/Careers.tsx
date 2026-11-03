@@ -3,6 +3,7 @@ import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
 import { useFormSubmit } from "../hooks/useFormSubmit";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { formatSize, useCms } from "../lib/cms";
 import {
   Field,
   TextInput,
@@ -39,6 +40,7 @@ export default function Careers() {
         title="Work with Us"
         lede="We have positions open for Article Trainees, Audit Assistants & Audit Managers."
       />
+      <Openings />
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-3xl font-semibold text-ink">Join the Team</h2>
         <p className="mt-3 max-w-prose text-ink-soft">
@@ -150,5 +152,37 @@ export default function Careers() {
         )}
       </section>
     </>
+  );
+}
+
+/** Openings published from the CRM, with any job description attached. Absent until there are some. */
+function Openings() {
+  const { content } = useCms();
+  const open = (content?.careers ?? []).filter((c) => c.open);
+  if (open.length === 0) return null;
+  return (
+    <section className="mx-auto max-w-3xl px-4 pt-16 sm:px-6 lg:px-8" aria-labelledby="openings">
+      <h2 id="openings" className="font-display text-3xl font-medium text-ink">Current openings</h2>
+      <ul className="mt-6 divide-y divide-line border-y border-line">
+        {open.map((c) => (
+          <li key={c.id} className="py-6">
+            <h3 className="font-display text-xl text-ink">{c.title}</h3>
+            {c.summary && <p className="mt-2 whitespace-pre-line leading-relaxed text-ink-soft">{c.summary}</p>}
+            {c.attachments.length > 0 && (
+              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                {c.attachments.map((f) => (
+                  <li key={f.id}>
+                    <a href={f.url} className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-accent hover:decoration-accent">
+                      {f.name}
+                    </a>{" "}
+                    <span className="text-ink-soft">({formatSize(f.sizeBytes)})</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

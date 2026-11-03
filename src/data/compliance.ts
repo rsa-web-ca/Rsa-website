@@ -3,9 +3,9 @@
  *
  * Dates are generated from these rules relative to today, so the calendar
  * never needs a yearly edit. When CBDT, CBIC or MCA notify an extension, the
- * change goes in public/compliance/overrides.json (fetched at runtime, so no
- * rebuild is needed); an override replaces the date of one occurrence and
- * shows its notification beside it.
+ * change is entered in the CRM (Website → Compliance) and published; the site
+ * reads it at runtime, so no rebuild is needed. An override replaces the date
+ * of one occurrence and shows its notification, and any attached PDF, beside it.
  *
  * Review note: the rules reflect the standard dates under the GST, income-tax
  * and Companies/LLP provisions. GST quarterly (QRMP) dates use the Karnataka
@@ -31,7 +31,7 @@ export interface DueItem {
   /** The rule's statutory date, kept when an override moves it. */
   originalDate: Date;
   /** Set when a notified extension applies. */
-  extension?: { note: string; url?: string };
+  extension?: { note: string; url?: string; files?: { name: string; url: string }[] };
 }
 
 interface Rule {
@@ -131,9 +131,9 @@ export interface OverrideFile {
   /** ISO date the overrides were last reviewed against notifications. */
   reviewed?: string;
   /** Moves one occurrence: matched by rule id and the rule's own ISO date. */
-  overrides?: { id: string; due: string; date: string; note: string; url?: string }[];
+  overrides?: { id: string; due: string; date: string; note: string; url?: string; files?: { name: string; url: string }[] }[];
   /** One-off dates that no rule covers (e.g. a special filing window). */
-  extra?: { title: string; law: Law; who?: string; period?: string; date: string; note?: string; url?: string }[];
+  extra?: { title: string; law: Law; who?: string; period?: string; date: string; note?: string; url?: string; files?: { name: string; url: string }[] }[];
 }
 
 export function isoDate(d: Date): string {
@@ -165,7 +165,7 @@ export function buildCalendar(from: Date, months: number, file: OverrideFile = {
     const item = items.find((i) => i.ruleId === o.id && isoDate(i.originalDate) === o.due);
     if (item) {
       item.date = parseIso(o.date);
-      item.extension = { note: o.note, url: o.url };
+      item.extension = { note: o.note, url: o.url, files: o.files };
     }
   }
   for (const e of file.extra ?? []) {
@@ -179,7 +179,7 @@ export function buildCalendar(from: Date, months: number, file: OverrideFile = {
       period: e.period ?? "",
       date,
       originalDate: date,
-      extension: e.note ? { note: e.note, url: e.url } : undefined,
+      extension: e.note || e.files?.length ? { note: e.note ?? "", url: e.url, files: e.files } : undefined,
     });
   }
 

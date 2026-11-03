@@ -62,7 +62,7 @@ export function SubmitButton({ status, children }: { status: SubmitStatus; child
     <button
       type="submit"
       disabled={submitting}
-      className="inline-flex cursor-pointer items-center gap-2 rounded bg-maroon-700 px-8 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800 disabled:cursor-wait disabled:opacity-60"
+      className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-maroon-700 px-8 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800 disabled:cursor-wait disabled:opacity-60"
     >
       {submitting && (
         <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">

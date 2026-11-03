@@ -140,7 +140,7 @@ export default function ComplianceCalendar() {
                           )}
                           {i.extension && (
                             <p className="mt-2 text-sm text-ink">
-                              <span className="mr-2 rounded bg-maroon-700/10 px-1.5 py-0.5 text-xs font-semibold text-accent">Extended</span>
+                              <span className="mr-2 font-semibold text-accent">Extended.</span>
                               {i.extension.url ? (
                                 <a href={i.extension.url} target="_blank" rel="noreferrer" className="underline underline-offset-2">{i.extension.note}</a>
                               ) : (
@@ -150,6 +150,17 @@ export default function ComplianceCalendar() {
                                 <span className="text-ink-soft"> (was {FULL_FMT.format(i.originalDate)})</span>
                               )}
                             </p>
+                          )}
+                          {i.extension?.files && i.extension.files.length > 0 && (
+                            <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                              {i.extension.files.map((f) => (
+                                <li key={f.url}>
+                                  <a href={f.url} className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-accent hover:decoration-accent">
+                                    {f.name}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
                           )}
                         </div>
                         <div className="col-start-2 flex items-center gap-3 sm:col-start-3">

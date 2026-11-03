@@ -27,7 +27,7 @@ export default function ContactCta({ text = "For any further details, kindly con
         </div>
         <Link
           to="/contact"
-          className="justify-self-start rounded bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+          className="justify-self-start rounded-lg bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
         >
           Contact Us
         </Link>

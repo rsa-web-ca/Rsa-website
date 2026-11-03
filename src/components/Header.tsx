@@ -164,7 +164,7 @@ export default function Header() {
                       </p>
                       <Link
                         to="/services"
-                        className="mt-6 inline-flex items-center gap-2 rounded bg-maroon-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-maroon-800"
+                        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-maroon-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-maroon-800"
                       >
                         All services
                       </Link>
@@ -197,7 +197,7 @@ export default function Header() {
             ))}
             <Link
               to="/contact"
-              className={`ml-3 whitespace-nowrap rounded px-4 py-2.5 text-sm font-semibold transition-colors duration-200 xl:ml-4 ${
+              className={`ml-3 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors duration-200 xl:ml-4 ${
                 solid ? "bg-maroon-700 text-white hover:bg-maroon-800" : "bg-white text-[#1f2633] hover:bg-white/90"
               }`}
             >
@@ -292,13 +292,13 @@ export default function Header() {
               <div className="flex flex-wrap items-center gap-3 border-t border-line px-3 pb-1 pt-4">
                 <Link
                   to="/contact"
-                  className="rounded bg-maroon-700 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+                  className="rounded-lg bg-maroon-700 px-5 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
                 >
                   Get in Touch
                 </Link>
                 <a
                   href={site.phoneHref}
-                  className="rounded border border-line px-5 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
+                  className="rounded-lg border border-line px-5 py-3 text-sm font-semibold text-ink transition-colors duration-200 hover:border-accent hover:text-accent"
                 >
                   Call {site.phone}
                 </a>

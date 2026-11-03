@@ -3,7 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
-import { posts, allTags, formatDate } from "../data/blog";
+import { formatDate } from "../data/blog";
+import { usePosts } from "../hooks/usePosts";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const PAGE_SIZE = 6;
@@ -14,6 +15,8 @@ export default function Blog() {
     "Notes on audit, taxation and compliance from R Shivakumar & Associates, Chartered Accountants, Bengaluru.",
   );
 
+  const { posts } = usePosts();
+  const allTags = useMemo(() => [...new Set(posts.flatMap((p) => p.tags))].sort((a, b) => a.localeCompare(b)), [posts]);
   const [params, setParams] = useSearchParams();
   const q = params.get("q") ?? "";
   const activeTag = params.get("tag") ?? "";
@@ -29,7 +32,7 @@ export default function Blog() {
       }
       return true;
     });
-  }, [q, activeTag]);
+  }, [q, activeTag, posts]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const page = Math.min(requestedPage, totalPages);
