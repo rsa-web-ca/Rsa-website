@@ -19,7 +19,7 @@ export default function ServiceDetail({ slug }: { slug: string }) {
 
   return (
     <>
-      <PageHeader title={service.title} parent={{ label: "Services", to: "/services" }} />
+      <PageHeader film="services" title={service.title} parent={{ label: "Services", to: "/services" }} />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-[1fr_20rem]">
           <Reveal>

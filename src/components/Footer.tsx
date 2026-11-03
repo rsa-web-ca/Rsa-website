@@ -24,6 +24,7 @@ export default function Footer() {
                 ["Services", "/services"],
                 ["Industries", "/industries"],
                 ["Careers", "/careers"],
+                ["Compliance Calendar", "/compliance-calendar"],
                 ["Blog", "/blogs"],
                 ["Contact", "/contact"],
               ].map(([label, to]) => (

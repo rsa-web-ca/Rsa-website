@@ -63,7 +63,7 @@ export default function Blog() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader film="hero-ledger"
         title="Blog"
         lede="Plain-spoken notes on audit, taxation and compliance — from our desk to yours."
       />

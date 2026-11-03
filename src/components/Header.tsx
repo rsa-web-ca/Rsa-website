@@ -18,6 +18,7 @@ function ExternalIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
 const NAV = [
   { label: "About", to: "/about" },
   { label: "Industries", to: "/industries" },
+  { label: "Calendar", to: "/compliance-calendar" },
   { label: "Careers", to: "/careers" },
   { label: "Blog", to: "/blogs" },
   { label: "Contact", to: "/contact" },

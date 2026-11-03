@@ -35,7 +35,7 @@ export default function Careers() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader film="careers"
         title="Work with Us"
         lede="We have positions open for Article Trainees, Audit Assistants & Audit Managers."
       />

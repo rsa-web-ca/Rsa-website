@@ -14,7 +14,7 @@ export default function About() {
   // can go back in this column once one exists.
   return (
     <>
-      <PageHeader title="About Us" />
+      <PageHeader film="about" title="About Us" />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <p className="font-display text-2xl leading-snug text-ink sm:text-3xl lg:col-span-7">

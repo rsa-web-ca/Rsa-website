@@ -15,6 +15,7 @@ import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
+import ComplianceCalendar from "./pages/ComplianceCalendar";
 import { services } from "./data/services";
 import { posts } from "./data/blog";
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       // The old Wix site hosted careers at /blank — keep the URL working.
       { path: "/blank", element: <Navigate to="/careers" replace /> },
       { path: "/contact", element: <Contact /> },
+      { path: "/compliance-calendar", element: <ComplianceCalendar /> },
       { path: "/blogs", element: <Blog /> },
       ...posts.map((p) => ({ path: `/blogs/${p.slug}`, element: <BlogPost slug={p.slug} /> })),
       ...services.map((s) => ({ path: `/${s.slug}`, element: <ServiceDetail slug={s.slug} /> })),

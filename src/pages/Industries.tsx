@@ -11,7 +11,7 @@ export default function Industries() {
   );
   return (
     <>
-      <PageHeader
+      <PageHeader film="industries"
         title="Industries / Sectors"
         lede="We serve clients across the following sectors."
       />

@@ -31,7 +31,7 @@ export default function Contact() {
 
   return (
     <>
-      <PageHeader title="Contact Us" lede="Call, write, or visit our office in Banashankari, Bengaluru." />
+      <PageHeader film="contact" title="Contact Us" lede="Call, write, or visit our office in Banashankari, Bengaluru." />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
           <Reveal>
