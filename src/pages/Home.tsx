@@ -3,7 +3,8 @@ import { services } from "../data/services";
 import { industries } from "../data/industries";
 import { site } from "../data/site";
 import { posts, formatDate } from "../data/blog";
-import Reveal from "../components/Reveal";
+import Letterhead from "../components/Letterhead";
+import ServiceIcon from "../components/ServiceIcon";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const latestPost = posts[0];
@@ -25,33 +26,23 @@ function ExternalIcon() {
   );
 }
 
-/** Section label set in small caps above a rule — the one structural device the page repeats. */
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="border-b border-line pb-3 text-sm font-semibold text-ink">
-      {children}
-    </p>
-  );
-}
-
 export default function Home() {
   usePageMeta();
   const years = new Date().getFullYear() - site.since;
+  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`;
 
   return (
     <>
-      {/* Opening: the firm's line on the left, its particulars on the right — like a letterhead */}
-      <section className="border-b border-line">
-        <div className="mx-auto grid max-w-7xl gap-14 px-4 pb-16 pt-12 sm:px-6 sm:pt-24 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-24">
-          <div className="lg:col-span-7">
-            <p className="text-sm font-medium text-ink-soft">
-              {site.name} · {site.tagline}
-            </p>
-            <h1 className="mt-6 font-display text-[40px] font-medium leading-[1.06] tracking-[-0.02em] text-ink sm:text-6xl lg:text-[68px]">
+      {/* Opening: the firm's line on a slate band, its letterhead laid over the band's lower edge */}
+      <section className="relative bg-band-deep text-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-0 lg:pt-24">
+          <div className="lg:col-span-6 lg:pb-40">
+            <p className="text-sm text-white/70">{site.tagline} · Banashankari, Bengaluru</p>
+            <h1 className="mt-6 font-display text-[40px] font-medium leading-[1.06] tracking-[-0.02em] sm:text-6xl lg:text-[64px]">
               Rendering audit, tax and advisory services since{" "}
-              <span className="figures-oldstyle text-accent">{site.since}</span>
+              <span className="figures-oldstyle text-maroon-300">{site.since}</span>
             </h1>
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
               M/s R Shivakumar &amp; Associates is a firm of chartered accountants in Bangalore.
               Since {site.since}, we have been rendering services, especially in areas such as
               audit &amp; assurance, taxation, tax litigation and consultancy services.
@@ -59,222 +50,195 @@ export default function Home() {
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
               <Link
                 to="/contact"
-                className="rounded bg-maroon-700 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+                className="rounded bg-[#fbf8f1] px-7 py-3.5 text-sm font-semibold text-[#1f2633] transition-colors duration-150 hover:bg-white"
               >
                 Get in Touch
               </Link>
               <Link
                 to="/services"
-                className="group inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent"
+                className="group inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/30 decoration-2 underline-offset-[6px] transition-colors hover:decoration-white"
               >
                 Explore Our Services
-                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
               </Link>
             </div>
           </div>
 
-          <aside className="lg:col-span-4 lg:col-start-9 lg:pt-12" aria-labelledby="particulars">
-            <h2 id="particulars" className="border-b-2 border-ink pb-3 text-sm font-semibold text-ink">
-              The firm
-            </h2>
-            <dl className="divide-y divide-line text-[15px]">
-              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
-                <dt className="text-ink-soft">Established</dt>
-                <dd className="font-display text-xl text-ink figures-oldstyle">{site.since}</dd>
-              </div>
-              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
-                <dt className="text-ink-soft">Practice</dt>
-                <dd className="text-ink">{years}+ years · {services.length} service lines</dd>
-              </div>
-              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
-                <dt className="text-ink-soft">Office</dt>
-                <dd className="leading-relaxed text-ink">
-                  <address className="not-italic">{site.address}</address>
-                  <a
-                    href={site.mapsUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent"
-                  >
-                    Get directions <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
-                </dd>
-              </div>
-              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
-                <dt className="text-ink-soft">Telephone</dt>
-                <dd>
-                  <a href={site.phoneHref} className="text-ink transition-colors hover:text-accent">{site.phone}</a>
-                </dd>
-              </div>
-              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
-                <dt className="text-ink-soft">Email</dt>
-                <dd className="min-w-0 break-words">
-                  <a href={`mailto:${site.email}`} className="text-ink transition-colors hover:text-accent">{site.email}</a>
-                </dd>
-              </div>
-            </dl>
-          </aside>
+          <div className="relative z-10 lg:col-span-5 lg:col-start-8 lg:-mb-24 lg:self-end">
+            <Letterhead className="letterhead-enter mx-auto max-w-md lg:max-w-none lg:rotate-[1.5deg]" />
+          </div>
         </div>
       </section>
 
-      {/* Services — a numbered index rather than a grid of cards */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-          <Reveal className="lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
-              <SectionLabel>Our Services</SectionLabel>
-              <h2 className="mt-6 font-display text-3xl font-medium leading-tight text-ink sm:text-4xl">
-                Audit, taxation, advisory and compliance
-              </h2>
-              <p className="mt-4 max-w-sm leading-relaxed text-ink-soft">
-                Nine service lines covering audit, taxation, advisory and compliance.
-              </p>
-              <Link
-                to="/services"
-                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors duration-200 hover:text-accent hover:decoration-accent"
-              >
-                View all services <ArrowRight />
-              </Link>
-            </div>
-          </Reveal>
-
-          <ol className="border-t-2 border-ink lg:col-span-8">
-            {services.map((s, i) => (
-              <li key={s.slug} className="border-b border-line">
-                <Link
-                  to={`/${s.slug}`}
-                  className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-x-4 py-6 sm:grid-cols-[3.5rem_1fr_auto] sm:gap-x-6"
-                >
-                  <span className="font-display text-lg text-ink-soft tabular-nums">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <span className="block font-display text-xl font-medium text-ink transition-colors duration-200 group-hover:text-accent sm:text-2xl">
-                      {s.title}
-                    </span>
-                    <span className="mt-1.5 block max-w-xl text-[15px] leading-relaxed text-ink-soft">{s.summary}</span>
-                  </span>
-                  <ArrowRight className="h-5 w-5 self-center text-ink-soft transition-[color,transform] duration-150 group-hover:translate-x-0.5 group-hover:text-ink" />
-                </Link>
-              </li>
+      {/* Particulars: the facts a client checks first */}
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
+          <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 lg:w-7/12 lg:grid-cols-2 xl:grid-cols-4">
+            {[
+              [String(site.since), "Established"],
+              [`${years}+`, "Years in practice"],
+              [String(services.length), "Service lines"],
+              [String(industries.length), "Sectors served"],
+            ].map(([figure, label]) => (
+              <div key={label} className="border-t-2 border-ink pt-4">
+                <dt className="text-sm text-ink-soft">{label}</dt>
+                <dd className="figures-oldstyle mt-2 font-display text-4xl font-medium text-ink sm:text-5xl">{figure}</dd>
+              </div>
             ))}
-          </ol>
+          </dl>
+          <p className="mt-10 max-w-xl text-sm leading-relaxed text-ink-soft">
+            Engagements are carried out to the standards issued by the Institute of Chartered
+            Accountants of India.
+          </p>
         </div>
       </section>
 
-      {/* Industries */}
-      <section className="border-y border-line bg-surface-raised">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:py-24">
-          <Reveal className="lg:col-span-4">
-            <SectionLabel>Industries / Sectors</SectionLabel>
-            <h2 className="mt-6 font-display text-3xl font-medium leading-tight text-ink sm:text-4xl">
-              Industries we serve
+      {/* Services: a ruled 3 × 3 schedule, one cell per service line */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="text-sm font-semibold text-accent">Our Services</p>
+            <h2 className="mt-3 max-w-2xl font-display text-3xl font-medium leading-tight text-ink sm:text-4xl">
+              Nine service lines covering audit, taxation, advisory and compliance
             </h2>
-            <p className="mt-4 max-w-sm leading-relaxed text-ink-soft">
+          </div>
+          <Link
+            to="/services"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent"
+          >
+            View all services <ArrowRight />
+          </Link>
+        </div>
+
+        <ul className="mt-12 grid gap-px overflow-hidden rounded border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((s, i) => (
+            <li key={s.slug} className="bg-surface">
+              <Link
+                to={`/${s.slug}`}
+                className="group flex h-full flex-col p-6 transition-colors duration-150 hover:bg-surface-raised sm:p-8"
+              >
+                <div className="flex items-center justify-between text-ink-soft">
+                  <ServiceIcon slug={s.slug} className="h-7 w-7 transition-colors duration-150 group-hover:text-accent" />
+                  <span className="font-display text-base tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="mt-8 font-display text-xl font-medium text-ink sm:text-2xl">{s.title}</h3>
+                <p className="mt-3 flex-1 text-[15px] leading-relaxed text-ink-soft">{s.summary}</p>
+                <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink-soft transition-colors duration-150 group-hover:text-accent">
+                  Read more <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Industries on the slate band */}
+      <section className="bg-band text-white">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:py-24">
+          <div className="lg:col-span-4">
+            <p className="text-sm font-semibold text-maroon-300">Industries / Sectors</p>
+            <h2 className="mt-3 font-display text-3xl font-medium leading-tight sm:text-4xl">Industries we serve</h2>
+            <p className="mt-4 max-w-sm leading-relaxed text-white/70">
               Sector experience spanning manufacturing, healthcare, technology and real estate.
             </p>
             <Link
               to="/industries"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors duration-200 hover:text-accent hover:decoration-accent"
+              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold underline decoration-white/30 decoration-2 underline-offset-[6px] transition-colors hover:decoration-white"
             >
               See all sectors <ArrowRight />
             </Link>
-          </Reveal>
-          <Reveal className="lg:col-span-8">
-            <ul className="grid border-t-2 border-ink sm:grid-cols-2 sm:gap-x-10">
-              {industries.map((ind) => (
-                <li key={ind.name} className="border-b border-line py-4">
-                  <span className="font-medium text-ink">{ind.name}</span>
-                  {ind.detail && <span className="mt-1 block text-sm leading-relaxed text-ink-soft">{ind.detail}</span>}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+          </div>
+          <ul className="grid border-t border-white/25 sm:grid-cols-2 sm:gap-x-10 lg:col-span-8">
+            {industries.map((ind, i) => (
+              <li key={ind.name} className="flex gap-4 border-b border-white/15 py-4">
+                <span className="w-6 shrink-0 pt-0.5 text-sm tabular-nums text-white/45">{String(i + 1).padStart(2, "0")}</span>
+                <span>
+                  <span className="font-medium">{ind.name}</span>
+                  {ind.detail && <span className="mt-1 block text-sm leading-relaxed text-white/60">{ind.detail}</span>}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
       {/* Latest from the blog */}
       {latestPost && (
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <Reveal>
-            <div className="flex items-end justify-between gap-4 border-b border-line pb-3">
-              <h2 className="text-sm font-semibold text-ink">From the blog</h2>
-              <Link to="/blogs" className="text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent">
-                View all posts
-              </Link>
-            </div>
-            <Link
-              to={`/blogs/${latestPost.slug}`}
-              className="group grid gap-3 py-8 md:grid-cols-12 md:gap-10"
-            >
-              <div className="text-sm text-ink-soft md:col-span-3">
-                {latestPost.date && (
-                  <time dateTime={latestPost.date} className="block">{formatDate(latestPost.date)}</time>
-                )}
-                <span>{latestPost.readingTime} min read</span>
-              </div>
-              <div className="md:col-span-9">
-                <h3 className="font-display text-2xl font-medium text-ink transition-colors duration-200 group-hover:text-accent sm:text-3xl">
-                  {latestPost.title}
-                </h3>
-                {latestPost.summary && (
-                  <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{latestPost.summary}</p>
-                )}
-                <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] group-hover:text-accent group-hover:decoration-accent">
-                  Read the post <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                </span>
-              </div>
+          <div className="flex items-end justify-between gap-4 border-b border-line pb-3">
+            <h2 className="text-sm font-semibold text-ink">From the blog</h2>
+            <Link to="/blogs" className="text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent">
+              View all posts
             </Link>
-          </Reveal>
+          </div>
+          <Link to={`/blogs/${latestPost.slug}`} className="group grid gap-3 py-8 md:grid-cols-12 md:gap-10">
+            <div className="text-sm text-ink-soft md:col-span-3">
+              {latestPost.date && <time dateTime={latestPost.date} className="block">{formatDate(latestPost.date)}</time>}
+              <span>{latestPost.readingTime} min read</span>
+            </div>
+            <div className="md:col-span-9">
+              <h3 className="font-display text-2xl font-medium text-ink transition-colors duration-150 group-hover:text-accent sm:text-3xl">
+                {latestPost.title}
+              </h3>
+              {latestPost.summary && <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{latestPost.summary}</p>}
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] group-hover:text-accent group-hover:decoration-accent">
+                Read the post <ArrowRight className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+              </span>
+            </div>
+          </Link>
         </section>
       )}
 
-      {/* How to reach us */}
+      {/* How to reach us: details beside the office on the map */}
       <section className="border-t border-line bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <Reveal>
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:py-24">
+          <div className="lg:col-span-5">
             <h2 className="font-display text-3xl font-medium text-ink sm:text-4xl">How to reach us</h2>
-            <div className="mt-10 grid gap-10 border-t-2 border-ink pt-8 md:grid-cols-3">
-              <div>
-                <h3 className="text-sm font-semibold text-ink">Visit</h3>
-                <a
-                  href={site.mapsUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 block max-w-xs leading-relaxed text-ink transition-colors hover:text-accent"
-                >
-                  {site.address}
-                </a>
+            <dl className="mt-8 divide-y divide-line border-t-2 border-ink">
+              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
+                <dt className="text-ink-soft">Office</dt>
+                <dd>
+                  <a href={site.mapsUrl} target="_blank" rel="noreferrer" className="leading-relaxed text-ink transition-colors hover:text-accent">
+                    {site.address}
+                  </a>
+                </dd>
               </div>
-              <div>
-                <h3 className="text-sm font-semibold text-ink">Call or write</h3>
-                <p className="mt-3 leading-relaxed">
-                  <a href={site.phoneHref} className="block text-ink transition-colors hover:text-accent">{site.phone}</a>
-                  <a href={`mailto:${site.email}`} className="block text-ink transition-colors hover:text-accent">{site.email}</a>
-                </p>
-                <Link
-                  to="/contact"
-                  className="mt-5 inline-block rounded bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
-                >
-                  Contact Us
-                </Link>
+              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
+                <dt className="text-ink-soft">Telephone</dt>
+                <dd><a href={site.phoneHref} className="text-ink transition-colors hover:text-accent">{site.phone}</a></dd>
               </div>
-              <div>
-                <h3 className="text-sm font-semibold text-ink">Existing clients</h3>
-                <p className="mt-3 max-w-xs leading-relaxed text-ink-soft">
-                  Existing clients can track engagements in the {site.crmLabel.toLowerCase()}.
-                </p>
-                <a
-                  href={site.crmUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 rounded border border-ink/25 px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-accent hover:text-accent"
-                >
-                  {site.crmLabel} <ExternalIcon />
-                </a>
+              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
+                <dt className="text-ink-soft">Email</dt>
+                <dd className="min-w-0 break-words"><a href={`mailto:${site.email}`} className="text-ink transition-colors hover:text-accent">{site.email}</a></dd>
               </div>
+              <div className="grid grid-cols-[104px_1fr] gap-4 py-4">
+                <dt className="text-ink-soft">Clients</dt>
+                <dd className="text-ink-soft">
+                  Existing clients can track engagements in the{" "}
+                  <a href={site.crmUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">
+                    {site.crmLabel.toLowerCase()} <ExternalIcon />
+                  </a>
+                </dd>
+              </div>
+            </dl>
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Link to="/contact" className="rounded bg-maroon-700 px-7 py-3.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-maroon-800">
+                Contact Us
+              </Link>
+              <a href={site.mapsUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-[6px] transition-colors hover:text-accent hover:decoration-accent">
+                Get directions <ArrowRight />
+              </a>
             </div>
-          </Reveal>
+          </div>
+          <div className="lg:col-span-7">
+            <iframe
+              title={`Map showing ${site.name}, Banashankari, Bengaluru`}
+              src={mapSrc}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="aspect-[4/3] h-auto w-full rounded border border-line grayscale-[60%] lg:aspect-auto lg:h-full lg:min-h-[420px]"
+            />
+          </div>
         </div>
       </section>
     </>

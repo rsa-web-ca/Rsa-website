@@ -134,6 +134,23 @@ p {
   }
 }
 
+/* The home letterhead is the page's one entrance beyond the route fade:
+   it settles onto the band, so the eye lands on it first. */
+.letterhead-enter {
+  animation: letterhead-in 0.5s var(--ease-out-quart) 0.1s both;
+}
+
+@keyframes letterhead-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 /* Blog post body — on-brand prose that reuses the site's tokens and fonts
    instead of a generic typography plugin, so posts read as native pages. */
 .blog-prose {
@@ -288,7 +305,8 @@ p {
   body {
     transition: none;
   }
-  .page-transition {
+  .page-transition,
+  .letterhead-enter {
     animation: none;
   }
 }

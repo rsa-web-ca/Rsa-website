@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { services } from "../data/services";
 import { site } from "../data/site";
 import Logo from "./Logo";
+import Seal from "./Seal";
 
 export default function Footer() {
   return (
@@ -13,6 +14,7 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
               Rendering audit, tax and advisory services from Bengaluru since {site.since}.
             </p>
+            <Seal className="mt-8 h-20 w-20 -rotate-12 text-white/25" />
           </div>
 
           <nav aria-label="Footer — pages">
