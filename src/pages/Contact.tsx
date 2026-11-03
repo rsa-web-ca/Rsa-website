@@ -138,6 +138,16 @@ export default function Contact() {
           </Reveal>
         </div>
       </section>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <iframe
+          title={`Map showing ${site.name}, Banashankari, Bengaluru`}
+          src={`https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="aspect-[4/3] w-full rounded border border-line grayscale-[60%] sm:aspect-[21/9]"
+        />
+      </section>
     </>
   );
 }
