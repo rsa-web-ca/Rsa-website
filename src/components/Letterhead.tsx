@@ -1,6 +1,5 @@
 import { services } from "../data/services";
 import { site } from "../data/site";
-import Seal from "./Seal";
 
 const LOGO = `${import.meta.env.BASE_URL}images/logo-color.svg`;
 
@@ -8,7 +7,7 @@ const LOGO = `${import.meta.env.BASE_URL}images/logo-color.svg`;
  * The home page's one rich moment: a sheet of the firm's own letterhead,
  * set in code from the brand pack's layout (logo left, particulars right,
  * address rule at the foot) with the service schedule typed on it and the
- * sign-off block stamped with the office seal. It stays paper-coloured in
+ * firm's sign-off block. It stays paper-coloured in
  * both themes, because it depicts a physical sheet, not page chrome.
  */
 export default function Letterhead({ className = "" }: { className?: string }) {
@@ -41,13 +40,10 @@ export default function Letterhead({ className = "" }: { className?: string }) {
           <li className="py-1.5 text-[#4a5262] sm:hidden">and {services.length - 6} more</li>
         </ol>
 
-        <div className="relative mt-8 flex items-end justify-between gap-4">
-          <div className="text-[13px] leading-5">
-            <p className="text-[#4a5262]">For</p>
-            <p className="font-medium">{site.name}</p>
-            <p className="text-[#4a5262]">{site.tagline}</p>
-          </div>
-          <Seal className="-mb-2 -mr-1 h-24 w-24 shrink-0 rotate-[-14deg] text-[#800020]/80 mix-blend-multiply sm:h-28 sm:w-28" />
+        <div className="mt-8 text-[13px] leading-5">
+          <p className="text-[#4a5262]">For</p>
+          <p className="font-medium">{site.name}</p>
+          <p className="text-[#4a5262]">{site.tagline}</p>
         </div>
       </div>
       <div className="h-1.5 bg-[#800020]" />
