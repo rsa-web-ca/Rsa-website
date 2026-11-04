@@ -401,3 +401,67 @@ p {
     transition: none;
   }
 }
+
+/* Posts written in the CRM editor: tables, embedded PDFs and file cards. */
+.blog-prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  margin: 1.75em 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.blog-prose th,
+.blog-prose td {
+  border: 1px solid var(--line);
+  padding: 0.55em 0.8em;
+  text-align: left;
+  vertical-align: top;
+}
+.blog-prose th {
+  background-color: var(--surface-raised);
+  color: var(--ink);
+  font-weight: 600;
+}
+.blog-prose hr {
+  margin: 2.5em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.blog-prose h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5em 0 0.4em;
+}
+.post-pdf {
+  margin: 2em 0;
+}
+.post-pdf iframe {
+  display: block;
+  width: 100%;
+  height: min(80vh, 46rem);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface-raised);
+}
+.post-pdf-caption {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+.post-filecard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 2em 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface-raised);
+}
+.post-filecard a {
+  font-weight: 600;
+}

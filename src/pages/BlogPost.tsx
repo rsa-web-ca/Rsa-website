@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import PostHtml from "../components/PostHtml";
 import remarkGfm from "remark-gfm";
 import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
@@ -57,7 +58,11 @@ export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
           <img src={post.cover.url} alt="" className="mb-10 aspect-[16/9] w-full rounded-lg border border-line object-cover" />
         )}
         <div className="blog-prose">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+          {post.html ? (
+            <PostHtml html={post.body} files={post.inline ?? []} />
+          ) : (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
+          )}
         </div>
         {post.files && post.files.length > 0 && (
           <section className="mt-12 border-t border-line pt-8" aria-labelledby="downloads">

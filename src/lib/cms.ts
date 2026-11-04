@@ -29,7 +29,8 @@ interface CmsBase {
 
 export interface CmsOverride extends CmsBase { ruleId: string; due: string; date: string; note: string; url?: string }
 export interface CmsExtra extends CmsBase { title: string; law: string; who?: string; period?: string; date: string; note?: string; url?: string }
-export interface CmsPost extends CmsBase { title: string; slug: string; summary?: string; body: string; date: string; author?: string; tags?: string[] }
+/** `format: "html"` bodies come from the CRM's rich editor; without it the body is Markdown. `inline` lists the pictures and files used inside an HTML body. */
+export interface CmsPost extends CmsBase { title: string; slug: string; summary?: string; body: string; format?: "html"; inline?: CmsFile[]; date: string; author?: string; tags?: string[] }
 export interface CmsFaq extends CmsBase { q: string; a: string }
 export interface CmsStep extends CmsBase { title: string; body: string }
 export interface CmsCareer extends CmsBase { title: string; summary?: string; open: boolean }
@@ -46,6 +47,11 @@ export interface CmsContent {
 
 // One request per page load, shared by every component that reads content.
 let pending: Promise<CmsContent | null> | null = null;
+
+/** Where a post's uploaded file is served from; built from the id, never taken from the post text. */
+export function cmsFileUrl(id: string): string {
+  return `${CMS_URL}/api/public/website/files/${encodeURIComponent(id)}`;
+}
 
 export function loadCms(): Promise<CmsContent | null> {
   pending ??= fetch(`${CMS_URL}/api/public/website/content`, { credentials: "omit" })

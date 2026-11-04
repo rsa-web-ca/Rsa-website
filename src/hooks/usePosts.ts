@@ -7,10 +7,15 @@ import { useCms, type CmsFile, type CmsPost } from "../lib/cms";
 export interface SitePost extends BlogPost {
   files?: CmsFile[];
   cover?: CmsFile | null;
+  /** The body is HTML from the CRM editor (cleaned again before it is shown), not Markdown. */
+  html?: boolean;
+  inline?: CmsFile[];
 }
 
 function fromCms(p: CmsPost): SitePost {
-  const words = p.body.trim().split(/\s+/).length;
+  const html = p.format === "html";
+  const text = html ? p.body.replace(/<[^>]*>/g, " ") : p.body;
+  const words = text.trim().split(/\s+/).length;
   return {
     slug: p.slug,
     title: p.title,
@@ -23,6 +28,8 @@ function fromCms(p: CmsPost): SitePost {
     body: p.body,
     files: p.attachments,
     cover: p.cover,
+    html,
+    inline: p.inline,
   };
 }
 
