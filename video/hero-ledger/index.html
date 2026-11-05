@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      /* R Shivakumar & Associates — hero loop. An audit ledger in slow perspective:
+         figures scroll through a fixed review band, ticks marked in the firm's maroon.
+         The track moves exactly one sheet height, so the last frame meets the first. */
+      :root {
+        --ground: #0e1420;
+        --rule: rgba(160, 176, 196, 0.16);
+        --rule-strong: rgba(160, 176, 196, 0.32);
+        --figure: rgba(226, 232, 240, 0.62);
+        --muted: rgba(160, 176, 196, 0.42);
+        --maroon: #b0213f;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ground); font-family: "IBM Plex Mono", monospace; }
+      #stage { position: absolute; inset: 0; perspective: 2600px; perspective-origin: 72% 40%; }
+      #sheet {
+        position: absolute; left: 740px; top: -40px; width: 1040px; height: 1240px;
+        transform: rotateX(26deg) rotateZ(-7deg); transform-origin: 50% 0%;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+                mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+        overflow: hidden;
+      }
+      #ruling { position: absolute; inset: 0; border-left: 1px solid var(--rule-strong); }
+      #ruling b { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--rule); }
+      #track { position: absolute; left: 0; right: 0; top: 0; }
+      .row {
+        display: grid; grid-template-columns: 84px 1fr 200px 200px 64px; align-items: center;
+        height: 64px; border-bottom: 1px solid var(--rule); padding: 0 20px; color: var(--figure);
+        font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+      }
+      .no { color: var(--muted); }
+      .part { display: flex; gap: 14px; }
+      .part i { width: calc(var(--w) * 0.7); display: block; height: 6px; border-radius: 4px; background: rgba(160, 176, 196, 0.22); }
+      .amt { text-align: right; }
+      .tick svg { width: 24px; height: 24px; margin-left: 22px; fill: none; stroke: var(--maroon); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+      #band {
+        position: absolute; left: 0; right: 0; top: 640px; height: 64px;
+        background: linear-gradient(90deg, rgba(176,33,63,0) 0%, rgba(176,33,63,0.14) 30%, rgba(176,33,63,0.14) 100%);
+        border-top: 1px solid rgba(176,33,63,0.55); border-bottom: 1px solid rgba(176,33,63,0.35);
+      }
+      #shade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--ground) 0%, rgba(14,20,32,0.92) 34%, rgba(14,20,32,0.25) 62%, rgba(14,20,32,0) 100%); }
+      #glow { position: absolute; inset: 0; background: radial-gradient(60% 70% at 78% 40%, rgba(112,128,144,0.10), rgba(14,20,32,0) 70%); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="14" data-width="1920" data-height="1080">
+      <div id="glow" class="clip" data-start="0" data-duration="14" data-track-index="0" data-layout-ignore></div>
+      <div id="stage" class="clip" data-start="0" data-duration="14" data-track-index="1" data-layout-allow-overflow data-layout-ignore>
+        <div id="sheet">
+          <div id="ruling"><b style="left:108px"></b><b style="left:576px"></b><b style="left:776px"></b><b style="left:976px"></b></div>
+          <div id="track">
+<div class="row">
+  <span class="no">1001</span>
+  <span class="part"><i style="--w:222px"></i></span>
+  <span class="amt">33,13,219.83</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1002</span>
+  <span class="part"><i style="--w:303px"></i><i style="--w:156px"></i></span>
+  <span class="amt">8,53,202.08</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1003</span>
+  <span class="part"><i style="--w:315px"></i><i style="--w:162px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">14,01,382.08</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1004</span>
+  <span class="part"><i style="--w:177px"></i><i style="--w:158px"></i></span>
+  <span class="amt">14,67,088.90</span>
+  <span class="amt"></span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1005</span>
+  <span class="part"><i style="--w:220px"></i><i style="--w:125px"></i></span>
+  <span class="amt">7,35,933.50</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1006</span>
+  <span class="part"><i style="--w:153px"></i></span>
+  <span class="amt">17,17,700.64</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1007</span>
+  <span class="part"><i style="--w:283px"></i><i style="--w:179px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">14,53,957.38</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1008</span>
+  <span class="part"><i style="--w:156px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">38,99,724.09</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1009</span>
+  <span class="part"><i style="--w:154px"></i><i style="--w:141px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">3,88,335.47</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1010</span>
+  <span class="part"><i style="--w:265px"></i><i style="--w:148px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">5,89,869.10</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1011</span>
+  <span class="part"><i style="--w:258px"></i><i style="--w:156px"></i></span>
+  <span class="amt">32,32,843.02</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1012</span>
+  <span class="part"><i style="--w:221px"></i></span>
+  <span class="amt">15,37,760.27</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1013</span>
+  <span class="part"><i style="--w:147px"></i><i style="--w:125px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">27,61,031.87</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1014</span>
+  <span class="part"><i style="--w:177px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">26,06,908.02</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1015</span>
+  <span class="part"><i style="--w:185px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">33,68,609.88</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1016</span>
+  <span class="part"><i style="--w:179px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">38,13,570.07</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1017</span>
+  <span class="part"><i style="--w:183px"></i><i style="--w:152px"></i></span>
+  <span class="amt">16,12,901.48</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1018</span>
+  <span class="part"><i style="--w:248px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">16,68,134.58</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1019</span>
+  <span class="part"><i style="--w:302px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">39,70,342.41</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1020</span>
+  <span class="part"><i style="--w:243px"></i><i style="--w:82px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">12,01,448.22</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1021</span>
+  <span class="part"><i style="--w:204px"></i></span>
+  <span class="amt">8,94,518.16</span>
+  <span class="amt"></span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1022</span>
+  <span class="part"><i style="--w:179px"></i><i style="--w:142px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">43,57,907.55</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1001</span>
+  <span class="part"><i style="--w:222px"></i></span>
+  <span class="amt">33,13,219.83</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1002</span>
+  <span class="part"><i style="--w:303px"></i><i style="--w:156px"></i></span>
+  <span class="amt">8,53,202.08</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1003</span>
+  <span class="part"><i style="--w:315px"></i><i style="--w:162px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">14,01,382.08</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1004</span>
+  <span class="part"><i style="--w:177px"></i><i style="--w:158px"></i></span>
+  <span class="amt">14,67,088.90</span>
+  <span class="amt"></span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1005</span>
+  <span class="part"><i style="--w:220px"></i><i style="--w:125px"></i></span>
+  <span class="amt">7,35,933.50</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1006</span>
+  <span class="part"><i style="--w:153px"></i></span>
+  <span class="amt">17,17,700.64</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1007</span>
+  <span class="part"><i style="--w:283px"></i><i style="--w:179px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">14,53,957.38</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1008</span>
+  <span class="part"><i style="--w:156px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">38,99,724.09</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1009</span>
+  <span class="part"><i style="--w:154px"></i><i style="--w:141px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">3,88,335.47</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1010</span>
+  <span class="part"><i style="--w:265px"></i><i style="--w:148px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">5,89,869.10</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1011</span>
+  <span class="part"><i style="--w:258px"></i><i style="--w:156px"></i></span>
+  <span class="amt">32,32,843.02</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1012</span>
+  <span class="part"><i style="--w:221px"></i></span>
+  <span class="amt">15,37,760.27</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1013</span>
+  <span class="part"><i style="--w:147px"></i><i style="--w:125px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">27,61,031.87</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1014</span>
+  <span class="part"><i style="--w:177px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">26,06,908.02</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1015</span>
+  <span class="part"><i style="--w:185px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">33,68,609.88</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1016</span>
+  <span class="part"><i style="--w:179px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">38,13,570.07</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1017</span>
+  <span class="part"><i style="--w:183px"></i><i style="--w:152px"></i></span>
+  <span class="amt">16,12,901.48</span>
+  <span class="amt"></span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1018</span>
+  <span class="part"><i style="--w:248px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">16,68,134.58</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1019</span>
+  <span class="part"><i style="--w:302px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">39,70,342.41</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1020</span>
+  <span class="part"><i style="--w:243px"></i><i style="--w:82px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">12,01,448.22</span>
+  <span class="tick"></span>
+</div>
+<div class="row">
+  <span class="no">1021</span>
+  <span class="part"><i style="--w:204px"></i></span>
+  <span class="amt">8,94,518.16</span>
+  <span class="amt"></span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+<div class="row">
+  <span class="no">1022</span>
+  <span class="part"><i style="--w:179px"></i><i style="--w:142px"></i></span>
+  <span class="amt"></span>
+  <span class="amt">43,57,907.55</span>
+  <span class="tick"><svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6"/></svg></span>
+</div>
+          </div>
+          <div id="band"></div>
+        </div>
+      </div>
+      <div id="shade" class="clip" data-start="0" data-duration="14" data-track-index="2" data-layout-ignore></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // One full sheet (22 rows × 64px) per loop, linear, so frame 14s == frame 0.
+      tl.fromTo("#track", { y: 0 }, { y: -1408, duration: 14, ease: "none" }, 0);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

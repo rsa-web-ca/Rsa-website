@@ -3,6 +3,7 @@ import PageHeader from "../components/PageHeader";
 import Reveal from "../components/Reveal";
 import { useFormSubmit } from "../hooks/useFormSubmit";
 import { usePageMeta } from "../hooks/usePageMeta";
+import { formatSize, useCms } from "../lib/cms";
 import {
   Field,
   TextInput,
@@ -15,12 +16,44 @@ import {
 } from "../components/forms";
 import { positions, genders, caCourseStatuses, attemptOptions } from "../data/careers";
 
+/** Always offered: someone can apply without a specific opening, and it is the choice left when none are open. */
+const GENERAL_APPLICATION = "General application";
+
+function joinTitles(titles: string[]): string {
+  return titles.length < 2 ? (titles[0] ?? "") : `${titles.slice(0, -1).join(", ")} & ${titles.at(-1)}`;
+}
+
+/**
+ * The positions an applicant can choose, and the sentence that introduces
+ * them. The openings published in the CRM are the source once the firm uses
+ * that section at all (any opening, open or closed): only open ones are
+ * offered, and closed ones never are. Until then, or when the CRM cannot be
+ * reached, the built-in list from data/careers stands. A published opening
+ * used to appear under Current openings but not in this list, so nobody could
+ * apply for it.
+ */
+function usePositions(): { options: string[]; lede: string } {
+  const { content } = useCms();
+  const careers = content?.careers ?? [];
+  if (careers.length === 0) {
+    return { options: [...positions, GENERAL_APPLICATION], lede: `We have positions open for ${joinTitles(positions.map((p) => `${p}s`))}.` };
+  }
+  const open = careers.filter((c) => c.open).map((c) => c.title);
+  return {
+    options: [...open, GENERAL_APPLICATION],
+    lede: open.length
+      ? `We have positions open for: ${joinTitles(open)}.`
+      : "No positions are advertised right now, but we welcome general applications.",
+  };
+}
+
 export default function Careers() {
   usePageMeta(
     "Work with Us",
     "Positions open for Article Trainees, Audit Assistants & Audit Managers in Bengaluru.",
   );
   const { status, submit } = useFormSubmit("Careers application — rsa-india.in");
+  const { options, lede } = usePositions();
   const successRef = useRef<HTMLDivElement>(null);
 
   // The form unmounts on success; bring the confirmation into view.
@@ -35,10 +68,11 @@ export default function Careers() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader film="careers"
         title="Work with Us"
-        lede="We have positions open for Article Trainees, Audit Assistants & Audit Managers."
+        lede={lede}
       />
+      <Openings />
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-3xl font-semibold text-ink">Join the Team</h2>
         <p className="mt-3 max-w-prose text-ink-soft">
@@ -72,7 +106,7 @@ export default function Careers() {
                     <option value="" disabled>
                       I'm applying for
                     </option>
-                    {positions.map((p) => (
+                    {options.map((p) => (
                       <option key={p} value={p}>
                         {p}
                       </option>
@@ -150,5 +184,37 @@ export default function Careers() {
         )}
       </section>
     </>
+  );
+}
+
+/** Openings published from the CRM, with any job description attached. Absent until there are some. */
+function Openings() {
+  const { content } = useCms();
+  const open = (content?.careers ?? []).filter((c) => c.open);
+  if (open.length === 0) return null;
+  return (
+    <section className="mx-auto max-w-3xl px-4 pt-16 sm:px-6 lg:px-8" aria-labelledby="openings">
+      <h2 id="openings" className="font-display text-3xl font-medium text-ink">Current openings</h2>
+      <ul className="mt-6 divide-y divide-line border-y border-line">
+        {open.map((c) => (
+          <li key={c.id} className="py-6">
+            <h3 className="font-display text-xl text-ink">{c.title}</h3>
+            {c.summary && <p className="mt-2 whitespace-pre-line leading-relaxed text-ink-soft">{c.summary}</p>}
+            {c.attachments.length > 0 && (
+              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                {c.attachments.map((f) => (
+                  <li key={f.id}>
+                    <a href={f.url} className="font-medium text-ink underline decoration-line underline-offset-4 hover:text-accent hover:decoration-accent">
+                      {f.name}
+                    </a>{" "}
+                    <span className="text-ink-soft">({formatSize(f.sizeBytes)})</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

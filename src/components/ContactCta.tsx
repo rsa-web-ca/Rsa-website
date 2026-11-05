@@ -7,25 +7,30 @@ interface ContactCtaProps {
   text?: string;
 }
 
+/** Closing block on inner pages: the firm's standard line, then the ways to reach it. */
 export default function ContactCta({ text = "For any further details, kindly contact us." }: ContactCtaProps) {
   return (
     <Reveal as="section" className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
-      <div className="rounded-2xl bg-band px-6 py-12 text-center sm:px-12">
-        <p className="mx-auto max-w-xl font-display text-2xl font-medium text-white">{text}</p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <Link
-            to="/contact"
-            className="rounded-md bg-maroon-700 px-6 py-3 text-sm font-semibold text-white shadow-lift transition-all duration-200 hover:bg-maroon-600"
-          >
-            Contact Us
-          </Link>
-          <a
-            href={site.phoneHref}
-            className="rounded-md border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:border-maroon-400 hover:text-maroon-400"
-          >
-            Call {site.phone}
-          </a>
+      <div className="grid gap-8 border-t-2 border-ink pt-10 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p className="max-w-xl font-display text-2xl font-medium leading-snug text-ink sm:text-3xl">{text}</p>
+          <p className="mt-3 text-ink-soft">
+            Telephone{" "}
+            <a href={site.phoneHref} className="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">
+              {site.phone}
+            </a>{" "}
+            · Email{" "}
+            <a href={`mailto:${site.email}`} className="font-medium text-ink underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent">
+              {site.email}
+            </a>
+          </p>
         </div>
+        <Link
+          to="/contact"
+          className="justify-self-start rounded-lg bg-maroon-700 px-6 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+        >
+          Contact Us
+        </Link>
       </div>
     </Reveal>
   );

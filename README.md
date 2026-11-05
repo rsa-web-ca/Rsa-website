@@ -157,3 +157,16 @@ npx hyperframes render --quality delivery --output out/rsa-brand-film.mp4
 ffmpeg -i out/rsa-brand-film.mp4 -vf "fps=15,scale=800:-1:flags=lanczos,palettegen=stats_mode=diff" palette.png
 ffmpeg -i out/rsa-brand-film.mp4 -i palette.png -lavfi "fps=15,scale=800:-1:flags=lanczos[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle" out/rsa-brand-film.gif
 ```
+
+## Content from the CRM
+
+Compliance extensions and one-off dates, blog posts, FAQs, "How we work" steps
+and careers openings are edited in the firm's CRM (crm.rsa-india.in → Website)
+and go live when an admin publishes them. The site reads them at runtime from
+`/api/public/website/content`; set `VITE_CMS_URL` to point elsewhere (it
+defaults to `https://crm.rsa-india.in`). If the CRM is unreachable the site
+falls back to its built-in copy (`src/data/home.ts`, `src/data/careers.ts`,
+the markdown posts) and the statutory due dates, so it never renders empty.
+
+Posts published from the CRM are served by the `/blogs/:slug` route; they are
+not in the build-time sitemap or RSS feed.

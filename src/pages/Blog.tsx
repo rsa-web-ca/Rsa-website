@@ -3,7 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import ContactCta from "../components/ContactCta";
 import Reveal from "../components/Reveal";
-import { posts, allTags, formatDate } from "../data/blog";
+import { formatDate } from "../data/blog";
+import { usePosts } from "../hooks/usePosts";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 const PAGE_SIZE = 6;
@@ -14,6 +15,8 @@ export default function Blog() {
     "Notes on audit, taxation and compliance from R Shivakumar & Associates, Chartered Accountants, Bengaluru.",
   );
 
+  const { posts } = usePosts();
+  const allTags = useMemo(() => [...new Set(posts.flatMap((p) => p.tags))].sort((a, b) => a.localeCompare(b)), [posts]);
   const [params, setParams] = useSearchParams();
   const q = params.get("q") ?? "";
   const activeTag = params.get("tag") ?? "";
@@ -29,7 +32,7 @@ export default function Blog() {
       }
       return true;
     });
-  }, [q, activeTag]);
+  }, [q, activeTag, posts]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const page = Math.min(requestedPage, totalPages);
@@ -63,7 +66,7 @@ export default function Blog() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader film="hero-ledger"
         title="Blog"
         lede="Plain-spoken notes on audit, taxation and compliance — from our desk to yours."
       />
@@ -94,7 +97,7 @@ export default function Blog() {
                   value={q}
                   onChange={(e) => onSearch(e.target.value)}
                   placeholder="Search posts…"
-                  className="w-full rounded-lg border border-line bg-surface py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-soft focus:border-accent focus:outline-none"
+                  className="w-full rounded border border-line bg-surface py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-soft focus:border-accent focus:outline-none"
                 />
               </label>
 
@@ -170,7 +173,7 @@ export default function Blog() {
                     <div className="group grid gap-2 py-8 sm:grid-cols-[minmax(0,12rem)_1fr_auto] sm:items-start sm:gap-8">
                       <div className="text-sm text-ink-soft">
                         {p.date && (
-                          <time dateTime={p.date} className="font-medium uppercase tracking-[0.12em]">
+                          <time dateTime={p.date} className="font-medium">
                             {formatDate(p.date)}
                           </time>
                         )}
@@ -263,7 +266,7 @@ interface PageLinkProps {
 
 function PageLink({ to, children, current, disabled, rel }: PageLinkProps) {
   const base =
-    "inline-flex h-9 min-w-9 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors";
+    "inline-flex h-9 min-w-9 items-center justify-center rounded border px-3 text-sm font-medium transition-colors";
   if (disabled) {
     return (
       <span

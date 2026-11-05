@@ -12,19 +12,22 @@ export default function Services() {
   );
   return (
     <>
-      <PageHeader
+      <PageHeader film="services"
         title="Our Services"
         lede="Nine service lines covering audit, taxation, advisory and compliance."
       />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <ul className="divide-y divide-line">
+        <ol className="divide-y divide-line border-y-2 border-y-ink">
           {services.map((s, i) => (
             <Reveal as="li" key={s.slug} delay={Math.min(i * 50, 250)}>
               <Link
                 to={`/${s.slug}`}
-                className="group grid gap-2 py-8 transition-colors duration-200 sm:grid-cols-[minmax(0,20rem)_1fr_auto] sm:items-center sm:gap-8"
+                className="group grid gap-2 py-8 transition-colors duration-200 sm:grid-cols-[3rem_minmax(0,18rem)_1fr_auto] sm:items-baseline sm:gap-8"
               >
-                <h2 className="font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
+                <span className="hidden font-display text-lg text-ink-soft tabular-nums sm:block">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h2 className="font-display text-2xl font-medium text-ink transition-colors duration-200 group-hover:text-accent">
                   {s.title}
                 </h2>
                 <p className="max-w-prose text-sm leading-relaxed text-ink-soft sm:text-base">{s.intro[0]}</p>
@@ -47,7 +50,7 @@ export default function Services() {
               </Link>
             </Reveal>
           ))}
-        </ul>
+        </ol>
       </section>
       <ContactCta />
     </>

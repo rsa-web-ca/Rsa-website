@@ -3,15 +3,15 @@ import { useEffect, useRef, type ReactNode } from "react";
 interface RevealProps {
   children: ReactNode;
   className?: string;
-  /** Delay in ms before the reveal transition starts once visible. */
+  /** Delay in ms before the reveal starts once visible (keep small stagger steps, ≤ 60ms). */
   delay?: number;
   as?: "div" | "section" | "li";
 }
 
 /**
- * Progressive-enhancement scroll reveal. Content is fully visible without JS
- * or with reduced motion; the hide class is only added right before the
- * IntersectionObserver can un-hide it.
+ * Progressive-enhancement scroll reveal: a short fade and 12px rise as a block
+ * enters the viewport. Content is fully visible without JS or with reduced
+ * motion; the hide class is only added right before the observer can un-hide it.
  */
 export default function Reveal({ children, className = "", delay = 0, as: Tag = "div" }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
@@ -21,16 +21,15 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const show = () => window.setTimeout(() => el.classList.add("reveal-in"), delay);
-
+    let timer = 0;
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          show();
+          timer = window.setTimeout(() => el.classList.add("reveal-in"), delay);
           io.disconnect();
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
     );
 
     el.classList.add("reveal-armed");
@@ -43,6 +42,7 @@ export default function Reveal({ children, className = "", delay = 0, as: Tag = 
     }, 2500);
     return () => {
       io.disconnect();
+      window.clearTimeout(timer);
       window.clearTimeout(fallback);
     };
   }, [delay]);
