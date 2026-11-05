@@ -6,7 +6,7 @@ const FMT = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short" })
 
 /** Glass panel of the next few statutory due dates, live from today. */
 export default function ComplianceWidget({ count = 4 }: { count?: number }) {
-  const { items } = useCompliance(2);
+  const { items, failed } = useCompliance(2);
   const next = items.slice(0, count);
   return (
     <aside className="rounded-xl border border-white/12 bg-[#121a28] p-6 text-white sm:p-7" aria-labelledby="next-due">
@@ -15,7 +15,7 @@ export default function ComplianceWidget({ count = 4 }: { count?: number }) {
           <span className="live-dot" aria-hidden="true" />
           Next due dates
         </h2>
-        <span className="text-xs text-white/55">Worked out from today</span>
+        <span className="text-xs text-white/55">{failed ? "Standard dates; extensions unavailable" : "Worked out from today"}</span>
       </div>
       <ul className="mt-5 divide-y divide-white/10">
         {next.map((i) => {

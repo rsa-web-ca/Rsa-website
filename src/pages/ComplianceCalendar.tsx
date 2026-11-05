@@ -35,7 +35,7 @@ export default function ComplianceCalendar() {
     "Compliance Calendar",
     "Upcoming GST, income-tax, TDS, payroll and ROC due dates, updated live with notified extensions.",
   );
-  const { items, reviewed } = useCompliance(6);
+  const { items, reviewed, failed, retry } = useCompliance(6);
   const [active, setActive] = useState<Set<Law>>(new Set());
 
   const shown = useMemo(() => (active.size ? items.filter((i) => active.has(i.law)) : items), [items, active]);
@@ -111,6 +111,18 @@ export default function ComplianceCalendar() {
           </aside>
 
           <div className="lg:col-span-9">
+            {failed && (
+              // The statutory dates below are worked out here and always show; only notified
+              // extensions and one-off dates come from the firm, and those could not be loaded.
+              <div role="status" className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+                <p>
+                  <span className="font-semibold">Extensions could not be loaded.</span> Showing the standard statutory dates only; a notified extension may not appear.
+                </p>
+                <button type="button" onClick={retry} className="cursor-pointer font-semibold underline underline-offset-2">
+                  Try again
+                </button>
+              </div>
+            )}
             {groups.length === 0 && <p className="text-ink-soft">No due dates in this filter for the next six months.</p>}
             {groups.map(([month, list]) => (
               <section key={month} className="mb-14 last:mb-0" aria-labelledby={`m-${month}`}>

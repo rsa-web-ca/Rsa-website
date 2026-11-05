@@ -16,12 +16,44 @@ import {
 } from "../components/forms";
 import { positions, genders, caCourseStatuses, attemptOptions } from "../data/careers";
 
+/** Always offered: someone can apply without a specific opening, and it is the choice left when none are open. */
+const GENERAL_APPLICATION = "General application";
+
+function joinTitles(titles: string[]): string {
+  return titles.length < 2 ? (titles[0] ?? "") : `${titles.slice(0, -1).join(", ")} & ${titles.at(-1)}`;
+}
+
+/**
+ * The positions an applicant can choose, and the sentence that introduces
+ * them. The openings published in the CRM are the source once the firm uses
+ * that section at all (any opening, open or closed): only open ones are
+ * offered, and closed ones never are. Until then, or when the CRM cannot be
+ * reached, the built-in list from data/careers stands. A published opening
+ * used to appear under Current openings but not in this list, so nobody could
+ * apply for it.
+ */
+function usePositions(): { options: string[]; lede: string } {
+  const { content } = useCms();
+  const careers = content?.careers ?? [];
+  if (careers.length === 0) {
+    return { options: [...positions, GENERAL_APPLICATION], lede: `We have positions open for ${joinTitles(positions.map((p) => `${p}s`))}.` };
+  }
+  const open = careers.filter((c) => c.open).map((c) => c.title);
+  return {
+    options: [...open, GENERAL_APPLICATION],
+    lede: open.length
+      ? `We have positions open for: ${joinTitles(open)}.`
+      : "No positions are advertised right now, but we welcome general applications.",
+  };
+}
+
 export default function Careers() {
   usePageMeta(
     "Work with Us",
     "Positions open for Article Trainees, Audit Assistants & Audit Managers in Bengaluru.",
   );
   const { status, submit } = useFormSubmit("Careers application — rsa-india.in");
+  const { options, lede } = usePositions();
   const successRef = useRef<HTMLDivElement>(null);
 
   // The form unmounts on success; bring the confirmation into view.
@@ -38,7 +70,7 @@ export default function Careers() {
     <>
       <PageHeader film="careers"
         title="Work with Us"
-        lede="We have positions open for Article Trainees, Audit Assistants & Audit Managers."
+        lede={lede}
       />
       <Openings />
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
@@ -74,7 +106,7 @@ export default function Careers() {
                     <option value="" disabled>
                       I'm applying for
                     </option>
-                    {positions.map((p) => (
+                    {options.map((p) => (
                       <option key={p} value={p}>
                         {p}
                       </option>

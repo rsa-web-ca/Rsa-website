@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 /**
  * Content the firm edits in its CRM (crm.rsa-india.in → Website): compliance
@@ -45,32 +45,71 @@ export interface CmsContent {
   careers: CmsCareer[];
 }
 
-// One request per page load, shared by every component that reads content.
-let pending: Promise<CmsContent | null> | null = null;
+/** How long the site waits for the CRM before showing its built-in content and a Retry. */
+const CMS_TIMEOUT_MS = 8_000;
+
+type CmsState = { content: CmsContent | null; ready: boolean; failed: boolean };
+
+/**
+ * One request shared by every component on the page, held in a tiny store so
+ * a Retry pressed in one place updates them all.
+ *
+ * A failure is not kept: the next component that mounts (moving to another
+ * page, say) or a Retry asks again. It used to be cached for the life of the
+ * tab, so after one blip every page kept the built-in content and a CRM-only
+ * post read "Page not found" until a full reload.
+ */
+let state: CmsState = { content: null, ready: false, failed: false };
+let pending: Promise<void> | null = null;
+const listeners = new Set<() => void>();
+
+function set(next: CmsState) {
+  state = next;
+  for (const l of listeners) l();
+}
 
 /** Where a post's uploaded file is served from; built from the id, never taken from the post text. */
 export function cmsFileUrl(id: string): string {
   return `${CMS_URL}/api/public/website/files/${encodeURIComponent(id)}`;
 }
 
-export function loadCms(): Promise<CmsContent | null> {
-  pending ??= fetch(`${CMS_URL}/api/public/website/content`, { credentials: "omit" })
-    .then((r) => (r.ok ? (r.json() as Promise<CmsContent>) : null))
-    .catch(() => null);
+/** Fetches the content unless it is already here or on its way. */
+export function loadCms(): Promise<void> {
+  if (state.content || pending) return pending ?? Promise.resolve();
+  if (state.failed) set({ ...state, ready: false, failed: false });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), CMS_TIMEOUT_MS);
+  pending = fetch(`${CMS_URL}/api/public/website/content`, { credentials: "omit", signal: controller.signal })
+    .then((r) => (r.ok ? (r.json() as Promise<CmsContent>) : Promise.reject(new Error(`CMS ${r.status}`))))
+    .then(
+      (content) => set({ content, ready: true, failed: false }),
+      () => set({ content: null, ready: true, failed: true }),
+    )
+    .finally(() => {
+      clearTimeout(timer);
+      pending = null;
+    });
   return pending;
 }
 
-/** `content` is null until the CRM answers, and stays null if it cannot be reached. */
-export function useCms(): { content: CmsContent | null; ready: boolean } {
-  const [state, setState] = useState<{ content: CmsContent | null; ready: boolean }>({ content: null, ready: false });
+/**
+ * `content` is null until the CRM answers. `failed` means it could not be
+ * reached (or took too long): callers show their built-in content, and say so
+ * where it matters, with `retry`.
+ */
+export function useCms(): CmsState & { retry: () => void } {
+  const snapshot = useSyncExternalStore(
+    (l) => {
+      listeners.add(l);
+      return () => listeners.delete(l);
+    },
+    () => state,
+    () => state,
+  );
   useEffect(() => {
-    let live = true;
-    void loadCms().then((content) => live && setState({ content, ready: true }));
-    return () => {
-      live = false;
-    };
+    void loadCms();
   }, []);
-  return state;
+  return { ...snapshot, retry: () => void loadCms() };
 }
 
 /** "182 KB", "1.4 MB" — for download links. */

@@ -20,7 +20,7 @@ interface BlogPostProps {
 export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
   const params = useParams();
   const slug = fixedSlug ?? params.slug ?? "";
-  const { posts, ready } = usePosts();
+  const { posts, ready, failed, retry } = usePosts();
   const index = posts.findIndex((p) => p.slug === slug);
   const post = index === -1 ? undefined : posts[index];
 
@@ -30,6 +30,30 @@ export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
   if (!post) {
     // A CRM post is only known once the CRM answers; until then, wait rather than 404.
     if (!ready) return <div className="mx-auto max-w-3xl px-4 py-24 text-ink-soft" role="status">Loading…</div>;
+    // "Not found" only once the CRM has answered without it. If the CRM could
+    // not be reached, the post may well exist: say so and offer to try again.
+    if (failed) {
+      return (
+        <div className="mx-auto max-w-3xl px-4 py-24" role="alert">
+          <h1 className="font-display text-3xl font-semibold text-ink">This article is temporarily unavailable</h1>
+          <p className="mt-3 max-w-prose text-ink-soft">
+            We could not load it just now. Please try again in a moment, or browse the other articles.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={retry}
+              className="cursor-pointer rounded-lg bg-maroon-700 px-6 py-2.5 text-sm font-semibold text-white transition-colors duration-200 hover:bg-maroon-800"
+            >
+              Try again
+            </button>
+            <Link to="/blogs" className="rounded-lg border border-line px-6 py-2.5 text-sm font-semibold text-ink hover:border-accent hover:text-accent">
+              All articles
+            </Link>
+          </div>
+        </div>
+      );
+    }
     return <NotFound />;
   }
 

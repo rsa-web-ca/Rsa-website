@@ -36,9 +36,9 @@ function toOverrides(content: CmsContent | null): OverrideFile {
  * The rule-based dates render immediately; extensions from the CRM arrive a
  * moment later. If the CRM cannot be reached, the statutory dates still show.
  */
-export function useCompliance(months = 3): { items: DueItem[]; reviewed?: string; ready: boolean } {
-  const { content, ready } = useCms();
+export function useCompliance(months = 3): { items: DueItem[]; reviewed?: string; ready: boolean; failed: boolean; retry: () => void } {
+  const { content, ready, failed, retry } = useCms();
   const file = useMemo(() => toOverrides(content), [content]);
   const items = useMemo(() => buildCalendar(new Date(), months, file), [months, file]);
-  return { items, reviewed: file.reviewed, ready };
+  return { items, reviewed: file.reviewed, ready, failed, retry };
 }

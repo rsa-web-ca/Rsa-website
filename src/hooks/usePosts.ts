@@ -38,12 +38,12 @@ function fromCms(p: CmsPost): SitePost {
  * newest first. A markdown post wins a slug clash: its route is static and
  * already built, so the CRM post could never be reached at that address.
  */
-export function usePosts(): { posts: SitePost[]; ready: boolean } {
-  const { content, ready } = useCms();
+export function usePosts(): { posts: SitePost[]; ready: boolean; failed: boolean; retry: () => void } {
+  const { content, ready, failed, retry } = useCms();
   const posts = useMemo(() => {
     const taken = new Set(markdownPosts.map((p) => p.slug));
     const cms = (content?.posts ?? []).filter((p) => !taken.has(p.slug)).map(fromCms);
     return [...markdownPosts, ...cms].sort(byNewest);
   }, [content]);
-  return { posts, ready };
+  return { posts, ready, failed, retry };
 }

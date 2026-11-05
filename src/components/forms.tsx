@@ -93,9 +93,14 @@ export function SuccessNote({ message }: { message: string }) {
 export function ErrorNote() {
   return (
     <p role="alert" className="rounded border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-800 dark:border-red-900 dark:bg-red-950/50 dark:text-red-300">
-      Something went wrong while submitting. Please try again, or email us directly at{" "}
+      We could not confirm that your message was received. What you typed is still here: please try again, or
+      reach us directly at{" "}
       <a href={`mailto:${site.email}`} className="font-semibold underline underline-offset-2">
         {site.email}
+      </a>{" "}
+      or{" "}
+      <a href={site.phoneHref} className="font-semibold underline underline-offset-2">
+        {site.phone}
       </a>
       .
     </p>
