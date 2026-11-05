@@ -110,8 +110,8 @@ export default function DisclaimerModal() {
         </p>
 
         <p className="mt-4 text-center text-xs text-ink-soft">
-          We store your acknowledgement on this device (via cookies/local
-          storage) to remember your preference.
+          We store your acknowledgement and other cookies to remember your
+          preference.
         </p>
 
         <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
