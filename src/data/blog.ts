@@ -1,6 +1,6 @@
 // Markdown-driven blog. Drop a `.md` file into src/content/blog/ with a
-// frontmatter block and it appears on the index (/blogs) and gets its own
-// route (/blogs/<filename>) automatically — no code changes per post.
+// frontmatter block and it appears on the index (/insights) and gets its own
+// route (/insights/<filename>) automatically — no code changes per post.
 //
 // Frontmatter parsing lives in ./frontmatter (dependency-free) so the same
 // logic can run at build time to generate the RSS feed and sitemap.

@@ -20,7 +20,7 @@ const NAV = [
   { label: "Industries", to: "/industries" },
   { label: "Calendar", to: "/compliance-calendar" },
   { label: "Careers", to: "/careers" },
-  { label: "Blog", to: "/blogs" },
+  { label: "Insights", to: "/insights" },
   { label: "Contact", to: "/contact" },
 ];
 

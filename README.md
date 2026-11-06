@@ -71,13 +71,14 @@ Spam protection: a hidden honeypot field plus FormSubmit's own filtering
 All page copy lives in `src/data/` (`site.ts`, `services.ts`, `industries.ts`,
 `careers.ts`) — edit those files to change text without touching components.
 
-## Blog
+## Insights
 
-The blog lives at `/blogs` (index) and `/blogs/<slug>` (individual posts), and
-matches the site's design — no separate generator or build step.
+The Insights section lives at `/insights` (index) and `/insights/<slug>` (individual
+posts), and matches the site's design — no separate generator or build step. The
+old `/blogs` addresses redirect to the same pages, so existing links keep working.
 
 To publish a post, drop a Markdown file into `src/content/blog/`. The filename
-becomes the URL slug (`hello-world.md` → `/blogs/hello-world`). Start it with a
+becomes the URL slug (`hello-world.md` → `/insights/hello-world`). Start it with a
 frontmatter block:
 
 ```markdown
@@ -127,7 +128,7 @@ Built-in blog features:
 
 - `usePageMeta` (`src/hooks/usePageMeta.ts`) sets a per-route title,
   description, keywords, canonical URL and Open Graph / Twitter Card tags.
-  Blog posts are tagged as `og:type=article`.
+  Insights posts are tagged as `og:type=article`.
 - A Vite plugin in `vite.config.ts` generates `feed.xml` (RSS 2.0),
   `sitemap.xml` (all routes + posts) and `robots.txt` into `dist/` at build.
 - All absolute URLs use `site.url` in `src/data/site.ts` — update that one
@@ -168,5 +169,5 @@ defaults to `https://crm.rsa-india.in`). If the CRM is unreachable the site
 falls back to its built-in copy (`src/data/home.ts`, `src/data/careers.ts`,
 the markdown posts) and the statutory due dates, so it never renders empty.
 
-Posts published from the CRM are served by the `/blogs/:slug` route; they are
+Posts published from the CRM are served by the `/insights/:slug` route; they are
 not in the build-time sitemap or RSS feed.

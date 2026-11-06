@@ -104,7 +104,7 @@ const expect = (cond, msg) => {
     const { ctx, page: p } = await page(browser)
     let up = false
     await ctx.route(CMS, (r) => (up ? r.fulfill({ json: content() }) : r.abort()))
-    await p.goto(`${BASE}/blogs/only-in-crm`, { waitUntil: 'networkidle' })
+    await p.goto(`${BASE}/insights/only-in-crm`, { waitUntil: 'networkidle' })
     await p.waitForTimeout(500)
     expect((await p.getByText(/page not found/i).count()) === 0, 'showed "Page not found" during an outage')
     expect((await p.getByText(/temporarily unavailable/i).count()) > 0, 'no temporary-unavailable message')
@@ -122,10 +122,10 @@ const expect = (cond, msg) => {
       calls++
       return calls === 1 ? r.abort() : r.fulfill({ json: content() })
     })
-    await p.goto(`${BASE}/blogs`, { waitUntil: 'networkidle' })
+    await p.goto(`${BASE}/insights`, { waitUntil: 'networkidle' })
     await p.waitForTimeout(300)
     await p.evaluate(() => {
-      history.pushState({}, '', '/blogs/only-in-crm')
+      history.pushState({}, '', '/insights/only-in-crm')
       dispatchEvent(new PopStateEvent('popstate'))
     })
     await p.waitForTimeout(800)
@@ -162,6 +162,96 @@ const expect = (cond, msg) => {
     await p.getByRole('button', { name: 'I Agree' }).press('Enter')
     await p.waitForTimeout(200)
     expect((await p.locator('[aria-labelledby="disclaimer-title"]').count()) === 0, 'I Agree by keyboard did not close it')
+    await ctx.close()
+  })
+
+  await check('Insights /blogs and /blogs/<slug> redirect to /insights and /insights/<slug>, and the post renders', async () => {
+    const { ctx, page: p } = await page(browser)
+    await ctx.route(CMS, (r) => r.fulfill({ json: content() }))
+    await p.goto(`${BASE}/blogs`, { waitUntil: 'networkidle' })
+    expect(new URL(p.url()).pathname === '/insights', `/blogs went to ${new URL(p.url()).pathname}`)
+    await p.goto(`${BASE}/blogs/only-in-crm`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(300)
+    expect(new URL(p.url()).pathname === '/insights/only-in-crm', `/blogs/only-in-crm went to ${new URL(p.url()).pathname}`)
+    expect((await p.getByText('Body from the CRM.').count()) > 0, 'redirected post body did not render')
+    await ctx.close()
+  })
+
+  await check('Navigation says Insights, not Blog', async () => {
+    const { ctx, page: p } = await page(browser)
+    await ctx.route(CMS, (r) => r.fulfill({ json: content() }))
+    await p.goto(`${BASE}/`, { waitUntil: 'networkidle' })
+    const labels = (await p.locator('header a').allTextContents()).map((t) => t.trim())
+    expect(labels.includes('Insights'), `header links were: ${labels.join(' | ')}`)
+    expect(!labels.includes('Blog'), 'header still shows a "Blog" link')
+    await ctx.close()
+  })
+
+  await check('Compliance calendar shows CRM calendar items (Sunday date, extension) and never the old working-day note', async () => {
+    const { ctx, page: p } = await page(browser)
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    const sunday = new Date()
+    sunday.setDate(sunday.getDate() + 10)
+    while (sunday.getDay() !== 0) sunday.setDate(sunday.getDate() + 1)
+    const ext = new Date()
+    ext.setDate(ext.getDate() + 40)
+    const extOriginal = new Date(ext)
+    extOriginal.setDate(extOriginal.getDate() - 3)
+    await ctx.route(CMS, (r) =>
+      r.fulfill({
+        json: content({
+          compliance: {
+            overrides: [],
+            extra: [],
+            calendar: [
+              { key: 'stub-sun', ruleId: 'stub-sun', title: 'Stub Sunday Filing', law: 'GST', who: 'Test taxpayers', period: 'Test period', date: iso(sunday), originalDate: iso(sunday) },
+              { key: 'stub-ext', ruleId: 'stub-ext', title: 'Stub Extended Return', law: 'Income tax', who: 'Test taxpayers', period: 'Test period', date: iso(ext), originalDate: iso(extOriginal), extension: { note: 'Stub extension notice' } },
+            ],
+          },
+        }),
+      }),
+    )
+    await p.goto(`${BASE}/compliance-calendar`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(400)
+    const text = await p.locator('main').innerText().catch(() => p.innerText('body'))
+    expect(text.includes('Stub Sunday Filing'), 'Sunday item not shown')
+    const sundayRow = await p.locator('li', { hasText: 'Stub Sunday Filing' }).first().innerText()
+    expect(/\bSun\b/.test(sundayRow), `Sunday item does not show a Sunday weekday: ${sundayRow.slice(0, 80)}`)
+    expect(text.includes('Stub Extended Return'), 'extension item not shown')
+    expect(text.includes('Extended.') && text.includes('Stub extension notice'), 'extension not shown as "Extended."')
+    expect(text.includes('(was '), 'original date not shown for the extension')
+    expect(!/check whether the next working day/i.test(text), 'internal working-day note is shown to the public')
+    await ctx.close()
+  })
+
+  await check('Compliance calendar falls back to built-in dates when the CRM calendar is empty', async () => {
+    const { ctx, page: p } = await page(browser)
+    await ctx.route(CMS, (r) => r.fulfill({ json: content({ compliance: { overrides: [], extra: [], calendar: [] } }) }))
+    await p.goto(`${BASE}/compliance-calendar`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(400)
+    const rows = await p.locator('section[aria-labelledby] li h3').count()
+    expect(rows > 0, 'empty CRM calendar blanked the public calendar')
+    expect((await p.getByText('Stub Sunday Filing').count()) === 0, 'stub item leaked into the fallback')
+    await ctx.close()
+  })
+
+  await check('A CRM post with a category shows it as the first tag pill', async () => {
+    const { ctx, page: p } = await page(browser)
+    const post = content().posts[0]
+    await ctx.route(CMS, (r) => r.fulfill({ json: content({ posts: [{ ...post, category: 'GST' }] }) }))
+    await p.goto(`${BASE}/insights/only-in-crm`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(300)
+    const tags = await p.locator('ul[aria-label="Tags"] li').allTextContents()
+    expect(tags[0] && tags[0].trim() === 'GST', `tags were: ${tags.join(' | ')}`)
+    await ctx.close()
+  })
+
+  await check('Disclaimer list is justified', async () => {
+    const { ctx, page: p } = await page(browser, { agreed: false })
+    await ctx.route(CMS, (r) => r.fulfill({ json: content() }))
+    await p.goto(`${BASE}/`, { waitUntil: 'networkidle' })
+    const align = await p.locator('[aria-labelledby="disclaimer-title"] ul').first().evaluate((el) => getComputedStyle(el).textAlign)
+    expect(align === 'justify', `text-align was ${align}`)
     await ctx.close()
   })
 

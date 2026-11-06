@@ -77,14 +77,14 @@ export default function DisclaimerModal() {
       <div className="my-8 w-full max-w-2xl rounded border border-line bg-surface p-6 shadow-lift sm:p-8">
         <h2
           id="disclaimer-title"
-          className="font-display text-lg font-semibold leading-snug text-ink sm:text-xl"
+          className="font-display text-lg font-semibold leading-snug text-ink sm:text-justify sm:text-xl sm:hyphens-auto"
         >
           As per the provisions of 'The Chartered Accountants Act, 1949', we are
           not permitted to solicit work or advertise. By clicking on the 'I
           agree' below, you acknowledge the following:
         </h2>
 
-        <ul className="mt-5 list-disc space-y-3 pl-5 text-sm text-ink-soft sm:text-base">
+        <ul className="mt-5 list-disc space-y-3 pl-5 text-justify text-sm text-ink-soft hyphens-auto sm:text-base">
           <li>
             This website was created to provide general information about R
             Shivakumar &amp; Associates, Chartered Accountants.

@@ -147,9 +147,6 @@ export default function ComplianceCalendar() {
                             {i.period}
                             {i.who && <> · {i.who}</>}
                           </p>
-                          {i.date.getDay() === 0 && !i.extension && (
-                            <p className="mt-1 text-xs text-ink-soft">Falls on a Sunday; check whether the next working day applies.</p>
-                          )}
                           {i.extension && (
                             <p className="mt-2 text-sm text-ink">
                               <span className="mr-2 font-semibold text-accent">Extended.</span>

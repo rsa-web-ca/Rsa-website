@@ -39,6 +39,41 @@ function toOverrides(content: CmsContent | null): OverrideFile {
 export function useCompliance(months = 3): { items: DueItem[]; reviewed?: string; ready: boolean; failed: boolean; retry: () => void } {
   const { content, ready, failed, retry } = useCms();
   const file = useMemo(() => toOverrides(content), [content]);
-  const items = useMemo(() => buildCalendar(new Date(), months, file), [months, file]);
+  const items = useMemo(() => fromCrm(content, months) ?? buildCalendar(new Date(), months, file), [content, months, file]);
   return { items, reviewed: file.reviewed, ready, failed, retry };
+}
+
+const parseIso = (s: string) => {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, m - 1, d);
+};
+
+/**
+ * The calendar the CRM worked out from its Compliance master, when it sent
+ * one: the CRM is the single source for what this page shows. Files attached
+ * to an extension come from the matching override. Null for an older CRM, or
+ * an empty list (an unseeded master), which leaves the built-in rules in charge
+ * so the public calendar never goes blank.
+ */
+function fromCrm(content: CmsContent | null, months: number): DueItem[] | null {
+  const list = content?.compliance.calendar;
+  if (!list?.length) return null;
+  const today = new Date();
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const end = new Date(start.getFullYear(), start.getMonth() + months, start.getDate());
+  const files = new Map(content!.compliance.overrides.map((o) => [`${o.ruleId}:${o.due}`, o.attachments.map(({ name, url }) => ({ name, url }))]));
+  return list
+    .filter((i) => (LAWS as string[]).includes(i.law))
+    .map((i) => ({
+      key: i.key,
+      ruleId: i.ruleId,
+      title: i.title,
+      law: i.law as Law,
+      who: i.who,
+      period: i.period,
+      date: parseIso(i.date),
+      originalDate: parseIso(i.originalDate),
+      extension: i.extension ? { ...i.extension, files: files.get(`${i.ruleId}:${i.originalDate}`) } : undefined,
+    }))
+    .filter((i) => i.date >= start && i.date <= end);
 }

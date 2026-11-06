@@ -232,7 +232,7 @@ export default function Home() {
           {latestPost && (
             <Reveal className="lg:col-span-7">
               <Link
-                to={`/blogs/${latestPost.slug}`}
+                to={`/insights/${latestPost.slug}`}
                 className="group relative isolate flex h-full min-h-[420px] flex-col justify-end overflow-hidden rounded-xl bg-[#0e1420] p-8 text-white sm:p-10"
               >
                 <img
