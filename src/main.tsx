@@ -1,6 +1,6 @@
 import { StrictMode, Suspense, lazy, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, Navigate, RouterProvider, useParams } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider, useLocation, useParams } from "react-router-dom";
 import "./index.css";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -19,10 +19,17 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 
-/** An old /blogs/<slug> address, sent on to the same post under /insights. */
+/** The old /blogs address, sent on to /insights; any query string or hash comes along. */
+function OldBlogIndex() {
+  const { pathname, search, hash } = useLocation();
+  return <Navigate to={{ pathname: pathname.replace(/^\/blogs/, "/insights"), search, hash }} replace />;
+}
+
+/** An old /blogs/<slug> address, sent on to the same post under /insights; any query string or hash comes along. */
 function OldBlogPost() {
   const { slug = "" } = useParams();
-  return <Navigate to={`/insights/${slug}`} replace />;
+  const { search, hash } = useLocation();
+  return <Navigate to={{ pathname: `/insights/${encodeURIComponent(slug)}`, search, hash }} replace />;
 }
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ComplianceCalendar = lazy(() => import("./pages/ComplianceCalendar"));
@@ -48,7 +55,7 @@ const router = createBrowserRouter([
       ...posts.map((p) => ({ path: `/insights/${p.slug}`, element: page(<BlogPost slug={p.slug} />) })),
       // Posts published from the CRM have no static route; this catches them.
       { path: "/insights/:slug", element: page(<BlogPost />) },
-      { path: "/blogs", element: <Navigate to="/insights" replace /> },
+      { path: "/blogs", element: <OldBlogIndex /> },
       { path: "/blogs/:slug", element: <OldBlogPost /> },
       ...services.map((s) => ({ path: `/${s.slug}`, element: page(<ServiceDetail slug={s.slug} />) })),
       { path: "*", element: page(<NotFound />) },

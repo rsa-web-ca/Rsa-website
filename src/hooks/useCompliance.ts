@@ -62,6 +62,13 @@ function fromCrm(content: CmsContent | null, months: number): DueItem[] | null {
   const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const end = new Date(start.getFullYear(), start.getMonth() + months, start.getDate());
   const files = new Map(content!.compliance.overrides.map((o) => [`${o.ruleId}:${o.due}`, o.attachments.map(({ name, url }) => ({ name, url }))]));
+  // One-off items are keyed the same way the CRM keys them; their files and link live on the extra itself.
+  const extras = new Map(
+    (content!.compliance.extra ?? []).map((e) => [
+      `extra:${e.title}:${e.date}`,
+      { note: e.note, url: e.url, files: e.attachments.map(({ name, url }) => ({ name, url })) },
+    ]),
+  );
   return list
     .filter((i) => (LAWS as string[]).includes(i.law))
     .map((i) => ({
@@ -73,7 +80,20 @@ function fromCrm(content: CmsContent | null, months: number): DueItem[] | null {
       period: i.period,
       date: parseIso(i.date),
       originalDate: parseIso(i.originalDate),
-      extension: i.extension ? { ...i.extension, files: files.get(`${i.ruleId}:${i.originalDate}`) } : undefined,
+      extension: i.ruleId === "extra" ? extraExtension(i.extension, extras.get(i.key)) : i.extension ? { ...i.extension, files: files.get(`${i.ruleId}:${i.originalDate}`) } : undefined,
     }))
     .filter((i) => i.date >= start && i.date <= end);
+}
+
+/**
+ * A one-off's extension, as the built-in calendar makes it: present when the CRM
+ * sent an extension or the one-off has attached files, with the CRM's own note and link.
+ */
+function extraExtension(
+  crm: { note: string; url?: string } | undefined,
+  extra: { note?: string; url?: string; files: { name: string; url: string }[] } | undefined,
+): DueItem["extension"] {
+  const files = extra?.files.length ? extra.files : undefined;
+  if (!crm && !files) return undefined;
+  return { note: crm?.note ?? extra?.note ?? "", url: crm?.url ?? extra?.url, files };
 }

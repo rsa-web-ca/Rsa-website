@@ -1,12 +1,14 @@
-// Browser checks for the review findings R9-R12 (form result, CRM jobs,
-// CRM outage, disclaimer focus). Not part of the build.
+// Browser checks for the review findings R9-R12 (form result, CRM jobs, CRM
+// outage, disclaimer focus) and for the Insights rename, the CRM-driven
+// compliance calendar, the post category tag and the disclaimer alignment.
+// Not part of the build.
 //
 //   npm run build && npx vite preview --port 4302 &
 //   node scripts/review-checks.cjs http://localhost:4302
 //
-// Needs Playwright (`npx playwright install chromium` once, if it is not
-// already on the machine). The form service and the CRM are stubbed with
-// Playwright routes: nothing is sent anywhere.
+// Uses the Playwright package and Chromium already installed on the machine.
+// The form service and the CRM are stubbed with Playwright routes: nothing is
+// sent anywhere.
 const { chromium } = require('playwright')
 const BASE = process.argv[2]
 const CMS = 'https://crm.rsa-india.in/api/public/website/content'
@@ -21,8 +23,8 @@ const content = (extra = {}) => ({
   ...extra,
 })
 
-async function page(browser, { agreed = true } = {}) {
-  const ctx = await browser.newContext()
+async function page(browser, { agreed = true, viewport } = {}) {
+  const ctx = await browser.newContext(viewport ? { viewport } : {})
   if (agreed) await ctx.addInitScript(() => sessionStorage.setItem('disclaimer-agreed', 'true'))
   await ctx.route('**/*posthog*/**', (r) => r.abort())
   return { ctx, page: await ctx.newPage() }
@@ -174,6 +176,13 @@ const expect = (cond, msg) => {
     await p.waitForTimeout(300)
     expect(new URL(p.url()).pathname === '/insights/only-in-crm', `/blogs/only-in-crm went to ${new URL(p.url()).pathname}`)
     expect((await p.getByText('Body from the CRM.').count()) > 0, 'redirected post body did not render')
+    await p.goto(`${BASE}/blogs?tag=GST`, { waitUntil: 'networkidle' })
+    const idx = new URL(p.url())
+    expect(idx.pathname === '/insights' && idx.search === '?tag=GST', `/blogs?tag=GST went to ${idx.pathname}${idx.search}`)
+    await p.goto(`${BASE}/blogs/only-in-crm?utm=1#sec`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(300)
+    const post = new URL(p.url())
+    expect(post.pathname === '/insights/only-in-crm' && post.search === '?utm=1' && post.hash === '#sec', `/blogs/only-in-crm?utm=1#sec went to ${post.pathname}${post.search}${post.hash}`)
     await ctx.close()
   })
 
@@ -246,15 +255,51 @@ const expect = (cond, msg) => {
     await ctx.close()
   })
 
-  await check('Disclaimer list is justified', async () => {
-    const { ctx, page: p } = await page(browser, { agreed: false })
-    await ctx.route(CMS, (r) => r.fulfill({ json: content() }))
-    await p.goto(`${BASE}/`, { waitUntil: 'networkidle' })
-    const align = await p.locator('[aria-labelledby="disclaimer-title"] ul').first().evaluate((el) => getComputedStyle(el).textAlign)
-    expect(align === 'justify', `text-align was ${align}`)
-    await ctx.close()
+  await check('Disclaimer text is justified from 640px up and left-aligned on phones', async () => {
+    for (const [width, justified] of [[1280, true], [375, false]]) {
+      const { ctx, page: p } = await page(browser, { agreed: false, viewport: { width, height: 800 } })
+      await ctx.route(CMS, (r) => r.fulfill({ json: content() }))
+      await p.goto(`${BASE}/`, { waitUntil: 'networkidle' })
+      const heading = await p.locator('#disclaimer-title').first().evaluate((el) => getComputedStyle(el).textAlign)
+      const list = await p.locator('[aria-labelledby="disclaimer-title"] ul').first().evaluate((el) => getComputedStyle(el).textAlign)
+      const isJustified = (v) => v === 'justify'
+      expect(isJustified(heading) === justified, `at ${width}px the heading text-align was ${heading}`)
+      expect(isJustified(list) === justified, `at ${width}px the list text-align was ${list}`)
+      await ctx.close()
+    }
   })
 
+  await check('Compliance calendar shows the file on an override and on a one-off with no note', async () => {
+    const { ctx, page: p } = await page(browser)
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    const ahead = (n) => {
+      const d = new Date()
+      d.setDate(d.getDate() + n)
+      return iso(d)
+    }
+    const file = (id, name) => ({ id, name, url: `https://example.com/${id}.pdf`, sizeBytes: 1, mimeType: 'application/pdf' })
+    const ovrDate = ahead(20)
+    const oneOffDate = ahead(60)
+    await ctx.route(CMS, (r) =>
+      r.fulfill({
+        json: content({
+          compliance: {
+            overrides: [{ id: 'o1', ruleId: 'stub-ovr', due: ovrDate, date: ovrDate, note: 'Override note', attachments: [file('ovr-file', 'Override notice.pdf')] }],
+            extra: [{ id: 'e1', title: 'Stub One-off File', law: 'GST', who: '', period: '', date: oneOffDate, attachments: [file('extra-file', 'One-off notice.pdf')] }],
+            calendar: [
+              { key: 'stub-ovr', ruleId: 'stub-ovr', title: 'Stub Override Filing', law: 'GST', who: 'Test taxpayers', period: 'Test period', date: ovrDate, originalDate: ovrDate, extension: { note: 'Override note' } },
+              { key: `extra:Stub One-off File:${oneOffDate}`, ruleId: 'extra', title: 'Stub One-off File', law: 'GST', who: '', period: '', date: oneOffDate, originalDate: oneOffDate },
+            ],
+          },
+        }),
+      }),
+    )
+    await p.goto(`${BASE}/compliance-calendar`, { waitUntil: 'networkidle' })
+    await p.waitForTimeout(400)
+    expect((await p.getByRole('link', { name: 'Override notice.pdf' }).count()) > 0, 'override attachment not shown')
+    expect((await p.getByRole('link', { name: 'One-off notice.pdf' }).count()) > 0, 'one-off attachment with no note not shown')
+    await ctx.close()
+  })
   await browser.close()
   console.log(results.join('\n'))
 })()

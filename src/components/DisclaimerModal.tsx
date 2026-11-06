@@ -84,7 +84,7 @@ export default function DisclaimerModal() {
           agree' below, you acknowledge the following:
         </h2>
 
-        <ul className="mt-5 list-disc space-y-3 pl-5 text-justify text-sm text-ink-soft hyphens-auto sm:text-base">
+        <ul className="mt-5 list-disc space-y-3 pl-5 text-sm text-ink-soft sm:text-justify sm:hyphens-auto sm:text-base">
           <li>
             This website was created to provide general information about R
             Shivakumar &amp; Associates, Chartered Accountants.
