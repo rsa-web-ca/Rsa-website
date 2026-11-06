@@ -39,7 +39,7 @@ function seoFiles(): Plugin {
       // --- RSS 2.0 feed ---
       const items = posts
         .map((p) => {
-          const url = `${site.url}/blogs/${p.slug}`
+          const url = `${site.url}/insights/${p.slug}`
           const pubDate = p.date ? new Date(p.date).toUTCString() : ""
           return [
             "    <item>",
@@ -58,8 +58,8 @@ function seoFiles(): Plugin {
       const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${xml(site.name)} — Blog</title>
-    <link>${site.url}/blogs</link>
+    <title>${xml(site.name)} — Insights</title>
+    <link>${site.url}/insights</link>
     <description>Notes on audit, taxation and compliance from ${xml(site.name)}.</description>
     <language>en</language>
     <atom:link href="${site.url}/feed.xml" rel="self" type="application/rss+xml" />
@@ -70,7 +70,7 @@ ${items}
       this.emitFile({ type: "asset", fileName: "feed.xml", source: feed })
 
       // --- Sitemap ---
-      const staticPaths = ["/", "/about", "/services", "/industries", "/careers", "/contact", "/blogs"]
+      const staticPaths = ["/", "/about", "/services", "/industries", "/careers", "/contact", "/insights"]
       const servicePaths = services.map((s) => `/${s.slug}`)
       const urls: string[] = [...staticPaths, ...servicePaths].map(
         (path) => `  <url>\n    <loc>${site.url}${path === "/" ? "/" : path}</loc>\n  </url>`,
@@ -78,7 +78,7 @@ ${items}
       for (const p of posts) {
         const lastmod = p.updated || p.date
         urls.push(
-          `  <url>\n    <loc>${site.url}/blogs/${p.slug}</loc>${
+          `  <url>\n    <loc>${site.url}/insights/${p.slug}</loc>${
             lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ""
           }\n  </url>`,
         )

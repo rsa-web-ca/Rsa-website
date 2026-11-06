@@ -39,6 +39,61 @@ function toOverrides(content: CmsContent | null): OverrideFile {
 export function useCompliance(months = 3): { items: DueItem[]; reviewed?: string; ready: boolean; failed: boolean; retry: () => void } {
   const { content, ready, failed, retry } = useCms();
   const file = useMemo(() => toOverrides(content), [content]);
-  const items = useMemo(() => buildCalendar(new Date(), months, file), [months, file]);
+  const items = useMemo(() => fromCrm(content, months) ?? buildCalendar(new Date(), months, file), [content, months, file]);
   return { items, reviewed: file.reviewed, ready, failed, retry };
+}
+
+const parseIso = (s: string) => {
+  const [y, m, d] = s.split("-").map(Number);
+  return new Date(y, m - 1, d);
+};
+
+/**
+ * The calendar the CRM worked out from its Compliance master, when it sent
+ * one: the CRM is the single source for what this page shows. Files attached
+ * to an extension come from the matching override. Null for an older CRM, or
+ * an empty list (an unseeded master), which leaves the built-in rules in charge
+ * so the public calendar never goes blank.
+ */
+function fromCrm(content: CmsContent | null, months: number): DueItem[] | null {
+  const list = content?.compliance.calendar;
+  if (!list?.length) return null;
+  const today = new Date();
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const end = new Date(start.getFullYear(), start.getMonth() + months, start.getDate());
+  const files = new Map(content!.compliance.overrides.map((o) => [`${o.ruleId}:${o.due}`, o.attachments.map(({ name, url }) => ({ name, url }))]));
+  // One-off items are keyed the same way the CRM keys them; their files and link live on the extra itself.
+  const extras = new Map(
+    (content!.compliance.extra ?? []).map((e) => [
+      `extra:${e.title}:${e.date}`,
+      { note: e.note, url: e.url, files: e.attachments.map(({ name, url }) => ({ name, url })) },
+    ]),
+  );
+  return list
+    .filter((i) => (LAWS as string[]).includes(i.law))
+    .map((i) => ({
+      key: i.key,
+      ruleId: i.ruleId,
+      title: i.title,
+      law: i.law as Law,
+      who: i.who,
+      period: i.period,
+      date: parseIso(i.date),
+      originalDate: parseIso(i.originalDate),
+      extension: i.ruleId === "extra" ? extraExtension(i.extension, extras.get(i.key)) : i.extension ? { ...i.extension, files: files.get(`${i.ruleId}:${i.originalDate}`) } : undefined,
+    }))
+    .filter((i) => i.date >= start && i.date <= end);
+}
+
+/**
+ * A one-off's extension, as the built-in calendar makes it: present when the CRM
+ * sent an extension or the one-off has attached files, with the CRM's own note and link.
+ */
+function extraExtension(
+  crm: { note: string; url?: string } | undefined,
+  extra: { note?: string; url?: string; files: { name: string; url: string }[] } | undefined,
+): DueItem["extension"] {
+  const files = extra?.files.length ? extra.files : undefined;
+  if (!crm && !files) return undefined;
+  return { note: crm?.note ?? extra?.note ?? "", url: crm?.url ?? extra?.url, files };
 }

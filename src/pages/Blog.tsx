@@ -11,7 +11,7 @@ const PAGE_SIZE = 6;
 
 export default function Blog() {
   usePageMeta(
-    "Blog",
+    "Insights",
     "Notes on audit, taxation and compliance from R Shivakumar & Associates, Chartered Accountants, Bengaluru.",
   );
 
@@ -43,7 +43,7 @@ export default function Blog() {
     window.scrollTo({ top: 0 });
   }, [page]);
 
-  /** Build a /blogs URL with the current params plus the given overrides. */
+  /** Build a /insights URL with the current params plus the given overrides. */
   function hrefWith(overrides: Record<string, string | number | undefined>): string {
     const next = new URLSearchParams(params);
     for (const [key, value] of Object.entries(overrides)) {
@@ -51,7 +51,7 @@ export default function Blog() {
       else next.set(key, String(value));
     }
     const s = next.toString();
-    return s ? `/blogs?${s}` : "/blogs";
+    return s ? `/insights?${s}` : "/insights";
   }
 
   function onSearch(value: string) {
@@ -67,7 +67,7 @@ export default function Blog() {
   return (
     <>
       <PageHeader film="hero-ledger"
-        title="Blog"
+        title="Insights"
         lede="Plain-spoken notes on audit, taxation and compliance — from our desk to yours."
       />
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -152,7 +152,7 @@ export default function Blog() {
                   </>
                 )}
                 {" · "}
-                <Link to="/blogs" className="font-semibold text-accent hover:text-accent-strong">
+                <Link to="/insights" className="font-semibold text-accent hover:text-accent-strong">
                   Clear
                 </Link>
               </p>
@@ -161,7 +161,7 @@ export default function Blog() {
             {filtered.length === 0 ? (
               <p className="mt-10 text-lg leading-relaxed text-ink-soft">
                 No posts match your search.{" "}
-                <Link to="/blogs" className="font-semibold text-accent hover:text-accent-strong">
+                <Link to="/insights" className="font-semibold text-accent hover:text-accent-strong">
                   View all posts
                 </Link>
                 .
@@ -181,7 +181,7 @@ export default function Blog() {
                       </div>
                       <div>
                         <h2 className="font-display text-2xl font-semibold text-ink transition-colors duration-200 group-hover:text-accent">
-                          <Link to={`/blogs/${p.slug}`} className="after:absolute after:inset-0">
+                          <Link to={`/insights/${p.slug}`} className="after:absolute after:inset-0">
                             {p.title}
                           </Link>
                         </h2>

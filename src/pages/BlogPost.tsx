@@ -13,7 +13,7 @@ import { formatSize } from "../lib/cms";
 import { usePageMeta } from "../hooks/usePageMeta";
 
 interface BlogPostProps {
-  /** Set for markdown posts (one static route each); CRM posts arrive via /blogs/:slug. */
+  /** Set for markdown posts (one static route each); CRM posts arrive via /insights/:slug. */
   slug?: string;
 }
 
@@ -47,7 +47,7 @@ export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
             >
               Try again
             </button>
-            <Link to="/blogs" className="rounded-lg border border-line px-6 py-2.5 text-sm font-semibold text-ink hover:border-accent hover:text-accent">
+            <Link to="/insights" className="rounded-lg border border-line px-6 py-2.5 text-sm font-semibold text-ink hover:border-accent hover:text-accent">
               All articles
             </Link>
           </div>
@@ -108,7 +108,7 @@ export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
             {post.tags.map((tag) => (
               <li key={tag}>
                 <Link
-                  to={`/blogs?tag=${encodeURIComponent(tag)}`}
+                  to={`/insights?tag=${encodeURIComponent(tag)}`}
                   className="inline-block rounded-full border border-line bg-surface-raised px-3 py-1 text-xs font-medium text-ink-soft transition-colors hover:border-accent hover:text-accent"
                 >
                   {tag}
@@ -128,7 +128,7 @@ export default function BlogPost({ slug: fixedSlug }: BlogPostProps) {
         )}
         <div className="mt-8 text-center">
           <Link
-            to="/blogs"
+            to="/insights"
             className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-strong"
           >
             <svg
@@ -158,7 +158,7 @@ function PostLink({ post, direction }: { post: BlogPost; direction: "previous" |
   const isNext = direction === "next";
   return (
     <Link
-      to={`/blogs/${post.slug}`}
+      to={`/insights/${post.slug}`}
       className={`group flex flex-col gap-1 rounded border border-line bg-surface p-5 transition-colors duration-200 hover:border-accent hover:bg-surface-raised ${
         isNext ? "sm:text-right" : ""
       }`}

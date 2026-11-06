@@ -30,7 +30,8 @@ interface CmsBase {
 export interface CmsOverride extends CmsBase { ruleId: string; due: string; date: string; note: string; url?: string }
 export interface CmsExtra extends CmsBase { title: string; law: string; who?: string; period?: string; date: string; note?: string; url?: string }
 /** `format: "html"` bodies come from the CRM's rich editor; without it the body is Markdown. `inline` lists the pictures and files used inside an HTML body. */
-export interface CmsPost extends CmsBase { title: string; slug: string; summary?: string; body: string; format?: "html"; inline?: CmsFile[]; date: string; author?: string; tags?: string[] }
+export interface CmsPost extends CmsBase { title: string; slug: string; summary?: string; body: string; format?: "html"; inline?: CmsFile[]; date: string; author?: string; tags?: string[]; category?: string }
+export interface CmsCalendarItem { key: string; ruleId: string; title: string; law: string; who: string; period: string; date: string; originalDate: string; extension?: { note: string; url?: string } }
 export interface CmsFaq extends CmsBase { q: string; a: string }
 export interface CmsStep extends CmsBase { title: string; body: string }
 export interface CmsCareer extends CmsBase { title: string; summary?: string; open: boolean }
@@ -38,7 +39,12 @@ export interface CmsCareer extends CmsBase { title: string; summary?: string; op
 export interface CmsContent {
   /** Unix seconds; when an admin last checked the calendar against notifications. */
   complianceReviewedAt: number | null;
-  compliance: { overrides: CmsOverride[]; extra: CmsExtra[] };
+  /**
+   * `calendar` is the calendar worked out by the CRM from its Compliance master
+   * (dates as YYYY-MM-DD, extensions applied). When present it is the calendar;
+   * the rules in src/data/compliance.ts are only the fallback for an older CRM.
+   */
+  compliance: { overrides: CmsOverride[]; extra: CmsExtra[]; calendar?: CmsCalendarItem[] };
   posts: CmsPost[];
   faqs: CmsFaq[];
   process: CmsStep[];

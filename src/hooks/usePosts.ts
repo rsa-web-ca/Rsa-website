@@ -22,7 +22,8 @@ function fromCms(p: CmsPost): SitePost {
     date: p.date,
     author: p.author,
     summary: p.summary,
-    tags: p.tags ?? [],
+    // The CRM's category leads the pills, so readers can filter Insights by it like a tag.
+    tags: [...new Set([...(p.category ? [p.category] : []), ...(p.tags ?? [])])],
     draft: false,
     readingTime: Math.max(1, Math.round(words / 200)),
     body: p.body,
